@@ -7,6 +7,7 @@ import vuetify from '@/plugins/vuetify'
 import { loadFonts } from '@/plugins/webfontloader'
 import router from '@/router'
 // eslint-disable-next-line import/no-unresolved
+import CKEditor from '@ckeditor/ckeditor5-vue'
 import '@core-scss/template/index.scss'
 import '@layouts/styles/index.scss'
 import '@styles/styles.scss'
@@ -28,6 +29,7 @@ pinia.use(piniaPluginPersistedstate)
 app.use(vuetify)
 app.use(pinia)
 app.use(router)
+app.use(CKEditor)
 
 // Mount vue app
 app.mount('#app')

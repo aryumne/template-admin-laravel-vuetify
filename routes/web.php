@@ -18,5 +18,8 @@ Route::get('{any?}', function () {
     return view('application');
 })->where('any', '.*');
 
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth:sanctum']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});
 Route::post('/login', [AuthenticationWebController::class, 'signIn'])->middleware(['redirect.if.authenticated']);
 Route::post('/logout', [AuthenticationWebController::class, 'signOut'])->middleware(['auth']);
