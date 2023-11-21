@@ -1,5 +1,17 @@
 <script setup>
 import avatar1 from '@images/avatars/avatar-1.png'
+import { authStore } from '@stores'
+
+
+const signOut = async () => {
+  try {
+    const res = await axios.post('/logout')
+
+    if(res.status === 200) await authStore.signOut()
+  } catch (error) {
+    console.log(error)
+  } 
+}
 </script>
 
 <template>
@@ -54,63 +66,8 @@ import avatar1 from '@images/avatars/avatar-1.png'
           </VListItem>
           <VDivider class="my-2" />
 
-          <!-- 👉 Profile -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="bx-user"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>Profile</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 Settings -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="bx-cog"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>Settings</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 Pricing -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="bx-dollar"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>Pricing</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 FAQ -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="bx-help-circle"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>FAQ</VListItemTitle>
-          </VListItem>
-
-          <!-- Divider -->
-          <VDivider class="my-2" />
-
           <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem @click.prevent="signOut">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -119,7 +76,9 @@ import avatar1 from '@images/avatars/avatar-1.png'
               />
             </template>
 
-            <VListItemTitle>Logout</VListItemTitle>
+            <VListItemTitle>
+              Logout
+            </VListItemTitle>
           </VListItem>
         </VList>
       </VMenu>

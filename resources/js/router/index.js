@@ -35,6 +35,14 @@ const router = createRouter({
           },
         },
         {
+          name: 'createBlog',
+          path: 'create/blog',
+          component: () => import('../pages/create-blog.vue'),
+          meta: {
+            title: 'Create Blog',
+          },
+        },
+        {
           path: 'typography',
           component: () => import('../pages/typography.vue'),
           meta: {
@@ -67,13 +75,6 @@ const router = createRouter({
           component: () => import('../pages/form-layouts.vue'),
           meta: {
             title: 'Form',
-          },
-        },
-        {
-          path: 'editor',
-          component: () => import('../pages/ckeditor.vue'),
-          meta: {
-            title: 'Editor',
           },
         },
       ],
@@ -122,8 +123,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthenticationStore()
 
-  console.log(authStore.authenticated)
-  console.log(to.meta)
   document.title = to.meta.title
   if (to.meta.middleware == 'guest') {
     if (authStore.authenticated) {

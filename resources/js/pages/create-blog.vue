@@ -1,10 +1,11 @@
 <script setup>
 import { blogService } from "@services"
 
+let ckEditorInstance
 const csrf_token = window.csrf_token
-
 const routePrefix = '/filemanager'
 const ckeditorRef = ref(null)
+const blogTypes = ref([])
 
 const data = ref({
   title: null,
@@ -15,13 +16,24 @@ const data = ref({
   blog_type_id: null,
 })
 
-const blogTypes = ref([])
+
+const resetForm = () => {
+  data.value = {
+    title: null,
+    short_desc: null,
+    thumb_url: null,
+    desc: null,
+    is_recomended: false,
+    blog_type_id: null,
+  }
+  ckEditorInstance.setData('')
+}
 
 const send = async () => {
   try {
-    const res = await blogService.store(data.value)
+    await blogService.store(data.value)
 
-    console.log(res)
+    resetForm()
   } catch (e) {
     console.error(e.message)
   }
@@ -30,9 +42,7 @@ const send = async () => {
 const openFileManager = () => {
   window.open(`${routePrefix}?type=file`, 'FileManager', 'width=900,height=600')
   window.SetUrl = items => {
-    console.log(items[0].thumb_url)
     data.value.thumb_url = items[0].url
-    console.log(data.value)
   }
 }
 
@@ -48,7 +58,7 @@ const loadScript = src => {
 }
 
 const initializeCKEditor = () => {
-  const editor = CKEDITOR.replace(ckeditorRef.value, {
+  ckEditorInstance = CKEDITOR.replace(ckeditorRef.value, {
     height: 300,
     filebrowserImageBrowseUrl: `${routePrefix}?type=Files`,
     filebrowserImageUploadUrl: `${routePrefix}/upload?type=Files&_token=${csrf_token}`,
@@ -56,11 +66,9 @@ const initializeCKEditor = () => {
     filebrowserUploadUrl: `${routePrefix}/upload?type=Files&_token=${csrf_token}`,
   })
 
-  editor.on('change', () => {
-    console.log(editor.getData())
-
+  ckEditorInstance.on('change', () => {
     // Update the value in data.desc when CKEditor content changes
-    data.value.desc = editor.getData()
+    data.value.desc = ckEditorInstance.getData()
   })
 }
 
@@ -89,16 +97,35 @@ onMounted(async () => {
 
 <template>
   <div>
-    <VRow>
+    <VRow justify="center">
       <VCol
         cols="12"
-        md="8"
+        md="10"
+        lg="8"
       >
         <!-- 👉 Multiple Column -->
         <VCard title="New Blog">
           <VCardText>
             <VForm @submit.prevent="send">
               <VRow>
+                <VCol cols="12">
+                  <VBtn
+                    block
+                    variant="tonal"
+                    color="grey-lighten-1"
+                    @click.prevent="openFileManager"
+                  >
+                    upload thumbnail
+                  </VBtn>
+                  <VCard v-if="data.thumb_url !== null">
+                    <VImg
+                      :src="data.thumb_url"
+                      max-height="250"
+                      cover
+                      class="bg-grey-lighten-2 mt-3"
+                    />
+                  </VCard>
+                </VCol>
                 <VCol cols="12">
                   <VTextField
                     v-model="data.title"
@@ -114,47 +141,20 @@ onMounted(async () => {
                   />
                 </VCol>
                 <VCol cols="12">
-                  <VBtn
-                    block
-                    variant="tonal"
-                    color="grey-lighten-1"
-                    @click.prevent="openFileManager"
-                  >
-                    Choose thumbnail
-                  </VBtn>
-                  <VCard v-if="data.thumb_url !== null">
-                    <VImg
-                      :src="data.thumb_url"
-                      max-height="250"
-                      cover
-                      class="bg-grey-lighten-2 mt-3"
-                    />
-                    <VCardTitle class="text-h6">
-                      max-height with cover
-                    </VCardTitle>
-                  </VCard>
-                </VCol>
-                <VCol cols="12">
                   <VSelect
                     v-model="data.blog_type_id"
-                    label="Select"
+                    label="Select blog type"
                     :items="blogTypes"
                     item-title="bt_name"
                     item-value="id"
-                    variant="solo-inverted"
+                    variant="outlined"
                   />
                 </VCol>
                 <VCol cols="12">
-                  <VTextarea
+                  <textarea
                     ref="ckeditorRef"
-                    label="Label"
+                    class="form-control"
                   />
-                  <div style="width: 100%; height: 500px; overflow: hidden; border: none;">
-                    <textarea
-                      ref="ckeditorRef"
-                      class="form-control"
-                    />
-                  </div> 
                 </VCol>
 
                 <VCol
@@ -169,17 +169,13 @@ onMounted(async () => {
                     type="reset"
                     color="secondary"
                     variant="tonal"
+                    @click.prevent="resetForm"
                   >
                     Reset
                   </VBtn>
                 </VCol>
               </VRow>
             </VForm>
-            
-            <iframe
-              src="/filemanager"
-              style="width: 100%; height: 500px; overflow: hidden; border: none;"
-            />
           </VCardText>
         </VCard>
       </VCol>
