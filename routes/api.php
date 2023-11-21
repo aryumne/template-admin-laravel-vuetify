@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\AuthenticationController;
+use App\Http\Controllers\api\BlogTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1'], function () {
-    Route::post('login', [AuthenticationController::class, 'signIn']);
-    Route::get('me', [AuthenticationController::class, 'me']);
-    Route::post('logout', [AuthenticationController::class, 'signOut'])->middleware('auth:sanctum');
+    Route::group(['prefix' => 'auth'], function () {
+        Route::post('login', [AuthenticationController::class, 'signIn']);
+        Route::get('me', [AuthenticationController::class, 'me'])->middleware('auth:sanctum');
+        Route::post('logout', [AuthenticationController::class, 'signOut'])->middleware('auth:sanctum');
+    });
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::resource('blog-types', BlogTypeController::class)->only('index');
+    });
 });
