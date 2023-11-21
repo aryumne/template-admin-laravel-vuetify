@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\api\AuthenticationController;
-use App\Http\Controllers\api\BlogTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\api\BlogController;
+use App\Http\Controllers\api\BlogTypeController;
+use App\Http\Controllers\api\AuthenticationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,5 +29,6 @@ Route::group(['prefix' => 'v1'], function () {
     });
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::resource('blog-types', BlogTypeController::class)->only('index');
+        Route::resource('blogs', BlogController::class)->except(['update', 'destroy']);
     });
 });

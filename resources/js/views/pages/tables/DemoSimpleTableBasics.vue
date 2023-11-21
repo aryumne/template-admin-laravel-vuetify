@@ -1,41 +1,17 @@
 <script setup>
-const desserts = [
-  {
-    dessert: 'Frozen Yogurt',
-    calories: 159,
-    fat: 6,
-    carbs: 24,
-    protein: 4,
-  },
-  {
-    dessert: 'Ice cream sandwich',
-    calories: 237,
-    fat: 6,
-    carbs: 24,
-    protein: 4,
-  },
-  {
-    dessert: 'Eclair',
-    calories: 262,
-    fat: 6,
-    carbs: 24,
-    protein: 4,
-  },
-  {
-    dessert: 'Cupcake',
-    calories: 305,
-    fat: 6,
-    carbs: 24,
-    protein: 4,
-  },
-  {
-    dessert: 'Gingerbread',
-    calories: 356,
-    fat: 6,
-    carbs: 24,
-    protein: 4,
-  },
-]
+import { blogService } from "@services"
+
+const blogs = ref([])
+
+onMounted(async () => {
+  try {
+    const res = await blogService.getBlogs()
+
+    blogs.value = res.data
+  } catch (e) {
+    console.error(e.message)
+  }
+})
 </script>
 
 <template>
@@ -43,42 +19,46 @@ const desserts = [
     <thead>
       <tr>
         <th class="text-uppercase">
-          Desserts (100g Servings)
+          Blog type
         </th>
         <th>
-          calories
+          title
         </th>
         <th>
-          Fat(g)
+          thumb
         </th>
         <th>
-          Carbs(g)
+          recomended
         </th>
         <th>
-          protein(g)
+          created_at
         </th>
       </tr>
     </thead>
 
     <tbody>
       <tr
-        v-for="item in desserts"
-        :key="item.dessert"
+        v-for="item in blogs"
+        :key="item.id"
       >
         <td>
-          {{ item.dessert }}
+          {{ item.blog_type_name }}
         </td>
         <td class="text-center">
-          {{ item.calories }}
+          {{ item.title }}
         </td>
         <td class="text-center">
-          {{ item.fat }}
+          <img
+            :src="item.thumb_url"
+            height="100"
+          >
         </td>
+        <td
+          class="text-center"
+          v-html="item.desc"
+        />
         <td class="text-center">
-          {{ item.carbs }}
-        </td>
-        <td class="text-center">
-          {{ item.protein }}
+          {{ item.created_at }}
         </td>
       </tr>
     </tbody>

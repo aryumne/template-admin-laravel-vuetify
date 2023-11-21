@@ -3,24 +3,24 @@
 namespace App\Repositories;
 
 use Exception;
-use App\Models\BlogType;
+use App\Models\Blog;
 use Illuminate\Support\Facades\DB;
-use App\Http\Resources\BlogTypeResource;
+use App\Http\Resources\BlogResource;
 
-class BlogTypeRepository extends BaseRepository
+class BlogRepository extends BaseRepository
 {
     protected $model;
 
-    function __construct(BlogType $loc)
+    function __construct(Blog $blog)
     {
-        $this->model = $loc;
+        $this->model = $blog;
     }
 
     public function getAll()
     {
         try {
             $data = $this->model->all();
-            return !is_null($data) ? BlogTypeResource::collection($data) : null;
+            return !is_null($data) ? BlogResource::collection($data) : null;
         } catch (Exception $e) {
             throw $e;
         }
@@ -31,21 +31,28 @@ class BlogTypeRepository extends BaseRepository
     {
         try {
             $data = $this->model->find($uuid)->with($relations)->first();
-            return new BlogTypeResource($data);
+            return new BlogResource($data);
         } catch (Exception $e) {
             throw $e;
         }
         return null;
     }
 
-
     public function store(array $data)
     {
         DB::beginTransaction();
         try {
-            $record = $this->model->create($data);
+            $newData = [
+                'title'          => $data['title'],
+                'short_desc'     => $data['short_desc'],
+                'thumb_url'      => $data['thumb_url'],
+                'desc'           => $data['desc'],
+                'is_recomended'  => $data['is_recomended'],
+                'blog_type_id'   => $data['blog_type_id'],
+            ];
+            $record = $this->model->create($newData);
             DB::commit();
-            return new BlogTypeResource($record);
+            return new BlogResource($record);
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;

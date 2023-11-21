@@ -10,4 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class BlogType extends Model
 {
     use HasUuids, SoftDeletes, HasFactory;
+
+    protected $table = 'blog_types';
 }

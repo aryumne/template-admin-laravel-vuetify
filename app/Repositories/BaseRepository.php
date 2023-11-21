@@ -11,10 +11,7 @@ abstract class BaseRepository
 
     abstract function getAll();
 
-    public function getById($uuid, $relations = [])
-    {
-        return $this->model->where('id', $uuid)->with($relations)->first();
-    }
+    abstract function getById($uuid, $relations = []);
 
     abstract function store(array $data);
 }
