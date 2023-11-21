@@ -28,10 +28,10 @@ const router = createRouter({
           },
         },
         {
-          path: 'account-settings',
-          component: () => import('../pages/account-settings.vue'),
+          path: 'blogs',
+          component: () => import('../pages/blogs.vue'),
           meta: {
-            title: 'Account Settings',
+            title: 'Blogs',
           },
         },
         {

@@ -81,9 +81,9 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
       />
       <VerticalNavLink
         :item="{
-          title: 'Account Settings',
+          title: 'Blogs',
           icon: 'mdi-account-cog-outline',
-          to: '/account-settings',
+          to: '/blogs',
         }"
       />
 
