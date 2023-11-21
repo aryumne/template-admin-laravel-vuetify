@@ -32,14 +32,14 @@ onMounted(async () => {
   // CKEditor initialization
   $('textarea[name=ce]').ckeditor({
     height: 300,
-    filebrowserImageBrowseUrl: `${route_prefix}?type=Images`,
-    filebrowserImageUploadUrl: `${route_prefix}/upload?type=Images&_token=${csrf_token}`, // Make sure csrf_token is defined
+    filebrowserImageBrowseUrl: `${route_prefix}?type=Files`,
+    filebrowserImageUploadUrl: `${route_prefix}/upload?type=Files&_token=${csrf_token}`, // Make sure csrf_token is defined
     filebrowserBrowseUrl: `${route_prefix}?type=Files`,
     filebrowserUploadUrl: `${route_prefix}/upload?type=Files&_token=${csrf_token}`, // Make sure csrf_token is defined
   })
 })
 
-const openDialog = () => window.open('/laravel-filemanager')
+const openDialog = () => window.open('/filemanager?type=Images&CKEditor=ce&CKEditorFuncNum=92&langCode=en')
 </script>
 
 <template>
