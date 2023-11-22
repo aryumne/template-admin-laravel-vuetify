@@ -1,10 +1,9 @@
 <script setup>
+import Ckeditor from "@/components/Ckeditor.vue"
 import { blogService } from "@services"
+import { ckeditorStore } from '@stores'
 
-let ckEditorInstance
-const csrf_token = window.csrf_token
 const routePrefix = '/filemanager'
-const ckeditorRef = ref(null)
 const blogTypes = ref([])
 
 const data = ref({
@@ -16,6 +15,9 @@ const data = ref({
   blog_type_id: null,
 })
 
+const setCkeditor = value => {
+  data.value.desc = value
+}
 
 const resetForm = () => {
   data.value = {
@@ -26,7 +28,7 @@ const resetForm = () => {
     is_recomended: false,
     blog_type_id: null,
   }
-  ckEditorInstance.setData('')
+  ckeditorStore.clearCkeditor()
 }
 
 const send = async () => {
@@ -46,52 +48,10 @@ const openFileManager = () => {
   }
 }
 
-const loadScript = src => {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script')
-
-    script.src = src
-    script.onload = resolve
-    script.onerror = reject
-    document.head.appendChild(script)
-  })
-}
-
-const initializeCKEditor = () => {
-  ckEditorInstance = CKEDITOR.replace(ckeditorRef.value, {
-    height: 300,
-    filebrowserImageBrowseUrl: `${routePrefix}?type=Files`,
-    filebrowserImageUploadUrl: `${routePrefix}/upload?type=Files&_token=${csrf_token}`,
-    filebrowserBrowseUrl: `${routePrefix}?type=Files`,
-    filebrowserUploadUrl: `${routePrefix}/upload?type=Files&_token=${csrf_token}`,
-  })
-
-  ckEditorInstance.on('change', () => {
-    // Update the value in data.desc when CKEditor content changes
-    data.value.desc = ckEditorInstance.getData()
-  })
-}
-
 onMounted(async () => {
   const res = await blogService.getBlogTypes()
 
   blogTypes.value = res.data
-
-  // Load jQuery
-  await loadScript('https://code.jquery.com/jquery-3.2.1.min.js')
-
-  // Load Popper.js
-  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js')
-
-  // Load Bootstrap
-  await loadScript('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js')
-  
-  // Load CKEditor scripts
-  await loadScript('//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.11/ckeditor.js')
-  await loadScript('//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.11/adapters/jquery.js')
-
-  // CKEditor initialization
-  initializeCKEditor()
 })
 </script>
 
@@ -151,10 +111,7 @@ onMounted(async () => {
                   />
                 </VCol>
                 <VCol cols="12">
-                  <textarea
-                    ref="ckeditorRef"
-                    class="form-control"
-                  />
+                  <Ckeditor @set-ckeditor="setCkeditor" />
                 </VCol>
 
                 <VCol
