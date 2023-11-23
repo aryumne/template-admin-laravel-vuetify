@@ -11,6 +11,8 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
 // const upgradeBanner = computed(() => {
 //   return vuetifyTheme.global.name.value === 'light' ? upgradeBannerLight : upgradeBannerDark
 // })
+
+const openLogViewer = () => window.location.href= '/log-viewer'
 </script>
 
 <template>
@@ -50,6 +52,14 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
           icon: 'mdi-account-cog-outline',
           to: '/blogs',
         }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Log Viewer',
+          icon: 'mdi-file-document-alert',
+          to: '#',
+        }"
+        @click="openLogViewer"
       />
     </template>
     <slot />

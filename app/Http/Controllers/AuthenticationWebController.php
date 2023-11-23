@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Helpers\HttpHelper;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,29 +21,33 @@ class AuthenticationWebController extends Controller
                 return HttpHelper::errorResponse('The credentials is not valid', [], Response::HTTP_UNAUTHORIZED);
             }
             $user = User::where('email', $req->email)->first();
-            // Check if the user's account has expired
-            // if ($user->profile->expired_date !== null && now()->greaterThanOrEqualTo($user->profile->expired_date)) {
-            //     Auth::logout(); // Log the user out
-            //     return HttpHelper::errorResponse('Your account has expired', [], Response::HTTP_UNAUTHORIZED);
-            // }
 
-            $req->session()->regenerate();
-            
+            $log = $req->session()->regenerate();
+            if ($log === false) throw new Exception('The generate session is not completed');
+            Log::info("User signed in", ['data' => $user]);
+
             return HttpHelper::successResponse('Successfully logged in', [], Response::HTTP_OK);
         } catch (Exception $e) {
             Auth::logout();
+            Log::error($e->getMessage(), ['error' => $e]);
             return HttpHelper::errorResponse('Authentication Failed', $e->getMessage(), Response::HTTP_UNAUTHORIZED);
         }
     }
 
     public function signOut(Request $request): JsonResponse
     {
-        Auth::logout();
+        try {
+            Auth::logout();
 
-        $request->session()->invalidate();
+            $request->session()->invalidate();
 
-        $request->session()->regenerateToken();
+            $request->session()->regenerateToken();
 
-        return HttpHelper::successResponse('successfully logged out', [], Response::HTTP_OK);
+            Log::info("successfully logged out");
+            return HttpHelper::successResponse('successfully logged out', [], Response::HTTP_OK);
+        } catch (Exception $e) {
+            Log::error($e->getMessage(), ['error' => $e]);
+            return HttpHelper::errorResponse('Authentication Failed', $e->getMessage(), Response::HTTP_UNAUTHORIZED);
+        }
     }
 }

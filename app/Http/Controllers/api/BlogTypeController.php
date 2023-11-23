@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Helpers\HttpHelper;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Repositories\BlogTypeRepository;
 
@@ -25,6 +26,7 @@ class BlogTypeController extends Controller
             $data = $this->btRepo->getAll();
             return HttpHelper::successResponse('Blog type data.', $data, Response::HTTP_OK);
         } catch (\Exception $e) {
+            Log::error($e->getMessage(), ['error' => $e]);
             HttpHelper::errorResponse('Failed to load data blog type!', [], Response::HTTP_NO_CONTENT);
         }
     }

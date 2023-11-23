@@ -5,8 +5,9 @@ namespace App\Http\Controllers\api;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Helpers\HttpHelper;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\BlogRequest;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use App\Repositories\BlogRepository;
 
 class BlogController extends Controller
@@ -26,6 +27,7 @@ class BlogController extends Controller
             $data = $this->blogRepo->getAll();
             return HttpHelper::successResponse('Blog data.', $data, Response::HTTP_OK);
         } catch (\Exception $e) {
+            Log::error($e->getMessage(), ['error' => $e]);
             HttpHelper::errorResponse('Failed to load data blog!', $e->getMessage(), Response::HTTP_NO_CONTENT);
         }
     }
@@ -37,8 +39,10 @@ class BlogController extends Controller
     {
         try {
             $data = $this->blogRepo->store($request->all());
+            Log::info("Create Blog", ['data' => $data->id]);
             return HttpHelper::successResponse('New blog is successfully created.', $data, Response::HTTP_OK);
         } catch (\Exception $e) {
+            Log::error($e->getMessage(), ['error' => $e]);
             HttpHelper::errorResponse('Failed to load data blog!', $e->getMessage(), Response::HTTP_NO_CONTENT);
         }
     }
@@ -52,6 +56,7 @@ class BlogController extends Controller
             $data = $this->blogRepo->getById($uuid);
             return HttpHelper::successResponse('Blog data.', $data, Response::HTTP_OK);
         } catch (\Exception $e) {
+            Log::error($e->getMessage(), ['error' => $e]);
             HttpHelper::errorResponse('Failed to load data blog!', $e->getMessage(), Response::HTTP_NO_CONTENT);
         }
     }
