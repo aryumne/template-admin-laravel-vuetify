@@ -57,7 +57,7 @@ const openLogViewer = () => window.location.href= '/log-viewer'
         :item="{
           title: 'Log Viewer',
           icon: 'mdi-file-document-alert',
-          to: '#',
+          to: '/log-viewer',
         }"
         @click="openLogViewer"
       />

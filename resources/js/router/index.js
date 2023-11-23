@@ -117,7 +117,6 @@ const router = createRouter({
       ],
     },
   ],
-  linkExactActiveClass: 'active',
 })
 
 router.beforeEach((to, from, next) => {

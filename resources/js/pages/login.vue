@@ -1,4 +1,5 @@
 <script setup>
+import { snackbarStore } from '@/stores'
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import logo from '@images/logo.svg?raw'
 import { authStore } from '@stores'
@@ -19,8 +20,8 @@ const signin = async () => {
     await axios.get('/sanctum/csrf-cookie')
 
     const res = await axios.post('/login', data.value)
-
-    if(res.status === 200)await authStore.signin()
+    if (res.status === 200) await authStore.signin()
+    snackbarStore.setMsg(res.data.message)
   } catch (error) {
     console.log(error)
 

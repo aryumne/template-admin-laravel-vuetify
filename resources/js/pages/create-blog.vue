@@ -1,7 +1,7 @@
 <script setup>
 import Ckeditor from "@/components/Ckeditor.vue"
 import { blogService } from "@services"
-import { ckeditorStore } from '@stores'
+import { ckeditorStore, snackbarStore } from '@stores'
 
 const routePrefix = '/filemanager'
 const blogTypes = ref([])
@@ -33,9 +33,10 @@ const resetForm = () => {
 
 const send = async () => {
   try {
-    await blogService.store(data.value)
+    const res = await blogService.store(data.value)
 
     resetForm()
+    snackbarStore.setMsg(res.message)
   } catch (e) {
     console.error(e.message)
   }

@@ -1,10 +1,23 @@
 <script setup>
+import { snackbarStore } from '@/stores'
 import DefaultLayoutWithVerticalNav from './components/DefaultLayoutWithVerticalNav.vue'
 </script>
 
 <template>
   <DefaultLayoutWithVerticalNav>
     <RouterView />
+    <VSnackbar
+      v-model="snackbarStore.isShow"
+      multi-line
+    >
+      {{ snackbarStore.msg }}
+
+      <template #actions>
+        <VBtn @click="snackbarStore.toggle">
+          Close
+        </VBtn>
+      </template>
+    </VSnackbar>
   </DefaultLayoutWithVerticalNav>
 </template>
 
