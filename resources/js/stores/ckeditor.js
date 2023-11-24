@@ -4,9 +4,10 @@ import { ref } from 'vue'
 export default defineStore('ckeditor', () => {
   let ckEditorInstance = ref(null)
 
-  function clearCkeditor() {
-    ckEditorInstance.value.setData('')
+  function setCkeditor(val = '') {
+    console.log(val)
+    ckEditorInstance.value.setData(val)
   }
 
-  return { ckEditorInstance, clearCkeditor }
+  return { ckEditorInstance, setCkeditor }
 })

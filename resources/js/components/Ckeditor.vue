@@ -1,7 +1,7 @@
 <script setup>
 import { ckeditorStore } from '@stores'
 
-const emitEvents = defineEmits(['setCkeditor'])
+const emitEvents = defineEmits(['setDesc', 'loadDesc'])
 const csrf_token = window.csrf_token
 const routePrefix = '/filemanager'
 const ckeditorRef = ref(null)
@@ -28,7 +28,7 @@ const initializeCKEditor = () => {
 
   ckeditorStore.ckEditorInstance.on('change', () => {
     // Update the value in data.desc when CKEditor content changes
-    emitEvents('setCkeditor', ckeditorStore.ckEditorInstance.getData())
+    emitEvents('setDesc', ckeditorStore.ckEditorInstance.getData())
   })
 }
 
@@ -48,6 +48,7 @@ onMounted(async () => {
 
   // CKEditor initialization
   initializeCKEditor()
+  emitEvents('loadDesc')
 })
 </script>
 

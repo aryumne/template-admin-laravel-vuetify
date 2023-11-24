@@ -40,7 +40,7 @@ class BlogController extends Controller
         try {
             $data = $this->blogRepo->store($request->all());
             Log::info("Creating Blog", ['data' => $data->id]);
-            return HttpHelper::successResponse('New blog is successfully created.', $data, Response::HTTP_OK);
+            return HttpHelper::successResponse('a new blog has been successfully created.', $data, Response::HTTP_OK);
         } catch (\Exception $e) {
             Log::error("Creating Blog", ['error_msg' => $e->getMessage(), 'detail' => $e]);
             return HttpHelper::errorResponse('Failed to store data blog!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
@@ -69,7 +69,7 @@ class BlogController extends Controller
         try {
             $data = $this->blogRepo->update($request->all(), $uuid);
             Log::info("Updating Blog", ['data' => $data->id]);
-            return HttpHelper::successResponse('Blog data.', $data, Response::HTTP_OK);
+            return HttpHelper::successResponse('The blog has been successfully updated.', $data, Response::HTTP_OK);
         } catch (\Exception $e) {
             Log::error("Updating Blog", ['error_msg' => $e->getMessage(), 'detail' => $e]);
             return HttpHelper::errorResponse('Failed to update data blog!', $e->getMessage(), Response::HTTP_BAD_REQUEST);

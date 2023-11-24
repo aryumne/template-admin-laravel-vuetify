@@ -28,6 +28,7 @@ const router = createRouter({
           },
         },
         {
+          name: 'blogs',
           path: 'blogs',
           component: () => import('../pages/blogs.vue'),
           meta: {

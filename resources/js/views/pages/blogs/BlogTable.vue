@@ -20,7 +20,7 @@ const deleteBlog = async() => {
     await getData()
     dialog.value = false
   } catch (e) {
-    snackbarStore.setMsg(res.message)
+    snackbarStore.setMsg(e.message)
   }
 }
 
@@ -30,7 +30,7 @@ const getData = async () => {
 
     blogs.value = res.data
   } catch (e) {
-    snackbarStore.setMsg(res.message)
+    snackbarStore.setMsg(e.message)
   }
 }
 

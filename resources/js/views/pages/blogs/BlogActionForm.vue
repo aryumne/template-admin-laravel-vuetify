@@ -26,7 +26,7 @@ const data = ref({
   blog_type_id: null,
 })
 
-const setCkeditor = value => {
+const syncToDesc = value => {
   data.value.desc = value
 }
 
@@ -35,21 +35,24 @@ const resetForm = () => {
     title: null,
     short_desc: null,
     thumb_url: null,
-    desc: null,
     is_recomended: false,
     blog_type_id: null,
   }
-  ckeditorStore.clearCkeditor()
+  if (props.isNew) {
+    data.value.desc = null
+    ckeditorStore.setCkeditor()
+  }
 }
 
 const send = async () => {
   try {
-    const res = await blogService.storeBlog(data.value)
+    const res = props.isNew ? await blogService.storeBlog(data.value) : await blogService.updateBlog(props.blogId, data.value)
 
     resetForm()
+    await getBlog()
     snackbarStore.setMsg(res.message)
   } catch (e) {
-    console.error(e.message)
+    snackbarStore.setMsg(e.message)
   }
 }
 
@@ -60,23 +63,29 @@ const openFileManager = () => {
   }
 }
 
+const loadDescToCkeditor = () => {
+  ckeditorStore.setCkeditor(data.value.desc)
+}
+
+const getBlog = async () => {
+  if (!props.isNew) {
+    const blogRes = await blogService.getOneBlog(props.blogId)
+
+    data.value.title = blogRes.data.title
+    data.value.short_desc = blogRes.data.short_desc
+    data.value.desc = blogRes.data.desc
+    data.value.thumb_url = blogRes.data.thumb_url
+    data.value.is_recomended = blogRes.data.is_recomended
+    data.value.blog_type_id = blogRes.data.blog_type_id
+  }
+}
+
 onMounted(async () => {
   try {
     const btRes = await blogService.getBlogTypes()
     
     blogTypes.value = btRes.data
-
-    if (!props.isNew) {
-      const blogRes = await blogService.getOneBlog(props.blogId)
-
-      console.log(blogRes.data)
-      data.value.title = blogRes.data.title
-      data.value.short_desc = blogRes.data.short_desc
-      data.value.thumb_url = blogRes.data.thumb_url
-      data.value.desc = blogRes.data.desc
-      data.value.is_recomended = blogRes.data.is_recomended
-      data.value.blog_type_id = blogRes.data.blog_type_id
-    }
+    await getBlog()
   } catch (error) {
     snackbarStore.setMsg(error.message)
   }
@@ -129,7 +138,10 @@ onMounted(async () => {
         />
       </VCol>
       <VCol cols="12">
-        <Ckeditor @set-ckeditor="setCkeditor" />
+        <Ckeditor
+          @set-desc="syncToDesc"
+          @load-desc="loadDescToCkeditor"
+        />
       </VCol>
 
       <VCol
@@ -137,17 +149,18 @@ onMounted(async () => {
         class="d-flex gap-4"
       >
         <VBtn type="submit">
-          Submit
+          Save
         </VBtn>
 
-        <VBtn
-          type="reset"
-          color="secondary"
-          variant="tonal"
-          @click.prevent="resetForm"
-        >
-          Reset
-        </VBtn>
+        <RouterLink :to="{name:'blogs'}">
+          <VBtn
+            type="reset"
+            color="secondary"
+            variant="tonal"
+          >
+            Discard
+          </VBtn>
+        </RouterLink>
       </VCol>
     </VRow>
   </VForm>
