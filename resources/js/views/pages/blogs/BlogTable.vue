@@ -3,29 +3,68 @@ import { blogService } from "@services"
 import { snackbarStore } from '@stores'
 
 const blogs = ref([])
+const blogId = ref(null)
+const dialog = ref(false)
 
-const deleteBlog = async id => {
+const deleteConfirm = async id => {
+  blogId.value = id
+  dialog.value = true
+}
+
+const deleteBlog = async() => {
   try {
-    const res = await blogService.deleteBlog(id)
+
+    const res = await blogService.deleteBlog(blogId.value)
 
     snackbarStore.setMsg(res.message)
+    await getData()
+    dialog.value = false
   } catch (e) {
-    console.error(e.message)
+    snackbarStore.setMsg(res.message)
   }
 }
 
-onMounted(async () => {
+const getData = async () => {
   try {
     const res = await blogService.getBlogs()
 
     blogs.value = res.data
   } catch (e) {
-    console.error(e.message)
+    snackbarStore.setMsg(res.message)
   }
-})
+}
+
+onMounted(getData)
 </script>
 
 <template>
+  <VDialog
+    v-model="dialog"
+    width="auto"
+  >
+    <VCard>
+      <VCardText>
+        Are you sure to delete this blog?
+      </VCardText>
+      <VCardActions>
+        <VBtn
+          color="secondary"
+          variant="tonal"
+          
+          @click="dialog = false"
+        >
+          Close Dialog
+        </VBtn>
+        <VBtn
+          color="error"
+          variant="flat"
+          @click.prevent="deleteBlog"
+        >
+          Delete
+        </VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
   <VTable>
     <thead>
       <tr>
@@ -100,7 +139,7 @@ onMounted(async () => {
                 color="error"
                 size="x-small"
                 class="me-1"
-                @click.prevent="deleteBlog(item.id)"
+                @click.prevent="deleteConfirm(item.id)"
               >
                 <VIcon color="grey-lighten-1">
                   mdi-trash-can
