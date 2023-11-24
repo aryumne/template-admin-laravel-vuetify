@@ -75,7 +75,7 @@ const getBlog = async () => {
     data.value.short_desc = blogRes?.data.short_desc
     data.value.desc = blogRes?.data.desc
     data.value.thumb_url = blogRes?.data.thumb_url
-    data.value.is_recomended = blogRes?.data.is_recomended
+    data.value.is_recomended = blogRes?.data.is_recomended == 1 ? true : false
     data.value.blog_type_id = blogRes?.data.blog_type_id
   }
 }
@@ -141,6 +141,12 @@ onMounted(async () => {
         <Ckeditor
           @set-desc="syncToDesc"
           @load-desc="loadDescToCkeditor"
+        />
+      </VCol>
+      <VCol cols="12">
+        <VCheckbox
+          v-model="data.is_recomended"
+          label="Recomended Blog"
         />
       </VCol>
 
