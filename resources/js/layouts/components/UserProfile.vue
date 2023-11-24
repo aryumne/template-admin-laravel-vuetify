@@ -1,15 +1,16 @@
 <script setup>
 import avatar1 from '@images/avatars/avatar-1.png'
-import { authStore } from '@stores'
+import { authStore, snackbarStore } from '@stores'
 
 
 const signOut = async () => {
   try {
     const res = await axios.post('/logout')
 
-    if(res.status === 200) await authStore.signOut()
+    if (res.status === 200) await authStore.signOut()
+    snackbarStore.setMsg(res.data.message)
   } catch (error) {
-    console.log(error)
+    snackbarStore.setMsg(error.message)
   } 
 }
 </script>

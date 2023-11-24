@@ -71,12 +71,12 @@ const getBlog = async () => {
   if (!props.isNew) {
     const blogRes = await blogService.getOneBlog(props.blogId)
 
-    data.value.title = blogRes.data.title
-    data.value.short_desc = blogRes.data.short_desc
-    data.value.desc = blogRes.data.desc
-    data.value.thumb_url = blogRes.data.thumb_url
-    data.value.is_recomended = blogRes.data.is_recomended
-    data.value.blog_type_id = blogRes.data.blog_type_id
+    data.value.title = blogRes?.data.title
+    data.value.short_desc = blogRes?.data.short_desc
+    data.value.desc = blogRes?.data.desc
+    data.value.thumb_url = blogRes?.data.thumb_url
+    data.value.is_recomended = blogRes?.data.is_recomended
+    data.value.blog_type_id = blogRes?.data.blog_type_id
   }
 }
 
@@ -84,7 +84,7 @@ onMounted(async () => {
   try {
     const btRes = await blogService.getBlogTypes()
     
-    blogTypes.value = btRes.data
+    blogTypes.value = btRes?.data
     await getBlog()
   } catch (error) {
     snackbarStore.setMsg(error.message)

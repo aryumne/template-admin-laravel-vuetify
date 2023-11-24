@@ -28,7 +28,7 @@ const getData = async () => {
   try {
     const res = await blogService.getBlogs()
 
-    blogs.value = res.data
+    blogs.value = res?.data
   } catch (e) {
     snackbarStore.setMsg(e.message)
   }

@@ -23,9 +23,7 @@ const signin = async () => {
     if (res.status === 200) await authStore.signin()
     snackbarStore.setMsg(res.data.message)
   } catch (error) {
-    console.log(error)
-
-    // alertStore.setAlert({ isShow: true, type: 'warning', msg: error.response.data.message })
+    snackbarStore.setMsg(error.message)
   } finally {
     loading.value = false
   }

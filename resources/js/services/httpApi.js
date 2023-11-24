@@ -41,7 +41,7 @@ const apiGet = async (path, params = {}) => {
   try {
     const response = await httpApi.get(`/${path}`, { ...params })
     
-    return response.data
+    return response?.data
   } catch (error) {
     console.error('Error on service function')
     throw error
@@ -52,7 +52,7 @@ const apiGetOne = async (path, id, params = {}) => {
   try {
     const response = await httpApi.get(`/${path}/${id}`, { ...params })
     
-    return response.data
+    return response?.data
   } catch (error) {
     console.error('Error on service function')
     throw error
@@ -63,7 +63,7 @@ const apiPost = async (path, body, params = {}) => {
   try {
     const response = await httpApi.post(`/${path}`, body, { ...params })
     
-    return response.data
+    return response?.data
   } catch (error) {
     console.error('Error on service function')
     throw error
@@ -74,7 +74,7 @@ const apiPatch = async (path, id, body, params = {}) => {
   try {
     const response = await httpApi.patch(`/${path}/${id}`, body, { ...params })
     
-    return response.data
+    return response?.data
   } catch (error) {
     console.error('Error on service function')
     throw error
@@ -85,7 +85,7 @@ const apiDelete = async (path, id, params = {}) => {
   try {
     const response = await httpApi.delete(`/${path}/${id}`, { ...params })
     
-    return response.data
+    return response?.data
   } catch (error) {
     console.error('Error on service function')
     throw error
