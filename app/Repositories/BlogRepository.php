@@ -59,4 +59,18 @@ class BlogRepository extends BaseRepository
         }
         return null;
     }
+
+    public function delete($uuid)
+    {
+        DB::beginTransaction();
+        try {
+            $this->model->find($uuid)->delete();
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+        return null;
+    }
 }

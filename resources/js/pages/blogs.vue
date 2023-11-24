@@ -1,8 +1,5 @@
 <script setup>
-import BlogTable from '@/views/pages/tables/BlogTable.vue'
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
+import BlogTable from '@/views/pages/blogs/BlogTable.vue'
 </script>
 
 <template>

@@ -36,10 +36,18 @@ const router = createRouter({
         },
         {
           name: 'createBlog',
-          path: 'create/blog',
-          component: () => import('../pages/create-blog.vue'),
+          path: 'blog/create',
+          component: () => import('../pages/blogs-create.vue'),
           meta: {
             title: 'Create Blog',
+          },
+        },
+        {
+          name: 'editBlog',
+          path: 'blog/:id',
+          component: () => import('../pages/blogs-edit.vue'),
+          meta: {
+            title: 'Edit Blog',
           },
         },
         {

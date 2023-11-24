@@ -11,7 +11,7 @@ export default defineStore('snackbar', () => {
     
   function setMsg(val) {
     msg.value = val
-    isShow.value = !isShow.value
+    isShow.value = true
   }
 
   return { isShow, toggle, msg, setMsg }

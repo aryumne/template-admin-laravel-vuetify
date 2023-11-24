@@ -39,7 +39,7 @@ class BlogController extends Controller
     {
         try {
             $data = $this->blogRepo->store($request->all());
-            Log::info("Create Blog", ['data' => $data->id]);
+            Log::info("Creating Blog", ['data' => $data->id]);
             return HttpHelper::successResponse('New blog is successfully created.', $data, Response::HTTP_OK);
         } catch (\Exception $e) {
             Log::error($e->getMessage(), ['error' => $e]);
@@ -74,6 +74,13 @@ class BlogController extends Controller
      */
     public function destroy(string $uuid)
     {
-        //
+        try {
+            $this->blogRepo->delete($uuid);
+            Log::info("Deleting Blog", ['data' => $uuid]);
+            return HttpHelper::successResponse('The blog is successfully deleted.', [], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage(), ['error' => $e]);
+            HttpHelper::errorResponse('Failed to delete the blog!', $e->getMessage(), Response::HTTP_NO_CONTENT);
+        }
     }
 }

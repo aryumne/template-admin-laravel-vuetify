@@ -1,7 +1,18 @@
 <script setup>
 import { blogService } from "@services"
+import { snackbarStore } from '@stores'
 
 const blogs = ref([])
+
+const deleteBlog = async id => {
+  try {
+    const res = await blogService.deleteBlog(id)
+
+    snackbarStore.setMsg(res.message)
+  } catch (e) {
+    console.error(e.message)
+  }
+}
 
 onMounted(async () => {
   try {
@@ -65,17 +76,19 @@ onMounted(async () => {
         <td class="text-center">
           <VTooltip location="top">
             <template #activator="{ props }">
-              <VBtn
-                icon
-                v-bind="props"
-                color="warning"
-                size="x-small"
-                class="me-1"
-              >
-                <VIcon color="grey-lighten-1">
-                  mdi-open-in-new
-                </VIcon>
-              </VBtn>
+              <RouterLink :to="{name: 'editBlog', params: {id: item.id}}">
+                <VBtn
+                  icon
+                  v-bind="props"
+                  color="warning"
+                  size="x-small"
+                  class="me-1"
+                >
+                  <VIcon color="grey-lighten-1">
+                    mdi-open-in-new
+                  </VIcon>
+                </VBtn>
+              </RouterLink>
             </template>
             <span>Edit</span>
           </VTooltip>
@@ -87,6 +100,7 @@ onMounted(async () => {
                 color="error"
                 size="x-small"
                 class="me-1"
+                @click.prevent="deleteBlog(item.id)"
               >
                 <VIcon color="grey-lighten-1">
                   mdi-trash-can

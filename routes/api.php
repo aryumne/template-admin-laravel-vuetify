@@ -29,6 +29,6 @@ Route::group(['prefix' => 'v1'], function () {
     });
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::resource('blog-types', BlogTypeController::class)->only('index');
-        Route::resource('blogs', BlogController::class)->except(['update', 'destroy']);
+        Route::resource('blogs', BlogController::class);
     });
 });
