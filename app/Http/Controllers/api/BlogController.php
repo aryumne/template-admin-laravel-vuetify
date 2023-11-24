@@ -27,8 +27,8 @@ class BlogController extends Controller
             $data = $this->blogRepo->getAll();
             return HttpHelper::successResponse('Blog data.', $data, Response::HTTP_OK);
         } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['error' => $e]);
-            HttpHelper::errorResponse('Failed to load data blog!', $e->getMessage(), Response::HTTP_NO_CONTENT);
+            Log::error($e->getMessage(), ['error_msg' => $e->getMessage(), 'detail' => $e]);
+            return HttpHelper::errorResponse('Failed to load data blog!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -42,8 +42,8 @@ class BlogController extends Controller
             Log::info("Creating Blog", ['data' => $data->id]);
             return HttpHelper::successResponse('New blog is successfully created.', $data, Response::HTTP_OK);
         } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['error' => $e]);
-            HttpHelper::errorResponse('Failed to load data blog!', $e->getMessage(), Response::HTTP_NO_CONTENT);
+            Log::error("Creating Blog", ['error_msg' => $e->getMessage(), 'detail' => $e]);
+            return HttpHelper::errorResponse('Failed to store data blog!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -56,8 +56,8 @@ class BlogController extends Controller
             $data = $this->blogRepo->getById($uuid);
             return HttpHelper::successResponse('Blog data.', $data, Response::HTTP_OK);
         } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['error' => $e]);
-            HttpHelper::errorResponse('Failed to load data blog!', $e->getMessage(), Response::HTTP_NO_CONTENT);
+            Log::error("Getting blog", ['error_msg' => $e->getMessage(), 'detail' => $e]);
+            return HttpHelper::errorResponse('Failed to load data blog!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -66,7 +66,14 @@ class BlogController extends Controller
      */
     public function update(Request $request, string $uuid)
     {
-        //
+        try {
+            $data = $this->blogRepo->update($request->all(), $uuid);
+            Log::info("Updating Blog", ['data' => $data->id]);
+            return HttpHelper::successResponse('Blog data.', $data, Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::error("Updating Blog", ['error_msg' => $e->getMessage(), 'detail' => $e]);
+            return HttpHelper::errorResponse('Failed to update data blog!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
@@ -79,8 +86,8 @@ class BlogController extends Controller
             Log::info("Deleting Blog", ['data' => $uuid]);
             return HttpHelper::successResponse('The blog is successfully deleted.', [], Response::HTTP_OK);
         } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['error' => $e]);
-            HttpHelper::errorResponse('Failed to delete the blog!', $e->getMessage(), Response::HTTP_NO_CONTENT);
+            Log::error("Deleting Blog", ['error_msg' => $e->getMessage(), 'detail' => $e]);
+            return HttpHelper::errorResponse('Failed to delete the blog!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
 }

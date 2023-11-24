@@ -24,12 +24,12 @@ class AuthenticationWebController extends Controller
 
             $log = $req->session()->regenerate();
             if ($log === false) throw new Exception('The generate session is not completed');
-            Log::info("User signed in", ['data' => $user]);
+            Log::info("Sign in", ['data' => $user]);
 
             return HttpHelper::successResponse('Successfully logged in', [], Response::HTTP_OK);
         } catch (Exception $e) {
             Auth::logout();
-            Log::error($e->getMessage(), ['error' => $e]);
+            Log::error("Sign in", ['error_msg' => $e->getMessage(), 'detail' => $e]);
             return HttpHelper::errorResponse('Authentication Failed', $e->getMessage(), Response::HTTP_UNAUTHORIZED);
         }
     }
@@ -46,7 +46,7 @@ class AuthenticationWebController extends Controller
             Log::info("successfully logged out");
             return HttpHelper::successResponse('successfully logged out', [], Response::HTTP_OK);
         } catch (Exception $e) {
-            Log::error($e->getMessage(), ['error' => $e]);
+            Log::error("Sign out", ['error_msg' => $e->getMessage(), 'detail' => $e]);
             return HttpHelper::errorResponse('Authentication Failed', $e->getMessage(), Response::HTTP_UNAUTHORIZED);
         }
     }

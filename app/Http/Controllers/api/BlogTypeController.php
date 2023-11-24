@@ -26,8 +26,8 @@ class BlogTypeController extends Controller
             $data = $this->btRepo->getAll();
             return HttpHelper::successResponse('Blog type data.', $data, Response::HTTP_OK);
         } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['error' => $e]);
-            HttpHelper::errorResponse('Failed to load data blog type!', [], Response::HTTP_NO_CONTENT);
+            Log::error("Getting blog types", ['error_msg' => $e->getMessage(), 'detail' => $e]);
+            return HttpHelper::errorResponse('Failed to load data blog type!', [], Response::HTTP_NO_CONTENT);
         }
     }
 }
