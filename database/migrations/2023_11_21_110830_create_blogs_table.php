@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('thumb_url');
             $table->text('desc');
             $table->boolean('is_recomended', false);
+            $table->string('blog_type_key');
             $table->foreignUuid('blog_type_id');
             $table->softDeletes();
             $table->timestamps();

@@ -53,7 +53,7 @@ class BlogController extends Controller
     public function show(string $uuid)
     {
         try {
-            $data = $this->blogRepo->getById($uuid);
+            $data = $this->blogRepo->getOneByCondition(['key' => 'id', 'value' => $uuid]);
             return HttpHelper::successResponse('Blog data.', $data, Response::HTTP_OK);
         } catch (\Exception $e) {
             Log::error("Getting blog", ['error_msg' => $e->getMessage(), 'detail' => $e]);

@@ -11,7 +11,14 @@ abstract class BaseRepository
 
     abstract function getAll();
 
-    abstract function getById($uuid, $relations = []);
+    /**
+     * getOneByCondition
+     *
+     * @param  mixed $condition=['key' => 'value of key', 'value' => 'value of value']
+     * @param  mixed $relations
+     * @return void
+     */
+    abstract function getOneByCondition($condition, $relations = []);
 
     abstract function store(array $data);
 }

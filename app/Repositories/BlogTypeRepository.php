@@ -27,10 +27,10 @@ class BlogTypeRepository extends BaseRepository
         return null;
     }
 
-    public function getById($uuid, $relations = [])
+    public function getOneByCondition($cond, $relations = [])
     {
         try {
-            $data = $this->model->find($uuid)->with($relations)->first();
+            $data = $this->model->where($cond['key'], $cond['value'])->with($relations)->first();
             return new BlogTypeResource($data);
         } catch (Exception $e) {
             throw $e;

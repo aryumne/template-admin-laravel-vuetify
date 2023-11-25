@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('blog_types', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('key')->unique();
             $table->string('bt_name');
             $table->string('menu_name');
             $table->softDeletes();
