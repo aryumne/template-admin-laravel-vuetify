@@ -29,6 +29,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('logout', [AuthenticationController::class, 'signOut'])->middleware('auth:sanctum');
     });
     Route::group(['prefix' => 'fe'], function () {
+        Route::get('detail/{slug}', [FeBlogController::class, 'show']);
         Route::get('destinations', [FeBlogController::class, 'getDestinations']);
         Route::get('festivals', [FeBlogController::class, 'getFestivals']);
         Route::get('inspirations', [FeBlogController::class, 'getInspiration']);

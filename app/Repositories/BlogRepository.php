@@ -52,6 +52,17 @@ class BlogRepository extends BaseRepository
         return null;
     }
 
+    public function getOneBySlug($cond, $relations = [])
+    {
+        try {
+            $data = $this->model->where($cond['key'], $cond['value'])->with($relations)->first();
+            return !is_null($data) ? new FeBlogResource($data) : null;
+        } catch (Exception $e) {
+            throw $e;
+        }
+        return null;
+    }
+
     public function getBlogsByTypeKey($key, $isRecomended = false)
     {
         try {

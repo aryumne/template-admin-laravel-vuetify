@@ -19,6 +19,17 @@ class FeBlogController extends Controller
         $this->blogRepo = $blogRepository;
     }
 
+    public function show(string $slug)
+    {
+        try {
+            $data = $this->blogRepo->getOneBySlug(['key' => 'slug', 'value' => $slug]);
+            return HttpHelper::successResponse('Blog data.', $data, Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::error("Getting blog", ['error_msg' => $e->getMessage(), 'detail' => $e]);
+            return HttpHelper::errorResponse('Failed to load data blog!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
     private function getBlogs($type, $isRecomended = false)
     {
         try {
