@@ -32,6 +32,17 @@ class BlogController extends Controller
         }
     }
 
+    public function groupByTypeKey()
+    {
+        try {
+            $data = $this->blogRepo->getAllWithGrouping();
+            return HttpHelper::successResponse('Blog data.', $data, Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage(), ['error_msg' => $e->getMessage(), 'detail' => $e]);
+            return HttpHelper::errorResponse('Failed to load data blog!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      */

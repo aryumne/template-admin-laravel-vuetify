@@ -30,6 +30,17 @@ class BlogRepository extends BaseRepository
         return null;
     }
 
+    public function getAllWithGrouping()
+    {
+        try {
+            $data = $this->model->with('blogType')->selectRaw('count(*) as total_blog, blog_type_id')->groupBy('blog_type_id')->get();
+            return !is_null($data) ? $data : null;
+        } catch (Exception $e) {
+            throw $e;
+        }
+        return null;
+    }
+
     public function getOneByCondition($cond, $relations = [])
     {
         try {
@@ -41,10 +52,13 @@ class BlogRepository extends BaseRepository
         return null;
     }
 
-    public function getBlogsByTypeKey($key)
+    public function getBlogsByTypeKey($key, $isRecomended = false)
     {
         try {
-            $data = $this->model->where('blog_type_key', $key)->with(['blogType'])->latest();
+            $query = $this->model->query();
+            $query = $query->where('blog_type_key', $key);
+            if ($isRecomended) $query = $query->where('is_recomended', true);
+            $data = $query->with(['blogType'])->latest()->get();
             return !is_null($data) ? FeBlogResource::collection($data) : null;
         } catch (Exception $e) {
             throw $e;
@@ -64,6 +78,7 @@ class BlogRepository extends BaseRepository
                 'thumb_url'      => $data['thumb_url'],
                 'desc'           => $data['desc'],
                 'is_recomended'  => $data['is_recomended'],
+                'blog_type_id'   => $blogType->id,
                 'blog_type_key'  => $blogType->key,
             ];
             $record = $this->model->create($newData);
@@ -88,10 +103,10 @@ class BlogRepository extends BaseRepository
             isset($data['thumb_url']) && $record->thumb_url = $data['thumb_url'];
             isset($data['desc']) && $record->desc = $data['desc'];
             isset($data['is_recomended']) && $record->is_recomended = $data['is_recomended'];
-            isset($data['blog_type_id']) && $record->blog_type_id = $data['blog_type_id'];
             if (isset($data['blog_type_id'])) {
                 $blogType = $this->btModel->find($data['blog_type_id']);
                 if (!$blogType) throw new Exception('Blog type not found!');
+                $record->blog_type_id = $blogType->id;
                 $record->blog_type_key = $blogType->key;
             }
             $record->save();

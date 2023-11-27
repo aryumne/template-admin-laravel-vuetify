@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\BlogController;
 use App\Http\Controllers\api\BlogTypeController;
 use App\Http\Controllers\api\AuthenticationController;
+use App\Http\Controllers\frontend\FeBlogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +28,16 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('me', [AuthenticationController::class, 'me'])->middleware('auth:sanctum');
         Route::post('logout', [AuthenticationController::class, 'signOut'])->middleware('auth:sanctum');
     });
+    Route::group(['prefix' => 'fe'], function () {
+        Route::get('destinations', [FeBlogController::class, 'getDestinations']);
+        Route::get('festivals', [FeBlogController::class, 'getFestivals']);
+        Route::get('inspirations', [FeBlogController::class, 'getInspiration']);
+        Route::get('trips', [FeBlogController::class, 'getTrips']);
+        Route::get('culinaries', [FeBlogController::class, 'getCulinaries']);
+    });
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::resource('blog-types', BlogTypeController::class)->only('index');
         Route::resource('blogs', BlogController::class);
+        Route::get('blogs-group', [BlogController::class, 'groupByTypeKey']);
     });
 });

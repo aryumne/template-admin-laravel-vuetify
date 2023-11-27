@@ -20,11 +20,11 @@ class FeBlogResource extends JsonResource
             'title'          => $this->title,
             'slug'           => $this->slug,
             'short_desc'     => $this->short_desc,
-            'thumb_url'      => $this->thumb_url,
+            'urlImage'       => $this->thumb_url,
             'desc'           => $this->desc,
             'is_recomended'  => $this->is_recomended,
-            'menu_name'      => $this->blogType->menu_name,
-            'created_at'     => Carbon::parse($this->created_at)->toDateTimeString(),
+            'menuName'       => $this->blogType->menu_name,
+            'date'           => Carbon::parse($this->created_at)->toFormattedDateString(),
         ];
     }
 }

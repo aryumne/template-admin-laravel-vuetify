@@ -24,6 +24,7 @@ class BlogResource extends JsonResource
             'desc'           => $this->desc,
             'is_recomended'  => $this->is_recomended,
             'blog_type_id'   => $this->blog_type_id,
+            'blog_type_key'  => $this->blog_type_key,
             'blog_type_name' => $this->blogType->bt_name,
             'menu_name'      => $this->blogType->menu_name,
             'created_at'     => Carbon::parse($this->created_at)->toDateTimeString(),
