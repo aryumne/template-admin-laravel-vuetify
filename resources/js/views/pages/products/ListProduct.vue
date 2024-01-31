@@ -1,33 +1,5 @@
 <template>
   <TableCard title="List Product">
-    <template #button>
-      <VContainer class="d-flex justify-md-end justify-sm-start">
-        <VBtn
-          size="small"
-          type="button"
-          class="me-2"
-          variant="tonal"
-          @click.prevent="toggleModal"
-        >
-          Import
-        </VBtn>
-        <VBtn
-          size="small"
-          type="button"
-          color="warning"
-          class="me-2"
-        >
-          Export
-        </VBtn>
-        <VBtn
-          size="small"
-          :to="{ name: 'blogs' }"
-          type="submit"
-        >
-          Add Product
-        </VBtn>
-      </VContainer>
-    </template>
     <template #content>
       <Datatable
         ref="childRef"
@@ -40,6 +12,27 @@
         @use-set-alert="snackbarStore.setMsg"
         @toggle-select-all="toggleSelectAll"
       >
+        <template #table-button>
+          <VBtn
+            type="button"
+            color="secondary"
+            variant="tonal"
+            class="mx-2"
+          >
+            <VIcon
+              size="small"
+              class="me-2"
+              color="green-darken-2"
+              icon="mdi-export-variant"
+            /> Export
+          </VBtn>
+          <VBtn
+            :to="{ name: 'blogs' }"
+            type="submit"
+          >
+            Add Product
+          </VBtn>
+        </template>
         <template #tbody>
           <tr v-if="loading">
             <td colspan="4">

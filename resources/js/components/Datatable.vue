@@ -2,8 +2,8 @@
   <VRow>
     <VCol
       cols="12"
-      md="6"
-      lg="6"
+      md="5"
+      lg="4"
       order-md="first"
       order="last"
     >
@@ -19,25 +19,23 @@
     </VCol>
     <VCol
       cols="12"
-      md="6"
-      lg="6"
+      md="7"
+      lg="8"
       order-md="last"
       order="first"
     >
-      <VContainer class="d-flex py-0 justify-md-end justify-sm-start px-0">
+      <VContainer class="d-flex py-0 align-center justify-md-end justify-sm-start px-0">
         <div class="my-auto text-body-1 datatables-text-info">
           Show
         </div>
         <VSelect
           v-model="configParams.entries"
           density="compact"
-          class="entries-select mx-2"
+          class="entries-select ms-2 p-0"
           :items="[5,10,25,50,100]"
           @update:model-value="changeEntries"
         />
-        <div class="my-auto text-body-1 datatables-text-info">
-          entries
-        </div>
+        <slot name="table-button" />
       </VContainer>
     </VCol>
   </VRow>
@@ -61,22 +59,27 @@
             v-for="head in props.tableHeads"
             :key="head.key"
           >
-            <div class="d-flex justify-content-between">
-              {{ head.display_text }}
+            <div class="d-flex align-center">
+              <div class="text-body-2 text-uppercase font-weight-bold">
+                {{ head.display_text }}
+              </div>
+              <VSpacer />
               <div
                 v-if="head.sortable"
                 class="d-flex flex-column"
               >
-                <i
-                  class="bx bxs-chevron-up icon-sort datatables-text-info"
+                <VIcon
+                  icon="mdi-chevron-up"
+                  class="icon-sort datatables-text-info icon-sort-up"
                   :class="{
                     'sort-active':
                       configParams.sort.field == head.key && configParams.sort.direction == 'asc'
                   }"
                   @click.prevent="sortName(head.key, 'asc')"
                 />
-                <i
-                  class="bx bxs-chevron-down icon-sort datatables-text-info"
+                <VIcon
+                  icon="mdi-chevron-down "
+                  class="icon-sort datatables-text-info icon-sort-down"
                   :class="{
                     'sort-active':
                       configParams.sort.field == head.key && configParams.sort.direction == 'desc'
@@ -217,23 +220,35 @@ onMounted(getData)
 
 <style scoped>
 .entries-select {
-  max-width: 70px !important;
+  max-inline-size: 70px !important;
 }
+
 .datatables-text-info {
   color: #a1acb8;
 }
+
 .page-link {
-  padding: 0.625rem 0.5125rem;
-  min-width: calc(2rem + 0px);
   font-size: 0.75rem;
   line-height: 1;
+  min-inline-size: calc(2rem + 0px);
+  padding-block: 0.625rem;
+  padding-inline: 0.5125rem;
 }
+
 .icon-sort {
-  margin: 0;
   padding: 0;
   font-size: 1rem !important;
-  line-height: 0.7 !important;
+  line-height: 0.5rem !important;
 }
+
+.icon-sort-up {
+  margin-block-end: -0.1rem;
+}
+
+.icon-sort-down {
+  margin-block-start: -0.1rem;
+}
+
 .sort-active {
   color: #696cff !important;
 }

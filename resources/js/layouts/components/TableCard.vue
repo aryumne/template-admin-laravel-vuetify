@@ -19,6 +19,7 @@
           <slot name="button" />
         </VCol>
       </VRow>
+      <VDivider class="mt-6 mb-3" />
       <slot name="content" />
     </VCardItem>
   </VCard>

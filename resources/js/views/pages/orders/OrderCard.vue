@@ -1,14 +1,4 @@
 <script setup>
-import avatar1 from '@images/avatars/avatar-1.png'
-import avatar2 from '@images/avatars/avatar-2.png'
-import avatar3 from '@images/avatars/avatar-3.png'
-import avatar4 from '@images/avatars/avatar-4.png'
-import eCommerce2 from '@images/eCommerce/2.png'
-import pages1 from '@images/pages/1.png'
-import pages2 from '@images/pages/2.png'
-import pages3 from '@images/pages/3.png'
-import pages5 from '@images/pages/5.jpg'
-import pages6 from '@images/pages/6.jpg'
 
 const isCardDetailsVisible = ref(false)
 </script>
@@ -18,21 +8,20 @@ const isCardDetailsVisible = ref(false)
     <!-- 👉 Influencing The Influencer -->
     <VCol
       cols="12"
-      lg="4"
-      md="6"
+      lg="8"
+      md="7"
     >
-      <VCard title="Influencing The Influencer">
-        <VCardText>
-          Computers have become ubiquitous in almost every facet of our lives. At work, desk jockeys spend hours in front of their desktops, while delivery people scan bar codes with handhelds and workers in the field stay in touch.
-        </VCardText>
-
-        <VCardText>
-          If you're in the market for new desktops, notebooks, or PDAs, there are a myriad of choices. Here's a rundown of some of the best systems available.
-        </VCardText>
-
-        <VCardActions>
-          <VBtn>Read More</VBtn>
-        </VCardActions>
+      <VCard>
+        <VCardItem>
+          <VTextField
+            type="text"
+            density="compact"
+            variant="outlined"
+            placeholder="search product..."
+            aria-controls="data"
+            @input="searchTyping"
+          />
+        </VCardItem>
       </VCard>
     </VCol>
 
@@ -40,7 +29,7 @@ const isCardDetailsVisible = ref(false)
     <VCol
       cols="12"
       lg="4"
-      md="6"
+      md="5"
     >
       <VCard title="The Best Answers">
         <VCardText class="d-flex align-center flex-wrap">
@@ -67,44 +56,6 @@ const isCardDetailsVisible = ref(false)
           <VBtn>Location</VBtn>
           <VBtn>Reviews</VBtn>
         </VCardActions>
-      </VCard>
-    </VCol>
-
-    <!-- 👉 Support -->
-    <VCol
-      cols="12"
-      md="6"
-      lg="4"
-    >
-      <VCard class="text-center">
-        <VCardText class="d-flex flex-column justify-center align-center">
-          <VAvatar
-            color="primary"
-            variant="tonal"
-            size="50"
-            class="mb-4"
-          >
-            <VIcon
-              size="2rem"
-              icon="bx-help-circle"
-            />
-          </VAvatar>
-
-          <h6 class="text-h6">
-            Support
-          </h6>
-        </VCardText>
-
-        <VCardText>
-          <p>
-            According to us blisters are a very common thing and we come across them very often in our daily lives. It is a very common occurrence like cold or fever depending upon your lifestyle.
-          </p>
-        </VCardText>
-        <VCardText>
-          <VBtn variant="elevated">
-            Contact Now
-          </VBtn>
-        </VCardText>
       </VCard>
     </VCol>
   </VRow>
