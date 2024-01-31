@@ -43,14 +43,28 @@ const openLogViewer = () => window.location.href= '/log-viewer'
         :item="{
           title: 'Dashboard',
           icon: 'bx-home',
-          to: '/dashboard',
+          to: {name:'dashboard'},
         }"
       />
       <VerticalNavLink
         :item="{
           title: 'Blogs',
           icon: 'mdi-account-cog-outline',
-          to: '/blogs',
+          to: {name:'blogs'},
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Products',
+          icon: 'mdi-account-cog-outline',
+          to: {name:'products'},
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Orders',
+          icon: 'bx-credit-card',
+          to: {name: 'orders', replace: true},
         }"
       />
       <VerticalNavLink

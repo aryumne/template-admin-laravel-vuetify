@@ -29,7 +29,7 @@ export default defineStore(
           authenticated.value = true
           user.value = res.data
           localStorage.setItem('_USR', hashing.Encode(JSON.stringify(user.value)))
-          router.push({ name: 'dashboard', replace: true })
+          router.push({ name: 'orders', replace: true })
         }
       } catch (error) {
         signOut()

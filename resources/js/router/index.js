@@ -6,14 +6,31 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/dashboard',
+      redirect: '/orders',
       meta: {
         middleware: 'auth',
-        title: 'Dashboard',
+        title: 'orders',
       },
     },
     {
       path: '/',
+      component: () => import('../layouts/navbarOnly.vue'),
+      meta: {
+        middleware: 'auth',
+      },
+      children: [
+        {
+          path: 'orders',
+          name: 'orders',
+          component: () => import('../pages/orders.vue'),
+          meta: {
+            title: 'orders',
+          },
+        },
+      ],
+    },
+    {
+      path: '/admin',
       component: () => import('../layouts/default.vue'),
       meta: {
         middleware: 'auth',
@@ -25,6 +42,14 @@ const router = createRouter({
           component: () => import('../pages/dashboard.vue'),
           meta: {
             title: 'Dashboard',
+          },
+        },
+        {
+          name: 'products',
+          path: 'products',
+          component: () => import('../pages/products.vue'),
+          meta: {
+            title: 'Products',
           },
         },
         {
@@ -66,10 +91,10 @@ const router = createRouter({
           },
         },
         {
-          path: 'cards',
-          component: () => import('../pages/cards.vue'),
+          path: 'orders',
+          component: () => import('../pages/orders.vue'),
           meta: {
-            title: 'Cards',
+            title: 'orders',
           },
         },
         {
