@@ -7,7 +7,7 @@
           md="6"
           class="d-flex pb-0 justify-start"
         >
-          <VCardTitle class="text-h5 my-auto">
+          <VCardTitle class="text-h6 my-auto">
             {{ title }}
           </VCardTitle>
         </VCol>

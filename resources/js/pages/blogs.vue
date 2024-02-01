@@ -1,6 +1,5 @@
 <script setup>
 import BlogTable from '@/views/pages/blogs/BlogTable.vue'
-import ListProduct from '@/views/pages/products/ListProduct.vue'
 </script>
 
 <template>
@@ -28,9 +27,6 @@ import ListProduct from '@/views/pages/products/ListProduct.vue'
           <BlogTable />
         </VCardText>
       </VCard>
-    </VCol>
-    <VCol cols="12">
-      <ListProduct />
     </VCol>
   </VRow>
 </template>

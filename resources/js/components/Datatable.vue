@@ -12,7 +12,7 @@
         type="text"
         density="compact"
         variant="outlined"
-        placeholder="search..."
+        placeholder="Cari di sini.."
         aria-controls="data"
         @input="searchTyping"
       />
@@ -25,9 +25,6 @@
       order="first"
     >
       <VContainer class="d-flex py-0 align-center justify-md-end justify-sm-start px-0">
-        <div class="my-auto text-body-1 datatables-text-info">
-          Show
-        </div>
         <VSelect
           v-model="configParams.entries"
           density="compact"
@@ -89,7 +86,7 @@
               </div>
             </div>
           </th>
-          <th>Action</th>
+          <th>Aksi</th>
         </tr>
       </thead>
       <tbody>
@@ -113,8 +110,17 @@
       cols="12"
       md="5"
     >
-      <div class="datatables-text-info">
-        Showing {{ data.from }} to {{ data.to }} of {{ data.total }} entries
+      <div
+        v-if="data.total > 0"
+        class="datatables-text-info"
+      >
+        Menampilkan {{ data.from }} sampai {{ data.to }} dari {{ data.total }}
+      </div>
+      <div
+        v-else
+        class="datatables-text-info"
+      >
+        Belum ada data
       </div>
     </VCol>
     <VCol

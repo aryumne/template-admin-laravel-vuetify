@@ -6,10 +6,10 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/orders',
+      redirect: '/cashier',
       meta: {
         middleware: 'auth',
-        title: 'orders',
+        title: 'Kasir',
       },
     },
     {
@@ -20,11 +20,11 @@ const router = createRouter({
       },
       children: [
         {
-          path: 'orders',
-          name: 'orders',
-          component: () => import('../pages/orders.vue'),
+          path: 'cashier',
+          name: 'cashier',
+          component: () => import('../pages/cashier.vue'),
           meta: {
-            title: 'orders',
+            title: 'Kasir',
           },
         },
       ],
@@ -47,9 +47,9 @@ const router = createRouter({
         {
           name: 'products',
           path: 'products',
-          component: () => import('../pages/products.vue'),
+          component: () => import('../pages/product.vue'),
           meta: {
-            title: 'Products',
+            title: 'Daftar Obat',
           },
         },
         {
@@ -88,13 +88,6 @@ const router = createRouter({
           component: () => import('../pages/icons.vue'),
           meta: {
             title: 'Icons',
-          },
-        },
-        {
-          path: 'orders',
-          component: () => import('../pages/orders.vue'),
-          meta: {
-            title: 'orders',
           },
         },
         {

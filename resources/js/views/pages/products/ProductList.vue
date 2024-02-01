@@ -1,5 +1,5 @@
 <template>
-  <TableCard title="List Product">
+  <TableCard title="Daftar Obat">
     <template #content>
       <Datatable
         ref="childRef"
@@ -26,12 +26,7 @@
               icon="mdi-export-variant"
             /> Export
           </VBtn>
-          <VBtn
-            :to="{ name: 'blogs' }"
-            type="submit"
-          >
-            Add Product
-          </VBtn>
+          <ProductForm />
         </template>
         <template #tbody>
           <tr v-if="loading">
@@ -113,12 +108,6 @@
       </Datatable>
     </template>
   </TableCard>
-  <ImportForm
-    v-if="openModal"
-    :is-show="openModal"
-    @toggle-modal="toggleModal"
-    @set-alert="snackbarStore.setMsg"
-  />
 </template>
 
 <script setup>
@@ -128,7 +117,7 @@ import TableCard from '@/layouts/components/TableCard.vue'
 import paths from '@services/paths.js'
 import { snackbarStore } from '@stores'
 import { ref, watch } from 'vue'
-import ImportForm from './ImportForm.vue'
+import ProductForm from './ProductForm.vue'
 
 const heads = ref([
   {
