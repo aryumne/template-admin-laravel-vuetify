@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            BlogTypeSeeder::class
+            BlogTypeSeeder::class,
+            ProductTypeSeeder::class
         ]);
     }
 }

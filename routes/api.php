@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\BlogController;
 use App\Http\Controllers\api\BlogTypeController;
 use App\Http\Controllers\api\AuthenticationController;
+use App\Http\Controllers\api\ProductController;
+use App\Http\Controllers\api\ProductTypeController;
 use App\Http\Controllers\frontend\FeBlogController;
 
 /*
@@ -37,8 +39,13 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('culinaries', [FeBlogController::class, 'getCulinaries']);
     });
     Route::middleware(['auth:sanctum'])->group(function () {
+        // Blog
         Route::resource('blog-types', BlogTypeController::class)->only('index');
         Route::resource('blogs', BlogController::class);
         Route::get('blogs-group', [BlogController::class, 'groupByTypeKey']);
+
+        // POS Cashier
+        Route::get('product-types', [ProductTypeController::class, 'index']);
+        Route::resource('products', ProductController::class);
     });
 });
