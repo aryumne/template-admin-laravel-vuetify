@@ -21,4 +21,9 @@ abstract class BaseRepository
     abstract function getOneByCondition($condition, $relations = []);
 
     abstract function store(array $data);
+
+    public function getById($uuid, $relations = [])
+    {
+        return $this->model->find($uuid)->with($relations)->first();
+    }
 }

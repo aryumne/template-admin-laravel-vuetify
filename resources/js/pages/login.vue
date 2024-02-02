@@ -20,9 +20,11 @@ const signin = async () => {
     await axios.get('/sanctum/csrf-cookie')
 
     const res = await axios.post('/login', data.value)
+    if (res.headers['content-type'].includes('text/html')) throw new Error('Terjadi kesalahan saat login, silahkan coba lagi!')
     if (res.status === 200) await authStore.signin()
     snackbarStore.setMsg(res.data.message)
   } catch (error) {
+    authStore.signOut()
     snackbarStore.setMsg(error.message)
   } finally {
     loading.value = false

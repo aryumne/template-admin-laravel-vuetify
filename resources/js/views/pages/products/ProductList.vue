@@ -35,9 +35,9 @@
             </td>
           </tr>
           <RouterLink
-            v-for="user in rows"
+            v-for="item in rows"
             v-else
-            :key="user.id"
+            :key="item.id"
             v-slot="{ navigate }"
             :to="{ name: 'blogs'}"
             custom
@@ -52,27 +52,30 @@
                   v-model="selectedRow.selected_ids"
                   type="checkbox"
                   class="dt-checkboxes form-check-input"
-                  :value="user.id"
+                  :value="item.id"
                   @click.stop
                 />
               </td>
               <td>
-                <div class="d-flex justify-content-start align-items-center user-name">
-                  <div class="d-flex flex-column">
-                    <a
-                      href="#"
-                      class="text-body text-truncate"
-                      data-bs-toggle="tooltip"
-                      data-bs-offset="0,4"
-                      data-bs-placement="top"
-                      data-bs-html="true"
-                      title="<span>Show details</span>"
-                    >
-                      <span class="fw-semibold">{{ user.name ?? user.profile?.name }}</span>
-                    </a>
-                    <small class="text-muted">{{ user.email }}</small>
-                  </div>
-                </div>
+                {{ item.barcode }}
+              </td>
+              <td>
+                {{ item.name }}
+              </td>
+              <td>
+                {{ item.product_type.name }}
+              </td>
+              <td>
+                {{ item.batch_number }}
+              </td>
+              <td>
+                {{ item.stok_by_pack }}
+              </td>
+              <td>
+                {{ item.total_item }}
+              </td>
+              <td class="text-end">
+                Rp. {{ currencyFormat(item.item_price) }}
               </td>
               <td>
                 <RouterLink
@@ -114,6 +117,7 @@
 import Datatable from '@/components/Datatable.vue'
 import Loading from '@/components/Loading.vue'
 import TableCard from '@/layouts/components/TableCard.vue'
+import { currencyFormat } from '@/utils'
 import paths from '@services/paths.js'
 import { snackbarStore } from '@stores'
 import { ref, watch } from 'vue'
@@ -121,9 +125,39 @@ import ProductForm from './ProductForm.vue'
 
 const heads = ref([
   {
-    display_text: 'User',
+    display_text: 'Barcode',
+    sortable: false,
+    key: 'barcode',
+  },
+  {
+    display_text: 'Nama obat',
     sortable: true,
     key: 'name',
+  },
+  {
+    display_text: 'Jenis Obat',
+    sortable: true,
+    key: 'product_type_id',
+  },
+  {
+    display_text: 'Nomor Batch',
+    sortable: true,
+    key: 'batch_number',
+  },
+  {
+    display_text: 'Stok Box',
+    sortable: true,
+    key: 'stok_by_pack',
+  },
+  {
+    display_text: 'Total pcs',
+    sortable: true,
+    key: 'total_item',
+  },
+  {
+    display_text: 'Harga per Pcs',
+    sortable: true,
+    key: 'item_price',
   },
 ])
 
@@ -167,60 +201,10 @@ watch(openModal, async (newVal, oldVal) => {
   }
 })
 
-const rows = ref([
-  {
-    id: "123141sads",
-    name: "aryum",
-    email: "aryum@gmail.com",
-  },
-  {
-    id: "123141sads",
-    name: "aryum",
-    email: "aryum@gmail.com",
-  },
-  {
-    id: "123141sads",
-    name: "aryum",
-    email: "aryum@gmail.com",
-  },
-  {
-    id: "123141sads",
-    name: "aryum",
-    email: "aryum@gmail.com",
-  },
-  {
-    id: "123141sads",
-    name: "aryum",
-    email: "aryum@gmail.com",
-  },
-])
+const rows = ref([])
 
 const setRows = data => {
-  rows.value = [ {
-    id: "123141sads",
-    name: "aryum",
-    email: "aryum@gmail.com",
-  },
-  {
-    id: "123141sads",
-    name: "aryum",
-    email: "aryum@gmail.com",
-  },
-  {
-    id: "123141sads",
-    name: "aryum",
-    email: "aryum@gmail.com",
-  },
-  {
-    id: "123141sads",
-    name: "aryum",
-    email: "aryum@gmail.com",
-  },
-  {
-    id: "123141sads",
-    name: "aryum",
-    email: "aryum@gmail.com",
-  }]
+  rows.value = data
 }
 
 const loading = ref(false)

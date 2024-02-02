@@ -114,7 +114,7 @@
         v-if="data.total > 0"
         class="datatables-text-info"
       >
-        Menampilkan {{ data.from }} sampai {{ data.to }} dari {{ data.total }}
+        Menampilkan {{ data.from }} sampai {{ data.to }} dari {{ data.total }} {{ totalPage }}
       </div>
       <div
         v-else
@@ -130,8 +130,12 @@
       <div class="d-flex justify-md-end justify-sm-center">
         <div class="text-center">
           <VPagination
+            v-if="totalPage > 0"
             v-model="configParams.page"
             :length="totalPage"
+            :total-visible="6"
+            @next="nextPage"
+            @prev="prevPage"
           />
         </div>
       </div>
@@ -142,7 +146,7 @@
 <script setup>
 import { CONSTANTS } from '@configs/index.js'
 import { apiGet } from '@services/httpApi.js'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
   pathApi: String,
@@ -164,6 +168,7 @@ const configParams = ref({
     direction: null,
   },
 })
+
 
 const issetData = computed(() => {
   return data.value.data?.length === 0 ? true : false
@@ -196,6 +201,10 @@ const getData = async () => {
 
 defineExpose({ getData })
 
+watch(configParams, (newVal, oldVal) => {
+  toPage(newVal.page)
+}, { deep: true })
+
 const changeEntries = () => {
   configParams.value.page = 1
   getData()
@@ -207,7 +216,6 @@ const searchTyping = () => {
 }
 
 const nextPage = () => {
-  configParams.value.page++
   getData()
 }
 
@@ -217,7 +225,6 @@ const toPage = page => {
 }
 
 const prevPage = () => {
-  configParams.value.page--
   getData()
 }
 

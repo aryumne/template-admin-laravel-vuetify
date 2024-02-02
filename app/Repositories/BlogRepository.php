@@ -27,7 +27,6 @@ class BlogRepository extends BaseRepository
         } catch (Exception $e) {
             throw $e;
         }
-        return null;
     }
 
     public function getAllWithGrouping()
@@ -38,7 +37,6 @@ class BlogRepository extends BaseRepository
         } catch (Exception $e) {
             throw $e;
         }
-        return null;
     }
 
     public function getOneByCondition($cond, $relations = [])
@@ -49,7 +47,6 @@ class BlogRepository extends BaseRepository
         } catch (Exception $e) {
             throw $e;
         }
-        return null;
     }
 
     public function getOneBySlug($cond, $relations = [])
@@ -60,7 +57,6 @@ class BlogRepository extends BaseRepository
         } catch (Exception $e) {
             throw $e;
         }
-        return null;
     }
 
     public function getBlogsByTypeKey($key, $isRecomended = false)
@@ -74,7 +70,6 @@ class BlogRepository extends BaseRepository
         } catch (Exception $e) {
             throw $e;
         }
-        return null;
     }
 
     public function store(array $data)
@@ -99,7 +94,6 @@ class BlogRepository extends BaseRepository
             DB::rollBack();
             throw $e;
         }
-        return null;
     }
 
     public function update(array $data, $uuid)
@@ -127,7 +121,6 @@ class BlogRepository extends BaseRepository
             DB::rollBack();
             throw $e;
         }
-        return null;
     }
 
     public function delete($uuid)
@@ -141,6 +134,5 @@ class BlogRepository extends BaseRepository
             DB::rollBack();
             throw $e;
         }
-        return null;
     }
 }

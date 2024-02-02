@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\CustomExceptionHandler;
 use Exception;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,6 @@ class ProductRepository extends BaseRepository
         } catch (Exception $e) {
             throw $e;
         }
-        return null;
     }
 
     public function getOneByCondition($cond, $relations = [])
@@ -35,7 +35,6 @@ class ProductRepository extends BaseRepository
         } catch (Exception $e) {
             throw $e;
         }
-        return null;
     }
 
 
@@ -50,6 +49,49 @@ class ProductRepository extends BaseRepository
             DB::rollBack();
             throw $e;
         }
-        return null;
+    }
+
+    public function update(array $data, string $uuid)
+    {
+        DB::beginTransaction();
+        try {
+            $record = $this->model->find($uuid);
+            if (!$record) throw new CustomExceptionHandler('Data obat tidak ditemukan!', 404);
+            isset($data['name']) && $record->name = $data['name'];
+            isset($data['batch_number']) && $record->batch_number = $data['batch_number'];
+            isset($data['stok_by_pack']) && $record->stok_by_pack = $data['stok_by_pack'];
+            isset($data['stok_by_item']) && $record->stok_by_item = $data['stok_by_item'];
+            isset($data['pack_price']) && $record->pack_price = $data['pack_price'];
+            isset($data['item_price']) && $record->item_price = $data['item_price'];
+            isset($data['total_item']) && $record->total_item = $data['total_item'];
+            isset($data['product_type_id']) && $record->product_type_id = $data['product_type_id'];
+            $record->save();
+            DB::commit();
+            return new ProductResource($record);
+        } catch (CustomExceptionHandler $e) {
+            DB::rollBack();
+            throw $e;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function delete($uuid)
+    {
+        DB::beginTransaction();
+        try {
+            $record = $this->model->find($uuid);
+            if (!$record) throw new CustomExceptionHandler('Data obat tidak ditemukan!', 404);
+            $record->delete();
+            DB::commit();
+            return true;
+        } catch (CustomExceptionHandler $e) {
+            DB::rollBack();
+            throw $e;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 }

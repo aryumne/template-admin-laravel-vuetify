@@ -57,7 +57,7 @@
               />
             </td>
             <td class="text-end">
-              Rp. {{ numberWithCommas(item.price * item.quantity) }}
+              Rp. {{ currencyFormat(item.price * item.quantity) }}
             </td>
           </tr>
           <tr>
@@ -68,7 +68,7 @@
               TOTAL
             </td>
             <td class="text-end font-weight-bold">
-              Rp. {{ numberWithCommas(totalOrders) }}
+              Rp. {{ currencyFormat(totalOrders) }}
             </td>
           </tr>
         </tbody>
@@ -84,6 +84,8 @@
 
 <script setup>
 import { ref } from "vue"
+
+import { currencyFormat } from "@/utils"
 
 const data = ref([
   {
@@ -116,9 +118,6 @@ const data = ref([
   },
 ])
 
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-}
 
 function updateQuantity(item, value) {
   item.quantity = parseInt(value, 10)

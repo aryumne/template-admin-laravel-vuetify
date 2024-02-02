@@ -15,8 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('slug');
-            $table->string('batch_number');
-            $table->string('barcode');
+            $table->string('batch_number')->nullable()->unique();
+            $table->char('barcode', 9);
             $table->integer('stok_by_pack')->default(0);
             $table->integer('pack_price')->default(0);
             $table->integer('stok_by_item')->default(0);

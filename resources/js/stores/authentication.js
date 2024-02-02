@@ -25,14 +25,17 @@ export default defineStore(
     async function signin() {
       try {
         const res = await authService.getUser()
+
+        console.log(res)
         if (res.data !== null || res.data !== undefined) {
           authenticated.value = true
           user.value = res.data
           localStorage.setItem('_USR', hashing.Encode(JSON.stringify(user.value)))
-          router.push({ name: 'orders', replace: true })
+          router.push({ name: 'cashier', replace: true })
         }
       } catch (error) {
-        signOut()
+        console.log('Error signin : ', error)
+        throw error
       }
     }
 

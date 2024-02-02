@@ -10,13 +10,14 @@ use Nicolaslopezj\Searchable\SearchableTrait;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
     use HasFactory, SoftDeletes, SearchableTrait, HasUuids;
 
     protected $table      = "products";
-    protected $guarded    = ["id", "slug"];
+    protected $guarded    = ["id", "slug", "barcode"];
     protected $searchable = [
         "columns" => [
             "products.name" => 15,
@@ -61,11 +62,28 @@ class Product extends Model
     {
         static::creating(function ($model) {
             $model->slug = Str::slug($model->name);
+            $model->barcode = self::generateUniqueBarcode();
         });
 
         static::updating(function ($model) {
             $model->slug = Str::slug($model->name);
         });
+    }
+
+    private static function generateUniqueBarcode(): string
+    {
+        $uniqNumber = mt_rand(100000000, 999999999);
+
+        while (self::isBarcodeExist($uniqNumber) === false) {
+            $uniqNumber = mt_rand(100000000, 999999999);
+        }
+
+        return (string) $uniqNumber;
+    }
+
+    private static function isBarcodeExist($uniqNumber): bool
+    {
+        return DB::table('products')->where('barcode', $uniqNumber)->doesntExist();
     }
 
     public function productType(): BelongsTo
