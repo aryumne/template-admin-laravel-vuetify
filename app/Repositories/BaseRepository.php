@@ -3,7 +3,7 @@
 
 namespace App\Repositories;
 
-use Exception;
+use App\Exceptions\CustomExceptionHandler;
 
 abstract class BaseRepository
 {
@@ -24,6 +24,17 @@ abstract class BaseRepository
 
     public function getById($uuid, $relations = [])
     {
-        return $this->model->find($uuid)->with($relations)->first();
+        try {
+            $data = $this->model->with($relations)->find($uuid);
+            if (!$data) throw new CustomExceptionHandler("Data obat tidak ditemukan!", 404);
+            return $data;
+        } catch (CustomExceptionHandler $e) {
+            throw $e;
+        }
+    }
+
+    public function checkExistingDataWithTrashed($key, $value)
+    {
+        return $this->model->withTrashed()->where($key, $value)->first();
     }
 }

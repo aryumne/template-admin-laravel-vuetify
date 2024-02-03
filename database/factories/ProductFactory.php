@@ -31,9 +31,9 @@ class ProductFactory extends Factory
         return [
             'name' => $name,
             'batch_number' => $batchNumber,
-            'stok_by_pack' => $stokByPack,
+            'pack_stok' => $stokByPack,
             'pack_price' => $packPrice,
-            'stok_by_item' => $stokByItem,
+            'items_per_pack' => $stokByItem,
             'item_price' => $itemPrice,
             'total_item' => $totalItem,
             'product_type_id' => $productType->id,

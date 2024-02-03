@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\ProductRepository;
 use App\Exceptions\CustomExceptionHandler;
 use App\Http\Requests\ProductRequest;
+use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
 {
@@ -55,7 +56,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         try {
-            $result = $this->productRepo->store($request->only(['name', 'batch_number', 'pack_price', 'item_price', 'product_type_id']));
+            $result = $this->productRepo->store($request->only(['name', 'batch_number', 'pack_stok', 'items_per_pack', 'total_item', 'pack_price', 'item_price', 'product_type_id']));
             return HttpHelper::successResponse('Data obat baru berhasil disimpan.', $result, Response::HTTP_CREATED);
         } catch (Exception $e) {
             return HttpHelper::errorResponse('Gagal menyimpan data!', $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -69,7 +70,9 @@ class ProductController extends Controller
     {
         try {
             $data = $this->productRepo->getById($uuid);
-            return HttpHelper::successResponse('Data obat.', $data, Response::HTTP_OK);
+            return HttpHelper::successResponse('Data obat.', new ProductResource($data), Response::HTTP_OK);
+        } catch (CustomExceptionHandler $e) {
+            return HttpHelper::errorResponse($e->getMessage(), [], $e->getCodeStatus());
         } catch (Exception $e) {
             return HttpHelper::errorResponse('Gagal memuat data obat!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
         }

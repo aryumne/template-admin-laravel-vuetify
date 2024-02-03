@@ -9,12 +9,12 @@ class ProductRequest extends BaseRequest
         return array_merge(parent::rules(), [
             'name'              => ['required', 'string', 'unique:App\Models\Product,name'],
             'batch_number'      => ['nullable', 'string', 'unique:App\Models\Product,batch_number'],
-            'stok_by_pack'      => ['nullable', 'number'],
-            'stok_by_item'      => ['nullable', 'number'],
-            'total_item'        => ['nullable', 'number'],
-            'pack_price'        => ['required', 'number'],
-            'item_price'        => ['required', 'number'],
-            'product_type_id'   => ['required', 'exists:App\Models\BlogType,id'],
+            'pack_stok'         => ['nullable', 'integer'],
+            'items_per_pack'    => ['nullable', 'integer'],
+            'total_item'        => ['nullable', 'integer'],
+            'pack_price'        => ['required', 'integer'],
+            'item_price'        => ['required', 'integer'],
+            'product_type_id'   => ['required', 'exists:App\Models\ProductType,id'],
         ]);
     }
 
@@ -23,8 +23,8 @@ class ProductRequest extends BaseRequest
         return array_merge(parent::attributes(), [
             'name'            => 'Nama Obat',
             'batch_number'    => 'Nomor Batch',
-            'stok_by_pack'    => 'Stok per Box',
-            'stok_by_item'    => 'Stok per Pcs',
+            'pack_stok'       => 'Stok per Box',
+            'items_per_pack'  => 'Stok per Pcs',
             'total_item'      => 'Total pcs',
             'pack_price'      => 'Harga per Box',
             'item_price'      => 'Harga satuan',
@@ -38,6 +38,7 @@ class ProductRequest extends BaseRequest
             '*.required' => ':attribute ini harus diisi!',
             '*.number'   => ':attribute ini harus angka!',
             '*.unique'   => ':attribute ini sudah terdaftar!',
+            '*.exists'   => ':attribute ini tidak ditemukan!',
         ]);
     }
 }

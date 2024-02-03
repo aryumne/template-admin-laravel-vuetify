@@ -7,6 +7,7 @@ use Exception;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\ProductResource;
+use Illuminate\Support\Facades\Log;
 
 class ProductRepository extends BaseRepository
 {
@@ -56,11 +57,26 @@ class ProductRepository extends BaseRepository
         DB::beginTransaction();
         try {
             $record = $this->model->find($uuid);
+
             if (!$record) throw new CustomExceptionHandler('Data obat tidak ditemukan!', 404);
-            isset($data['name']) && $record->name = $data['name'];
-            isset($data['batch_number']) && $record->batch_number = $data['batch_number'];
-            isset($data['stok_by_pack']) && $record->stok_by_pack = $data['stok_by_pack'];
-            isset($data['stok_by_item']) && $record->stok_by_item = $data['stok_by_item'];
+            if (isset($data['name'])) {
+                if ($record->name !== $data['name']) {
+                    $checkData = $this->checkExistingDataWithTrashed('name', $data['name']);
+                    if ($checkData) throw new CustomExceptionHandler("Nama obat ini telah terdaftar!", 422);
+                    $record->name = $data['name'];
+                }
+            }
+            if (isset($data['batch_number'])) {
+                if ($record->batch_number !== $data['batch_number']) {
+                    Log::info($record->batch_number . ' === ' . $data['batch_number']);
+                    $checkData = $this->checkExistingDataWithTrashed('batch_number', $data['batch_number']);
+                    Log::info(json_encode($checkData));
+                    if ($checkData) throw new CustomExceptionHandler("Nomor batch ini telah terdaftar!", 422);
+                    $record->batch_number = $data['batch_number'];
+                }
+            }
+            isset($data['pack_stok']) && $record->pack_stok = $data['pack_stok'];
+            isset($data['items_per_pack']) && $record->items_per_pack = $data['items_per_pack'];
             isset($data['pack_price']) && $record->pack_price = $data['pack_price'];
             isset($data['item_price']) && $record->item_price = $data['item_price'];
             isset($data['total_item']) && $record->total_item = $data['total_item'];

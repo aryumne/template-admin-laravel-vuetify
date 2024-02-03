@@ -69,7 +69,7 @@
                 {{ item.batch_number }}
               </td>
               <td>
-                {{ item.stok_by_pack }}
+                {{ item.pack_stok }}
               </td>
               <td>
                 {{ item.total_item }}
@@ -147,7 +147,7 @@ const heads = ref([
   {
     display_text: 'Stok Box',
     sortable: true,
-    key: 'stok_by_pack',
+    key: 'pack_stok',
   },
   {
     display_text: 'Total pcs',
