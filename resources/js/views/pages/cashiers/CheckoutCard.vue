@@ -7,23 +7,30 @@
         </div>
       </VCardTitle>
       <VDivider />
-      <StreamBarcodeReader
-        @decode="onDecode"
-        @loaded="onLoaded"
-      />
+      
+      <StreamBarcodeReader @decode="onDecode" />
     </VCardItem>
   </VCard>
 </template>
 
 <script setup>
+import { orderStore } from "@/stores"
+import { ref } from "vue"
 import { StreamBarcodeReader } from "vue-barcode-reader"
 
+const timer = ref( null)
 
 const onDecode = res => {
-  alert('Kode : '+res)
-}
+  if (timer.value) {
+    // So we clear and null it so it doesn't contact the api
+    clearTimeout(timer.value)
+    timer.value = null
+  }
 
-const onLoaded = res => {
-  console.log(res)
+  timer.value = setTimeout(() => {
+    if (res) {
+      orderStore.add(res)
+    }
+  }, 1000)
 }
 </script>

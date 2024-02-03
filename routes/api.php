@@ -47,5 +47,7 @@ Route::group(['prefix' => 'v1'], function () {
         // POS Cashier
         Route::get('product-types', [ProductTypeController::class, 'index']);
         Route::resource('products', ProductController::class);
+        Route::get('products-search', [ProductController::class, 'search']);
+        Route::get('product-barcode-search/{barcode}', [ProductController::class, 'searchByBarcode']);
     });
 });

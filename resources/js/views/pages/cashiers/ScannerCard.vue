@@ -2,12 +2,17 @@
   <VCard>
     <VCardItem>
       <VContainer>
-        <VTextField
-          type="text"
-          density="compact"
-          variant="outlined"
-          placeholder="search product..."
-          aria-controls="data"
+        <VAutocomplete
+          v-model:search="search"
+          :loading="searchLoading"
+          :items="searchResult"
+          item-title="name"
+          item-value="barcode"
+          clear-on-select
+          clearable
+          @update:search="searchProduct"
+          @update:model-value="clicked"
+          @update:focused="isFocused"
         />
       </VContainer>
       <VDivider />
@@ -33,7 +38,7 @@
   
         <tbody>
           <tr
-            v-for="item in data"
+            v-for="item in orderStore.orders"
             :key="item.barcode"
           >
             <td class="text-start">
@@ -44,7 +49,8 @@
                 density="compact"
                 :value="item.type"
                 class="custom-width mx-auto"
-                :items="['box', 'pcs']"
+                :items="['pack', 'pcs']"
+                @update:model-value="updateType(item,$event)"
               />
             </td>
             <td class="text-center">
@@ -83,49 +89,51 @@
 </template>
 
 <script setup>
+import { productService } from "@/services"
+import { orderStore } from "@/stores"
+import { currencyFormat } from "@/utils"
 import { ref } from "vue"
 
-import { currencyFormat } from "@/utils"
-
-const data = ref([
-  {
-    barcode: "12384123",
-    name: "Komix herbal",
-    type: "pcs",
-    quantity: 3,
-    price: 3000,
-  },
-  {
-    barcode: "98384123",
-    name: "Bodrex",
-    type: "pcs",
-    quantity: 2,
-    price: 2500,
-  },
-  {
-    barcode: "68384123",
-    name: "Amoxcillin",
-    type: "box",
-    quantity: 1,
-    price: 32000,
-  },
-  {
-    barcode: "23384123",
-    name: "asdasd",
-    type: "pcs",
-    quantity: 3,
-    price: 15000,
-  },
-])
-
+const search =ref("")
+const searchLoading = ref(false)
+const searchResult = ref([])
 
 function updateQuantity(item, value) {
-  item.quantity = parseInt(value, 10)
+  orderStore.changeQuantity(item.id, value)
+}
+
+async function updateType(item, value) {
+  await orderStore.changeType(item.id, value)
 }
 
 const totalOrders = computed(() => {
-  return data.value.reduce((sum, item) => sum + item.quantity * item.price, 0)
+  return orderStore.orders.reduce((sum, item) => sum + item.quantity * item.price, 0)
 })
+
+const searchProduct = async searchVal => {
+  try {
+    searchLoading.value = true
+    
+    if (searchVal !== "") {
+
+      const res = await productService.searchForOrder({ params: { search: searchVal.trim() } })
+
+      searchResult.value = res.data
+    }
+  } catch (e) {
+    console.error(e)
+  } finally {
+    searchLoading.value = false
+  }
+}
+
+const clicked = async val => {
+  await orderStore.add(val)
+}
+
+const isFocused = val => {
+  search.value = ""
+}
 </script>
 
 <style scoped>

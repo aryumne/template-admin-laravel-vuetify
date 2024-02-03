@@ -29,10 +29,10 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         try {
-            $perPage        = $request->input('entries', $this->paginateValue);
-            $search         = $request->input('search', '');
-            $sortField      = $request->input('sort.field', 'name');
-            $sortDirection  = $request->input('sort.direction') == 'asc' ? 'asc' : 'desc';
+            $perPage        = trim($request->input('entries', $this->paginateValue));
+            $search         = trim($request->input('search', ''));
+            $sortField      = trim($request->input('sort.field', 'name'));
+            $sortDirection  = trim($request->input('sort.direction')) == 'asc' ? 'asc' : 'desc';
             $data           = DatatableService::getDataForTable(
                 new Product(),
                 $perPage,
@@ -101,6 +101,34 @@ class ProductController extends Controller
             return HttpHelper::successResponse('Data berhasil dihapus.', [], Response::HTTP_OK);
         } catch (\Exception $e) {
             return HttpHelper::errorResponse('Gagal menghapus data!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function search(Request $request)
+    {
+
+        try {
+            $search = trim($request->input('search', ''));
+            $data   = $this->productRepo->search($search, $this->paginateValue);
+            if ($data) $data = ProductResource::collection($data);
+            return HttpHelper::successResponse('Hasil pencarian.', $data, Response::HTTP_OK);
+        } catch (Exception $e) {
+            return HttpHelper::errorResponse('Gagal memuat data!', $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function searchByBarcode(string $barcode)
+    {
+        try {
+            $data = $this->productRepo->getOneByCondition([
+                "key" => "barcode",
+                "value" => $barcode
+            ]);
+            return HttpHelper::successResponse('Data obat.', new ProductResource($data), Response::HTTP_OK);
+        } catch (CustomExceptionHandler $e) {
+            return HttpHelper::errorResponse($e->getMessage(), [], $e->getCodeStatus());
+        } catch (Exception $e) {
+            return HttpHelper::errorResponse('Gagal memuat data obat!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
 }

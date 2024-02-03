@@ -32,7 +32,10 @@ class ProductRepository extends BaseRepository
     {
         try {
             $data = $this->model->where($cond['key'], $cond['value'])->with($relations)->first();
-            return new ProductResource($data);
+            if (!$data) throw new CustomExceptionHandler("Data obat tidak ditemukan!", 404);
+            return $data;
+        } catch (CustomExceptionHandler $e) {
+            throw $e;
         } catch (Exception $e) {
             throw $e;
         }
@@ -93,7 +96,7 @@ class ProductRepository extends BaseRepository
         }
     }
 
-    public function delete($uuid)
+    public function delete(string $uuid)
     {
         DB::beginTransaction();
         try {
@@ -107,6 +110,15 @@ class ProductRepository extends BaseRepository
             throw $e;
         } catch (Exception $e) {
             DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function search(string $search, $limit)
+    {
+        try {
+            return $this->model->search($search, null, true, true)->limit($limit)->get();
+        } catch (Exception $e) {
             throw $e;
         }
     }
