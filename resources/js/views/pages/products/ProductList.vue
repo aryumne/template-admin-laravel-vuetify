@@ -34,79 +34,60 @@
               <Loading />
             </td>
           </tr>
-          <RouterLink
+          <tr
             v-for="item in rows"
             v-else
             :key="item.id"
-            v-slot="{ navigate }"
-            :to="{ name: 'blogs'}"
-            custom
+            role="link"
           >
-            <tr
-              role="link"
-              @click="navigate"
-              @keypress.enter="navigate"
-            >
-              <td class="checkbox-column">
-                <VCheckbox
-                  v-model="selectedRow.selected_ids"
-                  type="checkbox"
-                  class="dt-checkboxes form-check-input"
-                  :value="item.id"
-                  @click.stop
+            <td class="checkbox-column">
+              <VCheckbox
+                v-model="selectedRow.selected_ids"
+                type="checkbox"
+                class="dt-checkboxes form-check-input"
+                :value="item.id"
+              />
+            </td>
+            <td>
+              {{ item.barcode }}
+            </td>
+            <td>
+              {{ item.name }}
+            </td>
+            <td>
+              {{ item.product_type.name }}
+            </td>
+            <td>
+              {{ item.batch_number }}
+            </td>
+            <td>
+              {{ item.pack_stok }}
+            </td>
+            <td>
+              {{ item.total_item }}
+            </td>
+            <td class="text-end">
+              Rp. {{ currencyFormat(item.item_price) }}
+            </td>
+            <td class="text-center">
+              <RouterLink :to="{ name: 'blogs'}">
+                <VBtn
+                  density="compact"
+                  variant="text"
+                  color="info"
+                  icon="mdi-eye"
                 />
-              </td>
-              <td>
-                {{ item.barcode }}
-              </td>
-              <td>
-                {{ item.name }}
-              </td>
-              <td>
-                {{ item.product_type.name }}
-              </td>
-              <td>
-                {{ item.batch_number }}
-              </td>
-              <td>
-                {{ item.pack_stok }}
-              </td>
-              <td>
-                {{ item.total_item }}
-              </td>
-              <td class="text-end">
-                Rp. {{ currencyFormat(item.item_price) }}
-              </td>
-              <td>
-                <RouterLink
-                  :to="{ name: 'blogs'}"
-                  class="btn btn-icon btn-transparent d-inline ms-2 text-info"
-                >
-                  <i
-                    class="bx bx-show"
-                    data-bs-toggle="tooltip"
-                    data-bs-offset="0,4"
-                    data-bs-placement="top"
-                    data-bs-html="true"
-                    title="Detail"
-                  />
-                </RouterLink>
-                <RouterLink
-                  :to="{ name: 'blogs'}"
-                  class="btn btn-icon btn-transparent d-inline ms-2 text-warning"
-                >
-                  <i
-                    class="bx bx-edit"
-                    data-bs-toggle="tooltip"
-                    data-bs-offset="0,4"
-                    data-bs-placement="top"
-                    data-bs-html="true"
-                    title="Edit"
-                  />
-                </RouterLink>
-              </td>
-            </tr>
-          </RouterLink>
+              </RouterLink>
+              <RouterLink :to="{ name: 'blogs'}">
+                <VBtn
+                  density="compact"
+                  variant="text"
+                  color="warning"
+                  icon="mdi-pencil-outline"
+                />
+              </RouterLink>
+            </td>
+          </tr>
         </template>
       </Datatable>
     </template>
@@ -188,11 +169,6 @@ watch(
 )
 
 const openModal = ref(false)
-
-const toggleModal = () => {
-  openModal.value = !openModal.value
-}
-
 const childRef = ref()
 
 watch(openModal, async (newVal, oldVal) => {
@@ -211,13 +187,5 @@ const loading = ref(false)
 
 const isLoading = data => {
   loading.value = data
-}
-
-const statusUser = expiredDate => {
-  if (expiredDate === null) return true
-  const expired = new Date(expiredDate)
-  const currentDate = new Date()
-
-  return currentDate < expired
 }
 </script>
