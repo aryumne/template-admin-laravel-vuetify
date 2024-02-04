@@ -189,10 +189,10 @@ const getData = async () => {
     })
 
     data.value = res
-    totalPage.value = res.last_page
+    totalPage.value = res?.last_page
   } catch (e) {
     data.value = []
-    emitEvents('useSetAlert', { isShow: true, type: 'warning', msg: e.message })
+    emitEvents('useSetAlert', e.message)
   } finally {
     emitEvents('useSetRows', data.value.data)
     emitEvents('useIsLoading', false)

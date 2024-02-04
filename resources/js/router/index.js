@@ -53,6 +53,14 @@ const router = createRouter({
           },
         },
         {
+          name: 'sales',
+          path: 'sales',
+          component: () => import('../pages/sale.vue'),
+          meta: {
+            title: 'Daftar Penjualan',
+          },
+        },
+        {
           name: 'blogs',
           path: 'blogs',
           component: () => import('../pages/blogs.vue'),

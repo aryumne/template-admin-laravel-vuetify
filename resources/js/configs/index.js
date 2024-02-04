@@ -10,3 +10,9 @@ export const SECRETS = {
 export const CONSTANTS = {
   PAGINATE_DEFAULT: import.meta.env.VITE_PAGINATE_VALUE || 5,
 }
+
+
+export const OrderTypeEnum = {
+  PACK: 'pack',
+  PCS: 'pcs',
+}

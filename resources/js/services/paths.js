@@ -4,6 +4,7 @@ const paths = {
   productTypes: 'product-types',
   searchProducts: 'products-search',
   searchProductByBarcode: "product-barcode-search",
+  transactions: 'transactions',
 }
 
 

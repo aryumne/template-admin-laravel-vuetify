@@ -58,7 +58,7 @@
               <VBtn
                 density="compact"
                 variant="text"
-                color="dark"
+                color="error"
                 icon="mdi-window-close"
                 @click.prevent="orderStore.removeOrder(item.barcode)"
               />
@@ -71,7 +71,7 @@
                 density="compact"
                 :value="item.type"
                 class="custom-width mx-auto"
-                :items="['pack', 'pcs']"
+                :items="[OrderTypeEnum.PACK, OrderTypeEnum.PCS]"
                 @update:model-value="updateType(item,$event)"
               />
             </td>
@@ -90,7 +90,7 @@
           </tr>
           <tr>
             <td
-              colspan="3"
+              colspan="4"
               class="text-center font-weight-bold bg-grey-100"
             >
               TOTAL
@@ -102,26 +102,28 @@
         </tbody>
       </VTable>
       <VContainer class="d-flex justify-end">
-        <VBtn color="success">
-          Simpan
-        </VBtn>
+        <ConfirmationDialog :amount="totalOrders" />
       </VContainer>
     </VCardItem>
   </VCard>
 </template>
 
 <script setup>
+import { OrderTypeEnum } from "@/configs"
 import { productService } from "@/services"
 import { orderStore, snackbarStore } from "@/stores"
 import { currencyFormat } from "@/utils"
 import { ref } from "vue"
+import ConfirmationDialog from "./ConfirmationDialog.vue"
 
 const search =ref("")
 const searchLoading = ref(false)
 const searchResult = ref([])
 
 function updateQuantity(item, value) {
-  orderStore.changeQuantity(item.barcode, value)
+  if (value > 0) {
+    orderStore.changeQuantity(item.barcode, value)
+  }
 }
 
 async function updateType(item, value) {
