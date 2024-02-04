@@ -9,11 +9,11 @@ class ProductRequest extends BaseRequest
         return array_merge(parent::rules(), [
             'name'              => ['required', 'string', 'unique:App\Models\Product,name'],
             'batch_number'      => ['nullable', 'string', 'unique:App\Models\Product,batch_number'],
-            'pack_stok'         => ['nullable', 'integer'],
-            'items_per_pack'    => ['nullable', 'integer'],
-            'total_item'        => ['nullable', 'integer'],
-            'pack_price'        => ['required', 'integer'],
-            'item_price'        => ['required', 'integer'],
+            'pack_stok'         => ['nullable', 'numeric'],
+            'items_per_pack'    => ['nullable', 'numeric'],
+            'total_item'        => ['nullable', 'numeric'],
+            'pack_price'        => ['required', 'numeric'],
+            'item_price'        => ['required', 'numeric'],
             'product_type_id'   => ['required', 'exists:App\Models\ProductType,id'],
         ]);
     }
@@ -36,7 +36,7 @@ class ProductRequest extends BaseRequest
     {
         return array_merge(parent::messages(), [
             '*.required' => ':attribute ini harus diisi!',
-            '*.number'   => ':attribute ini harus angka!',
+            '*.numeric'  => ':attribute ini harus angka!',
             '*.unique'   => ':attribute ini sudah terdaftar!',
             '*.exists'   => ':attribute ini tidak ditemukan!',
         ]);
