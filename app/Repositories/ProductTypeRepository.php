@@ -24,7 +24,6 @@ class ProductTypeRepository extends BaseRepository
         } catch (Exception $e) {
             throw $e;
         }
-        return null;
     }
 
     public function getOneByCondition($cond, $relations = [])
@@ -35,7 +34,6 @@ class ProductTypeRepository extends BaseRepository
         } catch (Exception $e) {
             throw $e;
         }
-        return null;
     }
 
 
@@ -50,6 +48,5 @@ class ProductTypeRepository extends BaseRepository
             DB::rollBack();
             throw $e;
         }
-        return null;
     }
 }
