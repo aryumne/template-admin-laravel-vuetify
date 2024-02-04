@@ -9,20 +9,21 @@ import ScannerCard from "@/views/pages/cashiers/ScannerCard.vue"
       Kasir
     </p>
     <VRow>
-      <!-- 👉 Influencing The Influencer -->
-      <VCol
-        cols="12"
-        lg="8"
-        md="7"
-      >
-        <ScannerCard />
-      </VCol>
-
-      <!-- 👉 The Best Answers -->
       <VCol
         cols="12"
         lg="4"
         md="5"
+        order-sm="first"
+        order-md="last"
+      >
+        <ScannerCard />
+      </VCol>
+      <VCol
+        cols="12"
+        lg="8"
+        md="7"
+        order-sm="last"
+        order-md="first"
       >
         <CheckoutCard />
       </VCol>

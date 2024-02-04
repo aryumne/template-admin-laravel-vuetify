@@ -15,10 +15,7 @@ export default defineStore('order', () => {
       } else {
         const res = await productService.searchByBarcode(barcode)
 
-        console.log(res.data)
-
         const newOrder = {
-          id: res.data.id,
           name: res.data.name,
           barcode: res.data.barcode,
           type: "pcs",
@@ -27,20 +24,18 @@ export default defineStore('order', () => {
           total_price: res.data.item_price,
         }
 
-        orders.value.push(newOrder)
-        console.log(orders.value)
-          
+        orders.value.push(newOrder)          
       }
     } catch (error) {
-      console.log(error)
-      throw e
+      console.error(error)
+      throw error
     }
   }
 
-  async function changeType(id, type) {
+  async function changeType(barcode, type) {
     try {
-      const res = await productService.getOneProduct(id)
-      let order = orders.value.find(order => order.id === id)
+      const res = await productService.searchByBarcode(barcode)
+      let order = orders.value.find(order => order.barcode === barcode)
       order.type = type
       if (order.type === "pack") {
         order.price = res.data.pack_price
@@ -51,21 +46,32 @@ export default defineStore('order', () => {
         order.total_price = res.data.item_price + order.quantity
       }
     } catch (error) {
-      console.log(error)
-      throw e 
+      console.error(error)
+      throw error
     }
   }
 
-  function changeQuantity(id, newQuantity) {
+  function changeQuantity(barcode, newQuantity) {
     try {
-      let order = orders.value.find(order => order.id === id)
+      let order = orders.value.find(order => order.barcode === barcode)
       order.quantity = newQuantity
       order.total_price = newQuantity * order.price   
     } catch (error) {
-      console.log(error)
-      throw e 
+      console.error(error)
+      throw error
     }
   }
   
-  return { orders, add, changeType, changeQuantity }
+  function removeOrder(barcode) {
+    try {
+      const indexOfOrder = orders.value.findIndex(order => order.barcode === barcode)
+      if(indexOfOrder !== -1) orders.value.splice(indexOfOrder, 1)
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
+    
+  }
+  
+  return { orders, add, changeType, changeQuantity, removeOrder }
 })
