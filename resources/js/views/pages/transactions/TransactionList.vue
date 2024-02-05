@@ -38,7 +38,7 @@
               {{ item.transaction_number }}
             </td>
             <td>
-              {{ item.prescription_number == null ? '-': item.prescription_number }}
+              {{ item.prescription_number == null ? '-' : item.prescription_number }}
             </td>
             <td>
               Rp. {{ currencyFormat(item.amount) }}
@@ -54,7 +54,7 @@
                 density="compact"
                 variant="text"
                 color="info"
-                icon="mdi-eye"
+                icon="mdi-printer"
                 @click.prevent="download(item.id)"
               />
             </td>

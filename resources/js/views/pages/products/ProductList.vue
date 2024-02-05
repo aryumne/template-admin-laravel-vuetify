@@ -71,28 +71,48 @@
               Rp. {{ currencyFormat(item.item_price) }}
             </td>
             <td class="text-center">
-              <RouterLink :to="{ name: 'blogs'}">
-                <VBtn
-                  density="compact"
-                  variant="text"
-                  color="info"
-                  icon="mdi-eye"
-                />
-              </RouterLink>
-              <RouterLink :to="{ name: 'blogs'}">
-                <VBtn
-                  density="compact"
-                  variant="text"
-                  color="warning"
-                  icon="mdi-pencil-outline"
-                />
-              </RouterLink>
+              <VBtn
+                density="compact"
+                variant="text"
+                color="warning"
+                icon="mdi-pencil-outline"
+                @click="openEditForm(item.id)"
+              />
+              <VBtn
+                density="compact"
+                variant="text"
+                color="error"
+                icon="mdi-delete-outline"
+                @click="openDeleteConfirmation(item.id)"
+              />
             </td>
           </tr>
         </template>
       </Datatable>
     </template>
   </TableCard>
+  <VDialog
+    v-model="dialogEdit"
+    persistent
+    width="1024"
+  >
+    <ProductEditFrom
+      v-if="dialogEdit"
+      :uuid="uuid"
+      @close-dialog="closeEditForm"
+    />
+  </VDialog>
+  <VDialog
+    v-model="dialogDelete"
+    persistent
+    width="auto"
+  >
+    <ProductDeleteConfirmation
+      v-if="dialogDelete"
+      :uuid="uuid"
+      @close-dialog="closeDeleteConfirmation"
+    />
+  </VDialog>
 </template>
 
 <script setup>
@@ -103,8 +123,13 @@ import { currencyFormat } from '@/utils'
 import paths from '@services/paths.js'
 import { snackbarStore } from '@stores'
 import { ref, watch } from 'vue'
+import ProductDeleteConfirmation from './ProductDeleteConfirmation.vue'
+import ProductEditFrom from './ProductEditFrom.vue'
 import ProductForm from './ProductForm.vue'
 
+
+
+// Datatable heads
 const heads = ref([
   {
     display_text: 'Barcode',
@@ -143,6 +168,10 @@ const heads = ref([
   },
 ])
 
+
+// end Datatable heads
+
+// Checkbox selection
 const selectedRow = ref({
   is_all: false,
   selected_ids: [],
@@ -169,10 +198,41 @@ watch(
   { deep: true },
 )
 
-const openModal = ref(false)
-const childRef = ref()
+// end Checkbox selection
 
-watch(openModal, async (newVal, oldVal) => {
+const childRef = ref()
+const dialogEdit = ref(false)
+const uuid = ref(null)
+
+const openEditForm = id => {
+  uuid.value = id
+  dialogEdit.value = true
+}
+
+const closeEditForm = () => {
+  dialogEdit.value = false
+  uuid.value = null
+}
+
+watch(dialogEdit, async (newVal, oldVal) => {
+  if (newVal === false) {
+    await childRef.value.getData()
+  }
+})
+
+const dialogDelete = ref(false)
+
+const openDeleteConfirmation = id => {
+  uuid.value = id
+  dialogDelete.value = true
+}
+
+const closeDeleteConfirmation = () => {
+  uuid.value = null
+  dialogDelete.value = false
+}
+
+watch(dialogDelete, async (newVal, oldVal) => {
   if (newVal === false) {
     await childRef.value.getData()
   }
