@@ -7,6 +7,7 @@
         :path-api="paths.products"
         :selected-all="selectedRow.is_all"
         need-checkbox
+        need-action-row
         @use-is-loadings="isLoading"
         @use-set-rows="setRows"
         @use-set-alert="snackbarStore.setMsg"

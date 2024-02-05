@@ -7,6 +7,7 @@
         :path-api="paths.transactions"
         :selected-all="selectedRow.is_all"
         need-checkbox
+        need-action-row
         @use-is-loadings="isLoading"
         @use-set-rows="setRows"
         @use-set-alert="snackbarStore.setMsg"
@@ -49,14 +50,13 @@
               Rp. {{ currencyFormat(item.return_amount ) }}
             </td>
             <td class="text-center">
-              <RouterLink :to="{ name: 'blogs'}">
-                <VBtn
-                  density="compact"
-                  variant="text"
-                  color="info"
-                  icon="mdi-eye"
-                />
-              </RouterLink>
+              <VBtn
+                density="compact"
+                variant="text"
+                color="info"
+                icon="mdi-eye"
+                @click.prevent="download(item.id)"
+              />
             </td>
           </tr>
         </template>
@@ -69,6 +69,7 @@
 import Datatable from '@/components/Datatable.vue'
 import Loading from '@/components/Loading.vue'
 import TableCard from '@/layouts/components/TableCard.vue'
+import { downloadPdf } from '@/services/blobApi'
 import { currencyFormat } from '@/utils'
 import paths from '@services/paths.js'
 import { snackbarStore } from '@stores'
@@ -138,5 +139,18 @@ const loading = ref(false)
 
 const isLoading = data => {
   loading.value = data
+}
+
+const download = async uuid => {
+  try {
+    const url = await downloadPdf(paths.transactions, uuid)
+
+    // Open the PDF in a new tab
+    window.open(url, '_blank')
+    
+  
+  } catch (e) {
+    snackbarStore.setMsg(e.message)
+  }
 }
 </script>

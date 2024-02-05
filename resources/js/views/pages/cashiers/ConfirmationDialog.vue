@@ -1,7 +1,8 @@
+<!-- eslint-disable vue/no-restricted-class -->
 <template>
   <VBtn
     color="primary"
-    @click="dialog = true"
+    @click="openDialog"
   >
     Bayar
   </VBtn>
@@ -95,7 +96,7 @@
                   density="compact"
                   type="number"
                   prefix="Rp. "
-                  class="ml-auto custom-width"
+                  class="custom-width ml-auto"
                 />
               </td>
             </tr>
@@ -123,14 +124,17 @@
           >
             Batal
           </VBtn>
-          <!--
-            <VBtn class="mx-2">
+          
+          <VBtn
+            class="mx-2"
+            @click.prevent="submit(true)"
+          >
             Simpan & Cetak
-            </VBtn> 
-          -->
+          </VBtn> 
+         
           <VBtn
             variant="tonal"
-            @click.prevent="submit"
+            @click.prevent="submit(false)"
           >
             Simpan
           </VBtn>
@@ -143,9 +147,12 @@
 
 <script setup>
 import { transactionService } from '@/services'
+import { downloadPdf } from '@/services/blobApi'
+import paths from '@/services/paths'
 import { orderStore, snackbarStore } from "@/stores"
 import { currencyFormat } from "@/utils"
 import { ref, watch } from 'vue'
+
 
 const props = defineProps({
   amount: Number,
@@ -163,7 +170,13 @@ watch(cashAmount, (newVal, oldVal) => {
   returnAmount.value  = Math.abs(result)
 })
 
-const submit = async () => {
+
+const openDialog = () => {
+  if (orderStore.orders.length < 1) return snackbarStore.setMsg("Daftar pembelian masih kosong!")
+  else return  dialog.value = true
+}
+
+const submit = async isPrint => {
   try {
     loading.value = true
     if(cashAmount.value < props.amount) throw new Error("Uang tunai tidak cukup!")
@@ -175,6 +188,14 @@ const submit = async () => {
       return_amount: returnAmount.value,
       prescription_number: prescriptionNumber.value,
     })
+
+    if (isPrint) {
+      const url = await downloadPdf(paths.transactions, res.data.id)
+
+      // Open the PDF in a new tab
+      window.open(url, '_blank')
+    
+    }
 
     orderStore.resetOrder()
     snackbarStore.setMsg(res?.message)

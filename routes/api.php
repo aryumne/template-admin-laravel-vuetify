@@ -51,7 +51,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::resource('products', ProductController::class);
         Route::get('products-search', [ProductController::class, 'search']);
         Route::get('product-barcode-search/{barcode}', [ProductController::class, 'searchByBarcode']);
-        Route::resource('transactions', TransactionController::class)->only(['index', 'store']);
+        Route::resource('transactions', TransactionController::class)->only(['index', 'store', 'show']);
         Route::resource('sales', SalesController::class)->only('index');
     });
 });

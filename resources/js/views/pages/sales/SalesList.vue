@@ -66,16 +66,6 @@
             <td>
               Rp. {{ currencyFormat(item.total_price) }}
             </td>
-            <td class="text-center">
-              <RouterLink :to="{ name: 'blogs'}">
-                <VBtn
-                  density="compact"
-                  variant="text"
-                  color="info"
-                  icon="mdi-eye"
-                />
-              </RouterLink>
-            </td>
           </tr>
         </template>
       </Datatable>

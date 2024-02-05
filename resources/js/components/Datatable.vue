@@ -86,7 +86,9 @@
               </div>
             </div>
           </th>
-          <th>Aksi</th>
+          <th v-if="props.needActionRow">
+            Aksi
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -153,6 +155,7 @@ const props = defineProps({
   tableHeads: Array,
   selectedAll: Boolean,
   needCheckbox: Boolean,
+  needActionRow: Boolean,
 })
 
 const emitEvents = defineEmits(['useSetRows', 'useSetAlert', 'useIsLoading', 'toggleSelectAll'])

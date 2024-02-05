@@ -4,13 +4,15 @@ namespace App\Http\Controllers\api;
 
 use Exception;
 use App\Models\Order;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Helpers\HttpHelper;
 use App\Services\DatatableService;
 use App\Http\Controllers\Controller;
 use App\Exceptions\CustomExceptionHandler;
-use App\Models\Transaction;
+use App\Http\Resources\TransactionResource;
 use App\Repositories\TransactionRepository;
 
 class TransactionController extends Controller
@@ -65,9 +67,18 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $uuid)
     {
-        //
+        try {
+            $data = $this->trxRepo->getById($uuid, ['sales']);
+            // return HttpHelper::successResponse('Data obat.', new TransactionResource($data), Response::HTTP_OK);
+            $pdf = Pdf::loadView('invoice', ['data' => $data]);
+            return $pdf->download('invoice.pdf');
+        } catch (CustomExceptionHandler $e) {
+            return HttpHelper::errorResponse($e->getMessage(), [], $e->getCodeStatus());
+        } catch (Exception $e) {
+            return HttpHelper::errorResponse('Gagal memuat data obat!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
