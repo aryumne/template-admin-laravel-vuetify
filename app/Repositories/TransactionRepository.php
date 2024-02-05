@@ -66,7 +66,7 @@ class TransactionRepository extends BaseRepository
                     'total_price' => $order['total_price'],
                 ]);
                 if (!$sales) throw new CustomExceptionHandler("Gagal menyimpan data pembelian obat " . $order['name'] . "!");
-                $updateProduct =  $this->increaseProduct($sales->barcode, $sales->type, $sales->quantity);
+                $updateProduct =  $this->decreaseProduct($sales->barcode, $sales->type, $sales->quantity);
                 if ($updateProduct != true) throw new CustomExceptionHandler("Gagal menyimpan perubahan data obat " . $order['name'] . "!");
             }
             DB::commit();
@@ -80,7 +80,7 @@ class TransactionRepository extends BaseRepository
         }
     }
 
-    private function increaseProduct($barcode, $type, $quantity)
+    private function decreaseProduct($barcode, $type, $quantity)
     {
         try {
             $product = $this->productModel->where('barcode', $barcode)->first();

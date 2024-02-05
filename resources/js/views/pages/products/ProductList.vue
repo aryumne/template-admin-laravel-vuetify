@@ -18,7 +18,7 @@
             type="button"
             color="secondary"
             variant="tonal"
-            class="mx-2"
+            class="ms-2"
           >
             <VIcon
               size="small"
@@ -27,6 +27,16 @@
               icon="mdi-export-variant"
             /> Export
           </VBtn>
+          <RouterLink :to="{name:'productsAddStock'}">
+            <VBtn
+              type="button"
+              color="primary"
+              variant="tonal"
+              class="mx-2"
+            >
+              Tambah Stock
+            </VBtn>
+          </RouterLink>
           <ProductForm />
         </template>
         <template #tbody>

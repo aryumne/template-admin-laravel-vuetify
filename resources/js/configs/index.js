@@ -13,6 +13,6 @@ export const CONSTANTS = {
 
 
 export const OrderTypeEnum = {
-  PACK: 'pack',
+  PACK: 'box',
   PCS: 'pcs',
 }

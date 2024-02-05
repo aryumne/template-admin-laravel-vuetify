@@ -42,10 +42,10 @@
               </div>
             </th>
             <th>
-              satuan
+              Harga Per Box
             </th>
             <th>
-              jumlah
+              Jumlah
             </th>
             <th>
               <div class="text-end">
@@ -73,13 +73,16 @@
               {{ item.name }}
             </td>
             <td class="text-center">
-              <VSelect
-                density="compact"
-                :value="item.type"
-                class="custom-width mx-auto"
-                :items="[OrderTypeEnum.PACK, OrderTypeEnum.PCS]"
-                @update:model-value="updateType(item,$event)"
-              />
+              <VContainer style="max-width: 200px;">
+                <VTextField
+                  :value="item.price"
+                  density="compact"
+                  type="number"
+                  prefix="Rp. "
+                  class="mx-auto"
+                  @update:model-value="updatePrice(item, $event)"
+                />
+              </VContainer>
             </td>
             <td class="text-center">
               <VTextField
@@ -94,17 +97,6 @@
               Rp. {{ currencyFormat(item.price * item.quantity) }}
             </td>
           </tr>
-          <tr>
-            <td
-              colspan="4"
-              class="text-center font-weight-bold bg-grey-100"
-            >
-              TOTAL
-            </td>
-            <td class="text-end font-weight-bold">
-              Rp. {{ currencyFormat(totalOrders) }}
-            </td>
-          </tr>
         </tbody>
       </VTable>
       <VContainer class="d-flex justify-end">
@@ -115,7 +107,6 @@
 </template>
 
 <script setup>
-import { OrderTypeEnum } from "@/configs"
 import { productService } from "@/services"
 import { orderStore, snackbarStore } from "@/stores"
 import { currencyFormat } from "@/utils"
@@ -132,8 +123,10 @@ function updateQuantity(item, value) {
   }
 }
 
-async function updateType(item, value) {
-  await orderStore.changeType(item.barcode, value)
+function updatePrice(item, value) {
+  if (value > 0) {
+    orderStore.changePrice(item.barcode, value)
+  }
 }
 
 const totalOrders = computed(() => {

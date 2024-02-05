@@ -9,5 +9,6 @@ const updateProduct = async (id, body, params = {}) => await apiPatch(paths.prod
 const deleteProduct = async (id, params = {}) => await apiDelete(paths.products, id, params)
 const searchForOrder = async (params = {}) => await apiGet(paths.searchProducts, params)
 const searchByBarcode = async (barcode, params = {}) => await apiGetOne(paths.searchProductByBarcode, barcode, params)
+const storePurchases =  async (body, params = {}) => await apiPost(paths.purchases, body, params)
 
-export const productService = { getProducts, getOneProduct, getProductTypes, storeProduct, updateProduct, deleteProduct, searchForOrder, searchByBarcode }
+export const productService = { getProducts, getOneProduct, getProductTypes, storeProduct, updateProduct, deleteProduct, searchForOrder, searchByBarcode, storePurchases }

@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use Nicolaslopezj\Searchable\SearchableTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Sales extends Model
 {
-    use HasFactory, SearchableTrait, HasUuids;
+    use HasFactory, SearchableTrait, HasUuids, SoftDeletes;
 
     protected $table = 'sales';
     protected $guarded = ['id'];

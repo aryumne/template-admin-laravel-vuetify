@@ -9,7 +9,7 @@
         color="primary"
         v-bind="props"
       >
-        Tambah
+        Obat Baru
       </VBtn>
     </template>
     <VCard>

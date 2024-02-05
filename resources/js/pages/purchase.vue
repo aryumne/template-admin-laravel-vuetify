@@ -1,11 +1,11 @@
 <script setup>
-import SalesList from '@/views/pages/reports/SalesList.vue'
+import PurchaseList from '@/views/pages/reports/PurchaseList.vue'
 </script>
 
 <template>
   <VRow>
     <VCol cols="12">
-      <SalesList />
+      <PurchaseList />
     </VCol>
   </VRow>
 </template>

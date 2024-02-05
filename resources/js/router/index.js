@@ -53,6 +53,22 @@ const router = createRouter({
           },
         },
         {
+          name: 'purchases',
+          path: 'purchases',
+          component: () => import('../pages/purchase.vue'),
+          meta: {
+            title: 'Laporan Pembelian',
+          },
+        },
+        {
+          name: 'productsAddStock',
+          path: 'products-add-stock',
+          component: () => import('../pages/purchase-form.vue'),
+          meta: {
+            title: 'Form Pembelian',
+          },
+        },
+        {
           name: 'sales',
           path: 'sales',
           component: () => import('../pages/sale.vue'),

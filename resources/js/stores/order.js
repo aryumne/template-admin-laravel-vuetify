@@ -18,6 +18,7 @@ export default defineStore('order', () => {
 
         const newOrder = {
           name: res?.data.name,
+          product_id: res?.data.id,
           barcode: res?.data.barcode,
           type: OrderTypeEnum.PCS,
           quantity: 1,
@@ -54,7 +55,6 @@ export default defineStore('order', () => {
   function changeQuantity(barcode, newQuantity) {
     try {
       let order = orders.value.find(order => order.barcode === barcode)
-      console.log(newQuantity)
       if (newQuantity <= 0) {
         order.quantity = 1
         order.total_price = 1 * order.price   
@@ -62,6 +62,17 @@ export default defineStore('order', () => {
         order.quantity = newQuantity
         order.total_price = newQuantity * order.price   
       }
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
+  }
+
+  function changePrice(barcode, newPrice) {
+    try {
+      let order = orders.value.find(order => order.barcode === barcode)
+      order.price = newPrice
+      order.total_price = newPrice * order.quantity
     } catch (error) {
       console.error(error)
       throw error
@@ -82,5 +93,5 @@ export default defineStore('order', () => {
     orders.value = []
   }
   
-  return { orders, add, changeType, changeQuantity, removeOrder, resetOrder }
+  return { orders, add, changeType, changeQuantity, changePrice, removeOrder, resetOrder }
 })

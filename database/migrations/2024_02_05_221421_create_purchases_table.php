@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('purchases', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('product_id')->constrained('products');
             $table->string('name');
-            $table->char('barcode', 9);
-            $table->char('transaction_number', 15);
-            $table->foreign('barcode')->references('barcode')->on("products");
-            $table->foreign('transaction_number')->references('transaction_number')->on("transactions");
-            $table->string('type');
             $table->integer('quantity');
             $table->integer('price');
             $table->integer('total_price');
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('purchases');
     }
 };

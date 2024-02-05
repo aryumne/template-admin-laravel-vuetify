@@ -6,6 +6,7 @@ const paths = {
   searchProductByBarcode: "product-barcode-search",
   transactions: 'transactions',
   sales: 'sales',
+  purchases: 'purchases',
 }
 
 

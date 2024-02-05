@@ -1,4 +1,5 @@
 <script setup>
+import VerticalNavSectionTitle from '@/@layouts/components/VerticalNavSectionTitle.vue'
 import Footer from '@/layouts/components/Footer.vue'
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
@@ -50,22 +51,8 @@ const openLogViewer = () => window.location.href= '/log-viewer'
       <VerticalNavLink
         :item="{
           title: 'Data Obat',
-          icon: 'mdi-account-cog-outline',
+          icon: 'mdi-text-box',
           to: {name:'products'},
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Laporan Penjualan',
-          icon: 'mdi-text-box-multiple',
-          to: {name:'sales'},
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Data Transaksi',
-          icon: 'mdi-text-box-multiple',
-          to: {name:'transactions'},
         }"
       />
       <VerticalNavLink
@@ -73,6 +60,32 @@ const openLogViewer = () => window.location.href= '/log-viewer'
           title: 'Kasir',
           icon: 'mdi-point-of-sale',
           to: {name: 'cashier', replace: true},
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Riwayat Transaksi',
+          icon: 'mdi-clipboard-text-clock',
+          to: {name:'transactions'},
+        }"
+      />
+      <VerticalNavSectionTitle
+        :item="{
+          heading: 'Laporan',
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Laporan Pembelian',
+          icon: 'mdi-text-box-multiple',
+          to: {name:'purchases'},
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Laporan Penjualan',
+          icon: 'mdi-text-box-multiple',
+          to: {name:'sales'},
         }"
       />
       <VerticalNavLink
