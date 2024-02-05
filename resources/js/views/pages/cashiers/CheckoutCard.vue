@@ -142,7 +142,7 @@ const searchProduct = async searchVal => {
 
       const res = await productService.searchForOrder({ params: { search: searchVal.trim() } })
 
-      searchResult.value = res.data
+      searchResult.value = res?.data
     }
   } catch (e) {
     snackbarStore.setMsg(e.message)

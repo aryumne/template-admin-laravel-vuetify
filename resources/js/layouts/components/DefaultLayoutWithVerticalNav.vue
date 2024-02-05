@@ -38,6 +38,7 @@ const openLogViewer = () => window.location.href= '/log-viewer'
       </div>
     </template>
 
+
     <template #vertical-nav-content>
       <VerticalNavLink
         :item="{
@@ -48,21 +49,14 @@ const openLogViewer = () => window.location.href= '/log-viewer'
       />
       <VerticalNavLink
         :item="{
-          title: 'Blogs',
-          icon: 'mdi-account-cog-outline',
-          to: {name:'blogs'},
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Daftar Obat',
+          title: 'Data Obat',
           icon: 'mdi-account-cog-outline',
           to: {name:'products'},
         }"
       />
       <VerticalNavLink
         :item="{
-          title: 'Daftar Penjualan',
+          title: 'Data Penjualan',
           icon: 'mdi-text-box-multiple',
           to: {name:'sales'},
         }"

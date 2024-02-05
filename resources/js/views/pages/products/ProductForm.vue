@@ -16,10 +16,13 @@
       <VCardTitle class="mt-4">
         <span class="text-h6">Tambah Obat Baru</span>
       </VCardTitle>
-      <VCardText>
-        <VContainer>
+      <VForm @submit.prevent="save">
+        <VCardItem class="px-8 mb-4 ">
           <VRow>
-            <VCol cols="12">
+            <VCol
+              cols="12"
+              sm="6"
+            >
               <div class="text-subtitle-2 text-medium-emphasis">
                 Nama Obat
               </div>
@@ -27,7 +30,24 @@
                 v-model="data.name"
                 type="text"
                 placeholder="Komix Herbal"
-                required
+                :rules="rules.nameRules"
+              />
+            </VCol>
+
+            <VCol
+              cols="12"
+              sm="6"
+            >
+              <div class="text-subtitle-2 text-medium-emphasis">
+                Jenis obat*
+              </div>
+              <VAutocomplete
+                v-model="data.product_type_id"
+                :items="productTypes"
+                item-title="name"
+                item-value="id"
+                placeholder="Pilih jenis Obat"
+                :rules="rules.productTypeRules"
               />
             </VCol>
             
@@ -51,12 +71,14 @@
               sm="6"
             >
               <div class="text-subtitle-2 text-medium-emphasis">
-                Jenis obat*
+                Stok Pack*
               </div>
-              <VAutocomplete
-                v-model="data.variant"
-                :items="['Tablet', 'Kapsul', 'Salep','Sirup']"
-                placeholder="Pilih jenis Obat"
+              <VTextField
+                v-model="data.pack_stok"
+                type="number"
+                prefix="Rp. "
+                placeholder="50000"
+                required
               />
             </VCol>
             <VCol
@@ -64,10 +86,25 @@
               sm="6"
             >
               <div class="text-subtitle-2 text-medium-emphasis">
-                Harga per Box*
+                Harga per Pack*
               </div>
               <VTextField
                 v-model="data.pack_price"
+                type="number"
+                prefix="Rp. "
+                placeholder="50000"
+                required
+              />
+            </VCol>
+            <VCol
+              cols="12"
+              sm="6"
+            >
+              <div class="text-subtitle-2 text-medium-emphasis">
+                Jumlah pcs per pack
+              </div>
+              <VTextField
+                v-model="data.items_per_pack"
                 type="number"
                 prefix="Rp. "
                 placeholder="50000"
@@ -89,42 +126,123 @@
                 required
               />
             </VCol>
+            <VCol
+              cols="12"
+              sm="6"
+            >
+              <div class="text-subtitle-2 text-medium-emphasis">
+                Total Pcs
+              </div>
+              <VTextField
+                v-model="data.total_item"
+                type="number"
+                prefix="Rp. "
+                placeholder="3500"
+                required
+              />
+            </VCol>
           </VRow>
-        </VContainer>
-      </VCardText>
-      <VCardActions>
-        <VContainer class="d-flex justify-end">
-          <VSpacer />
-          <VBtn
-            color="blue-darken-1"
-            variant="text"
-            @click="dialog = false"
-          >
-            Batal
-          </VBtn>
-          <VBtn
-            color="primary"
-            variant="tonal"
-            @click="dialog = false"
-          >
-            Simpan
-          </VBtn>
-        </VContainer>
-      </VCardActions>
+          <VRow>
+            <VCol
+              cols="12"
+              class="d-flex justify-end"
+            >
+              <VBtn
+                color="blue-darken-1"
+                variant="text"
+                @click="dialog = false"
+              >
+                Batal
+              </VBtn>
+              <VBtn
+                type="submit"
+                :loading="loading"
+                color="primary"
+                variant="tonal"
+              >
+                Simpan
+              </VBtn>
+            </VCol>
+          </VRow>
+        </VCardItem>
+      </VForm>
     </VCard>
   </VDialog>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { productService } from '@/services'
+import { snackbarStore } from '@/stores'
+import { onMounted, ref } from 'vue'
 
 const dialog = ref(false)
+
+const productTypes = ref([])
+const loading= ref(false)
 
 const data = ref({
   name: '',
   batch_number: '',
-  variant: '',
+  product_type_id: '',
+  pack_stok: 0,
   pack_price: 0,
+  items_per_pack: 0,
   item_price: 0,
+  total_item: 0,
 })
+
+const rules = ref({
+  nameRules: [ value => {
+    if (value) return true
+
+    return 'Nama obat harus diisi!'
+  }],
+  productTypeRules: [ value => {
+    if (value) return true
+
+    return 'Jenis obat harus diisi!'
+  }],
+})
+
+const resetForm = () => {
+  data.value = {
+    name: '',
+    batch_number: '',
+    product_type_id: '',
+    pack_stok: 0,
+    pack_price: 0,
+    items_per_pack: 0,
+    item_price: 0,
+    total_item: 0,
+  }
+}
+
+
+const save = async() => {
+  try {
+    loading.value = true
+
+    const res = await productService.storeProduct(data.value)
+    
+    snackbarStore.setMsg(res?.message)
+    resetForm()
+    dialog.value = false
+  } catch (e) {
+    snackbarStore.setMsg(e.message)
+  } finally {
+    loading.value = false
+  }
+}
+
+const getData = async() => {
+  try {
+    const res = await productService.getProductTypes()
+
+    productTypes.value = res?.data
+  } catch (e) {
+    snackbarStore.setMsg(e.message)
+  }
+}
+
+onMounted(getData)
 </script>
