@@ -19,7 +19,13 @@
               v-bind="props"
               :title="item.raw.name"
               :subtitle="item.raw.barcode"
-            />
+            >
+              <template #append>
+                <div class="text-caption">
+                  {{ item.raw.total_item }}
+                </div>
+              </template>
+            </VListItem>
           </template>
         </VAutocomplete>
       </VContainer>

@@ -59,6 +59,8 @@ class TransactionController extends Controller
         try {
             $result = $this->trxRepo->store($request->only(['amount', 'cash_amount', 'return_amount', 'prescription_number', 'orders']));
             return HttpHelper::successResponse('Transaksi berhasil disimpan.', $result, Response::HTTP_CREATED);
+        } catch (CustomExceptionHandler $e) {
+            return HttpHelper::errorResponse($e->getMessage(), [], $e->getCodeStatus());
         } catch (Exception $e) {
             return HttpHelper::errorResponse('Gagal menyimpan data!', $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
