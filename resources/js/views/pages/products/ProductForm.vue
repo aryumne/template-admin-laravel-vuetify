@@ -76,7 +76,6 @@
               <VTextField
                 v-model="data.pack_stok"
                 type="number"
-                prefix="Rp. "
                 placeholder="50000"
                 required
               />
@@ -106,7 +105,6 @@
               <VTextField
                 v-model="data.items_per_pack"
                 type="number"
-                prefix="Rp. "
                 placeholder="50000"
                 required
               />
@@ -136,7 +134,6 @@
               <VTextField
                 v-model="data.total_item"
                 type="number"
-                prefix="Rp. "
                 placeholder="3500"
                 required
               />

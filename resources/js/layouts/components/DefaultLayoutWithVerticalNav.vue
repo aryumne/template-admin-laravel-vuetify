@@ -56,7 +56,7 @@ const openLogViewer = () => window.location.href= '/log-viewer'
       />
       <VerticalNavLink
         :item="{
-          title: 'Data Penjualan',
+          title: 'Laporan Penjualan',
           icon: 'mdi-text-box-multiple',
           to: {name:'sales'},
         }"
