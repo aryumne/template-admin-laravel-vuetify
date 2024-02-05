@@ -7,6 +7,7 @@ use App\Http\Controllers\api\ProductController;
 use App\Http\Controllers\api\BlogTypeController;
 use App\Http\Controllers\api\ProductTypeController;
 use App\Http\Controllers\api\TransactionController;
+use App\Http\Controllers\api\SalesController;
 use App\Http\Controllers\frontend\FeBlogController;
 use App\Http\Controllers\api\AuthenticationController;
 
@@ -51,5 +52,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('products-search', [ProductController::class, 'search']);
         Route::get('product-barcode-search/{barcode}', [ProductController::class, 'searchByBarcode']);
         Route::resource('transactions', TransactionController::class)->only(['index', 'store']);
+        Route::resource('sales', SalesController::class)->only('index');
     });
 });

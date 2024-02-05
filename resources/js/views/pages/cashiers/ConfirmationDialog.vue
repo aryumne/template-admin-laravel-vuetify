@@ -8,7 +8,7 @@
 
   <VDialog
     v-model="dialog"
-    width="auto"
+    width="500"
   >
     <VCard>
       <VCardItem>
@@ -17,6 +17,23 @@
             Detail pembelian
           </div>
         </VCardTitle>
+        <VContainer class="px-2">
+          <VRow align="center">
+            <VCol cols="4">
+              <div class="text-body-2 font-weight-bold">
+                No. Resep :
+              </div>
+            </VCol>
+            <VCol cols="8">
+              <VTextField
+                v-model="prescriptionNumber"
+                variant="underlined"
+                density="compact"
+                type="text"
+              />
+            </VCol>
+          </VRow>
+        </VContainer>
         <VTable>
           <thead>
             <tr>
@@ -60,8 +77,40 @@
               >
                 TOTAL
               </td>
-              <td class="text-end font-weight-bold">
+              <td class="text-end font-weight-bold text-success">
                 Rp. {{ currencyFormat(props.amount) }}
+              </td>
+            </tr>
+            <tr>
+              <td
+                colspan="2"
+                class="text-end font-weight-bold"
+              >
+                Tunai
+              </td>
+              <td class="text-end font-weight-bold">
+                <VTextField
+                  v-model="cashAmount"
+                  variant="underlined"
+                  density="compact"
+                  type="number"
+                  prefix="Rp. "
+                  class="ml-auto custom-width"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td
+                colspan="2"
+                class="text-end font-weight-bold"
+              >
+                Kembali
+              </td>
+              <td
+                class="text-end font-weight-bold"
+                :class="{ 'text-error' : cashAmount < props.amount}"
+              >
+                Rp. {{ currencyFormat(returnAmount) }}
               </td>
             </tr>
           </tbody>
@@ -96,7 +145,7 @@
 import { transactionService } from '@/services'
 import { orderStore, snackbarStore } from "@/stores"
 import { currencyFormat } from "@/utils"
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   amount: Number,
@@ -104,22 +153,35 @@ const props = defineProps({
 
 const dialog = ref(false)
 const loading = ref(false)
+const cashAmount = ref(0)
+const returnAmount = ref(0)
+const prescriptionNumber = ref('')
+
+
+watch(cashAmount, (newVal, oldVal) => {
+  let result = props.amount - newVal
+  returnAmount.value  = Math.abs(result)
+})
 
 const submit = async () => {
   try {
     loading.value = true
+    if(cashAmount.value < props.amount) throw new Error("Uang tunai tidak cukup!")
 
     const res = await transactionService.storeOrder({
       amount: props.amount,
       orders: orderStore.orders,
+      cash_amount: cashAmount.value,
+      return_amount: returnAmount.value,
+      prescription_number: prescriptionNumber.value,
     })
 
     orderStore.resetOrder()
     snackbarStore.setMsg(res?.message)
+    dialog.value = false
   } catch (error) {
     snackbarStore.setMsg(error.message)
   } finally {
-    dialog.value = false
     loading.value = false
   }
 }
@@ -129,5 +191,10 @@ const submit = async () => {
 <style scoped>
 tr > th, tr > td {
   padding: 8px 12px !important;
+}
+
+.custom-width {
+  padding: 0;
+  max-inline-size: 100px;
 }
 </style>

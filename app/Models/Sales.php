@@ -10,17 +10,17 @@ use Nicolaslopezj\Searchable\SearchableTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Order extends Model
+class Sales extends Model
 {
     use HasFactory, SearchableTrait, HasUuids;
 
-    protected $table = 'orders';
+    protected $table = 'sales';
     protected $guarded = ['id'];
     protected $searchable = [
         'columns' => [
-            'orders.name' => 15,
-            'orders.barcode' => 13,
-            'orders.transaction_number' => 10
+            'sales.name' => 15,
+            'sales.barcode' => 13,
+            'sales.transaction_number' => 10
         ]
     ];
 

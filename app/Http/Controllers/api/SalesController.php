@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\api;
 
 use Exception;
-use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Helpers\HttpHelper;
 use App\Services\DatatableService;
 use App\Http\Controllers\Controller;
 use App\Exceptions\CustomExceptionHandler;
-use App\Models\Transaction;
+use App\Models\Sales;
 use App\Repositories\TransactionRepository;
 
-class TransactionController extends Controller
+class SalesController extends Controller
 {
     protected $trxRepo, $paginateValue;
 
@@ -33,13 +32,13 @@ class TransactionController extends Controller
             $sortField      = trim($request->input('sort.field', 'created_at'));
             $sortDirection  = trim($request->input('sort.direction')) == 'asc' ? 'asc' : 'desc';
             $data           = DatatableService::getDataForTable(
-                new Transaction(),
+                new Sales(),
                 $perPage,
                 $search,
                 $sortField,
                 $sortDirection,
-                'transactions.id',
-                ['sales']
+                'sales.id',
+                ['product', 'transaction']
             );
             return response()->json($data);
         } catch (CustomExceptionHandler $e) {
@@ -54,12 +53,7 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $result = $this->trxRepo->store($request->only(['amount', 'cash_amount', 'return_amount', 'prescription_number', 'orders']));
-            return HttpHelper::successResponse('Transaksi berhasil disimpan.', $result, Response::HTTP_CREATED);
-        } catch (Exception $e) {
-            return HttpHelper::errorResponse('Gagal menyimpan data!', $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        //
     }
 
     /**

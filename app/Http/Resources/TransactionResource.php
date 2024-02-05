@@ -16,10 +16,14 @@ class TransactionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'     => $this->id,
-            'date'   => Carbon::parse($this->created_at)->toDateString(),
-            'orders' => OrderResource::collection($this->orders),
-            'transaction_number' => $this->transaction_number,
+            'id'            => $this->id,
+            'amount'        => $this->amount,
+            'cash_amount'   => $this->cash_amount,
+            'return_amount' => $this->return_amount,
+            'orders'        => SalesResource::collection($this->sales),
+            'date'          => Carbon::parse($this->created_at)->toDateString(),
+            'prescription_number' => $this->prescription_number,
+            'transaction_number'  => $this->transaction_number,
         ];
     }
 }

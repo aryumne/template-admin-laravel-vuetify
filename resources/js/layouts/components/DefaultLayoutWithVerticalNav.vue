@@ -63,6 +63,13 @@ const openLogViewer = () => window.location.href= '/log-viewer'
       />
       <VerticalNavLink
         :item="{
+          title: 'Data Transaksi',
+          icon: 'mdi-text-box-multiple',
+          to: {name:'transactions'},
+        }"
+      />
+      <VerticalNavLink
+        :item="{
           title: 'Kasir',
           icon: 'mdi-point-of-sale',
           to: {name: 'cashier', replace: true},

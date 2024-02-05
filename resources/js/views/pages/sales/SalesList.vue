@@ -4,7 +4,7 @@
       <Datatable
         ref="childRef"
         :table-heads="heads"
-        :path-api="paths.transactions"
+        :path-api="paths.sales"
         :selected-all="selectedRow.is_all"
         need-checkbox
         @use-is-loadings="isLoading"
@@ -61,9 +61,9 @@
               {{ item.quantity }}
             </td>
             <td>
-              {{ item.price }}
+              Rp. {{ currencyFormat(item.price ) }}
             </td>
-            <td class="text-end">
+            <td>
               Rp. {{ currencyFormat(item.total_price) }}
             </td>
             <td class="text-center">

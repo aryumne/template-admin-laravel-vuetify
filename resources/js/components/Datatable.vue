@@ -114,7 +114,7 @@
         v-if="data.total > 0"
         class="datatables-text-info"
       >
-        Menampilkan {{ data.from }} sampai {{ data.to }} dari {{ data.total }} {{ totalPage }}
+        Menampilkan {{ data.from }} sampai {{ data.to }} dari {{ data.total }}
       </div>
       <div
         v-else

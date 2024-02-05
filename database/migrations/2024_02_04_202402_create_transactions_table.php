@@ -14,7 +14,11 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->char('transaction_number', 15)->unique();
-            $table->string('amount');
+            $table->integer('amount');
+            $table->string('prescription_number')->nullable();
+            $table->integer('cash_amount');
+            $table->integer('return_amount');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

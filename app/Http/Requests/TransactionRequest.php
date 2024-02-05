@@ -9,6 +9,8 @@ class TransactionRequest extends BaseRequest
         return array_merge(parent::rules(), [
             'amount'         => ['required', 'numeric'],
             'orders'         => ['required', 'array', 'min:1'],
+            'cash_amount'    => ['required', 'numeric'],
+            'return_amount'  => ['required', 'numeric'],
         ]);
     }
 
@@ -16,7 +18,9 @@ class TransactionRequest extends BaseRequest
     {
         return array_merge(parent::attributes(), [
             'amount' => 'Total bayar',
-            'orders' => 'Daftar obat'
+            'orders' => 'Daftar obat',
+            'cash_amount' => 'Tunai',
+            'return_amount' => 'Kembalian',
         ]);
     }
 

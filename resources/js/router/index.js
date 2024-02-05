@@ -61,6 +61,14 @@ const router = createRouter({
           },
         },
         {
+          name: 'transactions',
+          path: 'transactions',
+          component: () => import('../pages/transaction.vue'),
+          meta: {
+            title: 'Daftar Transaksi',
+          },
+        },
+        {
           name: 'blogs',
           path: 'blogs',
           component: () => import('../pages/blogs.vue'),

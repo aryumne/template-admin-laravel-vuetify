@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
             $table->char('barcode', 9);
