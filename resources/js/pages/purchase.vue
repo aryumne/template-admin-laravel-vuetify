@@ -1,5 +1,5 @@
 <script setup>
-import PurchaseList from '@/views/pages/reports/PurchaseList.vue'
+import PurchaseList from '@/views/reports/PurchaseList.vue'
 </script>
 
 <template>

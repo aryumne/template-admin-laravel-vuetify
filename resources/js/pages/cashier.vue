@@ -1,6 +1,6 @@
 <script setup>
-import CheckoutCard from "@/views/pages/cashiers/CheckoutCard.vue"
-import ScannerCard from "@/views/pages/cashiers/ScannerCard.vue"
+import CheckoutCard from "@/views/cashiers/CheckoutCard.vue"
+import ScannerCard from "@/views/cashiers/ScannerCard.vue"
 </script>
 
 <template>

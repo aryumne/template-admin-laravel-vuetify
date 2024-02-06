@@ -1,5 +1,5 @@
 <script setup>
-import BlogTable from '@/views/pages/blogs/BlogTable.vue'
+import BlogTable from '@/views/blogs/BlogTable.vue'
 </script>
 
 <template>

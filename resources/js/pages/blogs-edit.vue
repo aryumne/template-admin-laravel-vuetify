@@ -1,5 +1,5 @@
 <script setup>
-import BlogActionForm from '@/views/pages/blogs/BlogActionForm.vue'
+import BlogActionForm from '@/views/blogs/BlogActionForm.vue'
 </script>
 
 <template>

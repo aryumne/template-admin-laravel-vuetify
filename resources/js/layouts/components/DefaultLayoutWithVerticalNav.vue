@@ -5,14 +5,9 @@ import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
 import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
 import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
+import { useRouter } from 'vue-router'
 
-// import upgradeBannerDark from '@images/pro/upgrade-banner-dark.png'
-// import upgradeBannerLight from '@images/pro/upgrade-banner-light.png'
-// const vuetifyTheme = useTheme()
-// const upgradeBanner = computed(() => {
-//   return vuetifyTheme.global.name.value === 'light' ? upgradeBannerLight : upgradeBannerDark
-// })
-
+const router = useRouter()
 const openLogViewer = () => window.location.href= '/log-viewer'
 </script>
 
@@ -30,6 +25,13 @@ const openLogViewer = () => window.location.href= '/log-viewer'
         </IconBtn>
 
         <NavbarThemeSwitcher />
+
+        <IconBtn
+          class="ms-n1"
+          @click="router.push({name:'cashier'})"
+        >
+          <VIcon icon="mdi-point-of-sale" />
+        </IconBtn>
 
         <VSpacer />
 
@@ -53,13 +55,6 @@ const openLogViewer = () => window.location.href= '/log-viewer'
           title: 'Data Obat',
           icon: 'mdi-text-box',
           to: {name:'products'},
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Kasir',
-          icon: 'mdi-point-of-sale',
-          to: {name: 'cashier', replace: true},
         }"
       />
       <VerticalNavLink

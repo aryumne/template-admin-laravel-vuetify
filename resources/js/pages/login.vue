@@ -1,6 +1,5 @@
 <script setup>
 import { snackbarStore } from '@/stores'
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import logo from '@images/logo.svg?raw'
 import { authStore } from '@stores'
 
@@ -65,7 +64,6 @@ const signin = async () => {
       <VCardText>
         <VForm @submit.prevent="signin">
           <VRow>
-            <!-- email -->
             <VCol cols="12">
               <VTextField
                 v-model="data.email"
@@ -76,8 +74,15 @@ const signin = async () => {
               />
             </VCol>
 
-            <!-- password -->
             <VCol cols="12">
+              <div class="d-flex align-center justify-end flex-wrap">
+                <RouterLink
+                  class="text-primary ms-2 mb-1"
+                  to="javascript:void(0)"
+                >
+                  Forgot Password?
+                </RouterLink>
+              </div>
               <VTextField
                 v-model="data.password"
                 label="Password"
@@ -87,23 +92,7 @@ const signin = async () => {
                 @click:append-inner="isPasswordVisible = !isPasswordVisible"
               />
 
-              <!-- remember me checkbox -->
-              <div class="d-flex align-center justify-space-between flex-wrap mt-1 mb-4">
-                <VCheckbox
-                  v-model="data.remember"
-                  label="Remember me"
-                />
-
-                <RouterLink
-                  class="text-primary ms-2 mb-1"
-                  to="javascript:void(0)"
-                >
-                  Forgot Password?
-                </RouterLink>
-              </div>
-
-              <!-- login button -->
-              <div class="text-center">
+              <div class="text-center mt-4">
                 <VBtn
                   block
                   type="submit"
@@ -117,37 +106,6 @@ const signin = async () => {
                   </template>
                 </VBtn>
               </div>
-            </VCol>
-
-            <!-- create account -->
-            <VCol
-              cols="12"
-              class="text-center text-base"
-            >
-              <span>New on our platform?</span>
-              <RouterLink
-                class="text-primary ms-2"
-                to="/register"
-              >
-                Create an account
-              </RouterLink>
-            </VCol>
-
-            <VCol
-              cols="12"
-              class="d-flex align-center"
-            >
-              <VDivider />
-              <span class="mx-4">or</span>
-              <VDivider />
-            </VCol>
-
-            <!-- auth providers -->
-            <VCol
-              cols="12"
-              class="text-center"
-            >
-              <AuthProvider />
             </VCol>
           </VRow>
         </VForm>

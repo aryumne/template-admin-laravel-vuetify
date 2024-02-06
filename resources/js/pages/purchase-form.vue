@@ -1,5 +1,5 @@
 <script setup>
-import PurchaseForm from '@/views/pages/products/PurchaseForm.vue'
+import PurchaseForm from '@/views/products/PurchaseForm.vue'
 </script>
 
 <template>
