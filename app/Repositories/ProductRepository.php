@@ -83,6 +83,7 @@ class ProductRepository extends BaseRepository
             isset($data['pack_price']) && $record->pack_price = $data['pack_price'];
             isset($data['item_price']) && $record->item_price = $data['item_price'];
             isset($data['total_item']) && $record->total_item = $data['total_item'];
+            isset($data['expired_date']) && $record->expired_date = $data['expired_date'];
             isset($data['product_type_id']) && $record->product_type_id = $data['product_type_id'];
             $record->save();
             DB::commit();

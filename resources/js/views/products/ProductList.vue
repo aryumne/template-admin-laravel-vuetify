@@ -60,10 +60,15 @@
               />
             </td>
             <td>
-              {{ item.barcode }}
+              <div class="text-body-1">
+                {{ item.name }}
+              </div>
+              <div class="text-caption">
+                {{ item.barcode }}
+              </div>
             </td>
             <td>
-              {{ item.name }}
+              {{ item.expired_date }}
             </td>
             <td>
               {{ item.product_type.name }}
@@ -142,14 +147,14 @@ import ProductForm from './ProductForm.vue'
 // Datatable heads
 const heads = ref([
   {
-    display_text: 'Barcode',
-    sortable: false,
-    key: 'barcode',
-  },
-  {
     display_text: 'Nama obat',
     sortable: true,
     key: 'name',
+  },
+  {
+    display_text: 'Tgl Kedaluarsa',
+    sortable: true,
+    key: 'expired_date',
   },
   {
     display_text: 'Jenis Obat',

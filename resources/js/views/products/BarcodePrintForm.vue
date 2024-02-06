@@ -44,6 +44,10 @@ const handlePaste = () => {
     clicked(searchResult.value[0]?.barcode)
   , 200)
 }
+
+onUnmounted(() => {
+  barcodeStore.resetProduct()
+})
 </script>
 
 <template>
@@ -113,7 +117,7 @@ const handlePaste = () => {
                   variant="text"
                   color="error"
                   icon="mdi-window-close"
-                  @click.prevent="barcodeStore.removeBarcode(item.barcode)"
+                  @click.prevent="barcodeStore.removeProduct(item.barcode)"
                 />
               </td>
               <td class="text-start">

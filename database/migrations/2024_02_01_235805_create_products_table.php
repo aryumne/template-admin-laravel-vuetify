@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('items_per_pack')->default(0);
             $table->integer('item_price')->default(0);
             $table->integer('total_item')->default(0);
+            $table->date('expired_date');
             $table->foreignUuid('product_type_id')->constrained('product_types');
             $table->softDeletes();
             $table->timestamps();

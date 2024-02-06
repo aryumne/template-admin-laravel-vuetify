@@ -11,7 +11,7 @@
             sm="6"
           >
             <div class="text-subtitle-2 text-medium-emphasis">
-              Nama Obat
+              Nama Obat*
             </div>
             <VTextField
               v-model="data.name"
@@ -37,7 +37,6 @@
               :rules="rules.productTypeRules"
             />
           </VCol>
-            
           <VCol
             cols="12"
             sm="6"
@@ -52,13 +51,26 @@
               required
             />
           </VCol>
-            
           <VCol
             cols="12"
             sm="6"
           >
             <div class="text-subtitle-2 text-medium-emphasis">
-              Stok Pack*
+              Tanggal Kedaluarsa*
+            </div>
+            <VTextField
+              v-model="data.expired_date"
+              type="date"
+              :rules="rules.expiredDateRules"
+              required
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="6"
+          >
+            <div class="text-subtitle-2 text-medium-emphasis">
+              Stok Box*
             </div>
             <VTextField
               v-model="data.pack_stok"
@@ -72,7 +84,7 @@
             sm="6"
           >
             <div class="text-subtitle-2 text-medium-emphasis">
-              Harga per Pack*
+              Harga per Box*
             </div>
             <VTextField
               v-model="data.pack_price"
@@ -87,7 +99,7 @@
             sm="6"
           >
             <div class="text-subtitle-2 text-medium-emphasis">
-              Jumlah pcs per pack
+              Jumlah Pcs per Box*
             </div>
             <VTextField
               v-model="data.items_per_pack"
@@ -116,7 +128,7 @@
             sm="6"
           >
             <div class="text-subtitle-2 text-medium-emphasis">
-              Total Pcs
+              Total Pcs*
             </div>
             <VTextField
               v-model="data.total_item"
@@ -178,6 +190,7 @@ const data = ref({
   items_per_pack: 0,
   item_price: 0,
   total_item: 0,
+  expired_date: null,
 })
 
 const rules = ref({
@@ -190,6 +203,11 @@ const rules = ref({
     if (value) return true
 
     return 'Jenis obat harus diisi!'
+  }],
+  expiredDateRules: [ value => {
+    if (value) return true
+
+    return 'Tanggal kedaluarsa harus diisi!'
   }],
 })
 
@@ -225,6 +243,7 @@ const getData = async() => {
     data.value.items_per_pack = resData?.items_per_pack
     data.value.item_price = resData?.item_price
     data.value.total_item = resData?.total_item
+    data.value.expired_date = resData?.expired_date
   } catch (e) {
     snackbarStore.setMsg(e.message)
   }

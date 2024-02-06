@@ -56,7 +56,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         try {
-            $result = $this->productRepo->store($request->only(['name', 'batch_number', 'pack_stok', 'items_per_pack', 'total_item', 'pack_price', 'item_price', 'product_type_id']));
+            $result = $this->productRepo->store($request->only(['name', 'batch_number', 'pack_stok', 'items_per_pack', 'total_item', 'pack_price', 'item_price', 'expired_date', 'product_type_id']));
             return HttpHelper::successResponse('Data obat baru berhasil disimpan.', $result, Response::HTTP_CREATED);
         } catch (Exception $e) {
             return HttpHelper::errorResponse('Gagal menyimpan data!', $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);

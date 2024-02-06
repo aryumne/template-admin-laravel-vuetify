@@ -26,6 +26,7 @@ class ProductResource extends JsonResource
             'pack_price'     => $this->pack_price,
             'item_price'     => $this->item_price,
             'total_item'     => $this->total_item,
+            'expired_date'   => $this->expired_date,
             'product_type'   => new ProductTypeResource($this->productType),
         ];
     }

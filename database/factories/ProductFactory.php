@@ -24,7 +24,7 @@ class ProductFactory extends Factory
         $stokByItem = fake()->numberBetween(0, 100);
         $itemPrice = fake()->numberBetween(3000, 12000);
         $totalItem = fake()->numberBetween(0, 500);
-
+        $expiredDate = fake()->dateTimeBetween('now', '+2 years')->format('Y-m-d');
         // Ambil satu product_type secara acak dari database
         $productType = ProductType::inRandomOrder()->first();
 
@@ -36,6 +36,7 @@ class ProductFactory extends Factory
             'items_per_pack' => $stokByItem,
             'item_price' => $itemPrice,
             'total_item' => $totalItem,
+            'expired_date' => $expiredDate,
             'product_type_id' => $productType->id,
         ];
     }

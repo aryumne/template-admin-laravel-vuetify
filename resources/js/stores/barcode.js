@@ -23,7 +23,7 @@ export default defineStore('products', () => {
 
   }
     
-  function removeOrder(barcode) {
+  function removeProduct(barcode) {
     try {
       const indexOfOrder = products.value.findIndex(product => product.barcode === barcode)
       if(indexOfOrder !== -1) products.value.splice(indexOfOrder, 1)
@@ -33,9 +33,9 @@ export default defineStore('products', () => {
     }
   }
 
-  function resetOrder() {
+  function resetProduct() {
     products.value = []
   }
   
-  return { products, add, updateRows, removeOrder, resetOrder }
+  return { products, add, updateRows, removeProduct, resetProduct }
 })

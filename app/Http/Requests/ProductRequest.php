@@ -14,7 +14,8 @@ class ProductRequest extends BaseRequest
             'total_item'        => ['nullable', 'numeric'],
             'pack_price'        => ['required', 'numeric'],
             'item_price'        => ['required', 'numeric'],
-            'product_type_id'   => ['required', 'exists:App\Models\ProductType,id'],
+            'expired_date'      => ['required', 'date'],
+            'product_type_id'   => ['required', 'exists:App\Models\ProductType,id']
         ]);
     }
 
@@ -29,6 +30,7 @@ class ProductRequest extends BaseRequest
             'pack_price'      => 'Harga per Box',
             'item_price'      => 'Harga satuan',
             'product_type_id' => 'Jenis obat',
+            'expired_date'    => 'Tanggal kedaluarsa'
         ]);
     }
 
@@ -39,6 +41,7 @@ class ProductRequest extends BaseRequest
             '*.numeric'  => ':attribute ini harus angka!',
             '*.unique'   => ':attribute ini sudah terdaftar!',
             '*.exists'   => ':attribute ini tidak ditemukan!',
+            '*.date'     => ':attribute ini harus berupa tanggal'
         ]);
     }
 }
