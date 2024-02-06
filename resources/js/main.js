@@ -12,6 +12,7 @@ import '@styles/styles.scss'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { createApp } from 'vue'
+import print from 'vue3-print-nb'
 
 loadFonts()
 
@@ -27,6 +28,7 @@ pinia.use(piniaPluginPersistedstate)
 app.use(vuetify)
 app.use(pinia)
 app.use(router)
+app.use(print)
 
 // Mount vue app
 app.mount('#app')

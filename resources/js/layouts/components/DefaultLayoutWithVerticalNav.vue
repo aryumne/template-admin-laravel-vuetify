@@ -56,6 +56,13 @@ const openLogViewer = () => window.location.href= '/log-viewer'
       />
       <VerticalNavLink
         :item="{
+          title: 'Cetak Barcode',
+          icon: 'mdi-printer',
+          to: {name:'barcodePrint'},
+        }"
+      />
+      <VerticalNavLink
+        :item="{
           title: 'Riwayat Transaksi',
           icon: 'mdi-clipboard-text-clock',
           to: {name:'transactions'},

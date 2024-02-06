@@ -69,6 +69,14 @@ const router = createRouter({
           },
         },
         {
+          path: 'barcode-print',
+          name: 'barcodePrint',
+          component: () => import('../pages/barcode-print.vue'),
+          meta: {
+            title: 'Form Cetak Barcode',
+          },
+        },
+        {
           path: 'sales',
           name: 'sales',
           component: () => import('../pages/sale.vue'),

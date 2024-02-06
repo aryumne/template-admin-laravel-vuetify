@@ -12,6 +12,7 @@
   "dependencies": {
     "@casl/ability": "^6.2.0",
     "@casl/vue": "^2.2.0",
+    "@chenfengyuan/vue-barcode": "^2.0.2",
     "@floating-ui/dom": "1.2.8",
     "@vueuse/core": "^10.1.2",
     "@vueuse/math": "^10.1.2",
@@ -21,6 +22,7 @@
     "chart.js": "^4.1.2",
     "crypto-js": "^4.2.0",
     "eslint-import-resolver-alias": "^1.1.2",
+    "jsbarcode": "^3.11.6",
     "jwt-decode": "^3.1.2",
     "pinia": "^2.1.3",
     "pinia-plugin-persistedstate": "^3.2.0",
@@ -38,6 +40,7 @@
     "vue-router": "^4.2.1",
     "vue3-apexcharts": "^1.4.1",
     "vue3-perfect-scrollbar": "^1.6.0",
+    "vue3-print-nb": "^0.1.4",
     "vuetify": "3.3.1",
     "webfontloader": "^1.6.28"
   },
