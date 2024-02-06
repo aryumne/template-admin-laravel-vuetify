@@ -5,9 +5,7 @@ import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
 import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
 import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
 const openLogViewer = () => window.location.href= '/log-viewer'
 </script>
 
@@ -26,12 +24,11 @@ const openLogViewer = () => window.location.href= '/log-viewer'
 
         <NavbarThemeSwitcher />
 
-        <IconBtn
-          class="ms-n1"
-          @click="router.push({name:'cashier'})"
-        >
-          <VIcon icon="mdi-point-of-sale" />
-        </IconBtn>
+        <RouterLink :to="{name:'cashier', replace: true}">
+          <IconBtn class="ms-n1">
+            <VIcon icon="mdi-point-of-sale" />
+          </IconBtn>
+        </RouterLink>
 
         <VSpacer />
 

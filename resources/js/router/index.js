@@ -13,14 +13,14 @@ const router = createRouter({
       },
     },
     {
-      path: '/',
+      path: '/cashier',
       component: () => import('../layouts/navbarOnly.vue'),
       meta: {
         middleware: 'auth',
       },
       children: [
         {
-          path: 'cashier',
+          path: '',
           name: 'cashier',
           component: () => import('../pages/cashier.vue'),
           meta: {
@@ -37,72 +37,72 @@ const router = createRouter({
       },
       children: [
         {
+          path: '',
           name: 'dashboard',
-          path: 'dashboard',
           component: () => import('../pages/dashboard.vue'),
           meta: {
             title: 'Dashboard',
           },
         },
         {
-          name: 'products',
           path: 'products',
+          name: 'products',
           component: () => import('../pages/product.vue'),
           meta: {
             title: 'Daftar Obat',
           },
         },
         {
-          name: 'purchases',
           path: 'purchases',
+          name: 'purchases',
           component: () => import('../pages/purchase.vue'),
           meta: {
             title: 'Laporan Pembelian',
           },
         },
         {
-          name: 'productsAddStock',
           path: 'products-add-stock',
+          name: 'productsAddStock',
           component: () => import('../pages/purchase-form.vue'),
           meta: {
             title: 'Form Pembelian',
           },
         },
         {
-          name: 'sales',
           path: 'sales',
+          name: 'sales',
           component: () => import('../pages/sale.vue'),
           meta: {
             title: 'Daftar Penjualan',
           },
         },
         {
-          name: 'transactions',
           path: 'transactions',
+          name: 'transactions',
           component: () => import('../pages/transaction.vue'),
           meta: {
             title: 'Daftar Transaksi',
           },
         },
         {
-          name: 'blogs',
           path: 'blogs',
+          name: 'blogs',
           component: () => import('../pages/blogs.vue'),
           meta: {
             title: 'Blogs',
           },
         },
         {
-          name: 'createBlog',
           path: 'blog/create',
+          name: 'createBlog',
           component: () => import('../pages/blogs-create.vue'),
           meta: {
             title: 'Create Blog',
           },
         },
         {
-          name: 'editBlog',
           path: 'blog/:id',
+          name: 'editBlog',
           component: () => import('../pages/blogs-edit.vue'),
           meta: {
             title: 'Edit Blog',

@@ -13,18 +13,14 @@ const router = useRouter()
     <!-- 👉 navbar -->
     <template #navbar>
       <div class="d-flex h-100 align-center">
-        <IconBtn
-          class="ms-n3"
-          @click="router.push({name:'dashboard'})"
-        >
-          <VIcon icon="bx-home" />
-        </IconBtn>
-
+        <RouterLink :to="{name:'dashboard', replace: true}">
+          <IconBtn class="ms-n3">
+            <VIcon icon="bx-home" />
+          </IconBtn>
+        </RouterLink>
         <NavbarThemeSwitcher />
 
-        <VSpacer />
-
-        
+        <VSpacer />       
 
         <UserProfile />
       </div>
