@@ -4,7 +4,6 @@ import axios from 'axios'
 
 const blobApi = axios.create({
   baseURL: apiVersion,
-  responseType: 'arraybuffer',
   headers: {
     common: {
       'X-Requested-With': 'XMLHttpRequest',
@@ -37,7 +36,7 @@ blobApi.interceptors.response.use(
 
 const downloadPdf = async (path, id, params = {}) => {
   try {
-    const response = await blobApi.get(`/${path}/${id}`, { ...params })
+    const response = await blobApi.get(`/${path}/${id}`, { responseType: 'arraybuffer', ...params })
     
     const blob = new Blob([response.data], { type: 'application/pdf' })
     
@@ -48,6 +47,18 @@ const downloadPdf = async (path, id, params = {}) => {
   }
 }
 
+const downloadExcel = async (path, body, params = {}) => {
+  try {
+    const response = await blobApi.post(`/${path}`, body, { responseType: 'blob', ...params })
+    const blob = new Blob([response.data], { type: 'application/pdf' })
+    
+    return URL.createObjectURL(blob)
+  } catch (error) {
+    console.error('Error on service function')
+    throw error
+  }
+}
 
-export { downloadPdf }
+
+export { downloadExcel, downloadPdf }
 

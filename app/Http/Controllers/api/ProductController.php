@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\api;
 
 use Exception;
+use Carbon\Carbon;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Helpers\HttpHelper;
 use App\Services\DatatableService;
 use App\Http\Controllers\Controller;
-use App\Repositories\ProductRepository;
-use App\Exceptions\CustomExceptionHandler;
+use Rap2hpoutre\FastExcel\FastExcel;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
+use App\Repositories\ProductRepository;
+use Illuminate\Support\Facades\Validator;
+use App\Exceptions\CustomExceptionHandler;
 
 class ProductController extends Controller
 {
@@ -129,6 +132,58 @@ class ProductController extends Controller
             return HttpHelper::errorResponse($e->getMessage(), [], $e->getCodeStatus());
         } catch (Exception $e) {
             return HttpHelper::errorResponse('Gagal memuat data obat!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function download(Request $request)
+    {
+        if (!$request->has('is_by_selected')) return HttpHelper::errorValidation('Silahkan pilih jenis download berdasarkan tanggal atau per data!', [], Response::HTTP_UNPROCESSABLE_ENTITY);
+        $rules = [];
+        if ($request->is_by_selected == 1) {
+            $rules['selected_ids'] = ['required', 'array', 'min:1'];
+        } else {
+            $rules['start_date'] = ['required', 'date'];
+            $rules['end_date'] = ['required', 'date'];
+        }
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails())  return HttpHelper::errorValidation($validator->errors()->first(), $validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        try {
+            $filePath = storage_path('app/public/data-obat.xlsx');
+            (new FastExcel($this->attendanceGenerator($request->all())))->export($filePath, function ($att) {
+                return [
+                    'Nama obat'     => $att->name,
+                    'Barcode'       => $att->barcode,
+                    'Nomor batch'   => isset($att->batch_number) ? $att->batch_number : " ",
+                    'Jenis'         => $att->type,
+                    'Tanggal kedaluarsa' => $att->expired_date,
+                    'Stok box'      => $att->pack_stok,
+                    'Harga per box' => $att->pack_price,
+                    'Pcs per box'   => $att->items_per_pack,
+                    'Total pcs'     => $att->total_item,
+                    'Harga pe pcs'  => $att->item_price,
+                ];
+            });
+            return response()->download($filePath)->deleteFileAfterSend(true);
+        } catch (CustomExceptionHandler $e) {
+            return HttpHelper::errorResponse($e->getMessage(), [], $e->getCodeStatus());
+        } catch (Exception $e) {
+            return HttpHelper::errorResponse('Proses download gagal!', $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private function attendanceGenerator($data)
+    {
+        $query = Product::query();
+        if ($data['is_by_selected'] == 1) {
+            $query->whereIn('id', $data['selected_ids'])->orderBy('created_at', 'asc');
+        } else {
+            $startDate = Carbon::parse($data['start_date'])->startOfDay();
+            $endDate = Carbon::parse($data['end_date'])->endOfDay();
+            $query->whereBetween('created_at', [$startDate, $endDate])->orderBy('created_at', 'asc');
+        }
+        foreach ($query->cursor() as $att) {
+            $att->type = $att->productType->name;
+            yield $att;
         }
     }
 }

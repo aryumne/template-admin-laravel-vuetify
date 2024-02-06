@@ -1,3 +1,4 @@
+import { downloadExcel } from "./blobApi"
 import { apiDelete, apiGet, apiGetOne, apiPatch, apiPost } from "./httpApi"
 import paths from "./paths"
 
@@ -9,6 +10,18 @@ const updateProduct = async (id, body, params = {}) => await apiPatch(paths.prod
 const deleteProduct = async (id, params = {}) => await apiDelete(paths.products, id, params)
 const searchForOrder = async (params = {}) => await apiGet(paths.searchProducts, params)
 const searchByBarcode = async (barcode, params = {}) => await apiGetOne(paths.searchProductByBarcode, barcode, params)
-const storePurchases =  async (body, params = {}) => await apiPost(paths.purchases, body, params)
+const storePurchases = async (body, params = {}) => await apiPost(paths.purchases, body, params)
+const downloadProduct = async (body, params = {}) => await downloadExcel(paths.productsDownload, body, params)
 
-export const productService = { getProducts, getOneProduct, getProductTypes, storeProduct, updateProduct, deleteProduct, searchForOrder, searchByBarcode, storePurchases }
+export const productService = {
+  getProducts,
+  getOneProduct,
+  getProductTypes,
+  storeProduct,
+  updateProduct,
+  deleteProduct,
+  searchForOrder,
+  searchByBarcode,
+  storePurchases,
+  downloadProduct,
+}

@@ -50,6 +50,7 @@ Route::group(['prefix' => 'v1'], function () {
         // POS Cashier
         Route::get('product-types', [ProductTypeController::class, 'index']);
         Route::resource('products', ProductController::class);
+        Route::post('products-download', [ProductController::class, 'download']);
         Route::get('products-search', [ProductController::class, 'search']);
         Route::get('product-barcode-search/{barcode}', [ProductController::class, 'searchByBarcode']);
         Route::resource('transactions', TransactionController::class)->only(['index', 'store', 'show']);
