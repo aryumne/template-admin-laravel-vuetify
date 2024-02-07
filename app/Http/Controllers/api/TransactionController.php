@@ -98,9 +98,14 @@ class TransactionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $uuid)
     {
-        Log::info(json_encode($request->all()));
+        try {
+            $data = $this->trxRepo->update($request->all(), $uuid);
+            return HttpHelper::successResponse('Perubahan data berhasil disimpan.', $data, Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return HttpHelper::errorResponse('Gagal menyimpan perubahan!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**

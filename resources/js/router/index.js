@@ -93,6 +93,14 @@ const router = createRouter({
           },
         },
         {
+          path: 'transactions/:id',
+          name: 'transactionsEdit',
+          component: () => import('../pages/transaction-edit.vue'),
+          meta: {
+            title: 'Edit Transaksi',
+          },
+        },
+        {
           path: 'blogs',
           name: 'blogs',
           component: () => import('../pages/blogs.vue'),

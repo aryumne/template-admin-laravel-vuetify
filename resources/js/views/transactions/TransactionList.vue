@@ -50,6 +50,14 @@
               Rp. {{ currencyFormat(item.return_amount ) }}
             </td>
             <td class="text-center">
+              <RouterLink :to="{name:'transactionsEdit', params: {id: item.id}}">
+                <VBtn
+                  density="compact"
+                  variant="text"
+                  color="warning"
+                  icon="mdi-pencil-outline"
+                />  
+              </RouterLink>
               <VBtn
                 density="compact"
                 variant="text"

@@ -23,7 +23,6 @@ class SalesResource extends JsonResource
             'quantity'      => $this->quantity,
             'price'         => $this->price,
             'total_price'   => $this->total_price,
-            'total_item'    => $this->total_item,
             'date'          => Carbon::parse($this->created_at)->toDateString(),
             'transaction_number' => $this->transaction_number,
         ];
