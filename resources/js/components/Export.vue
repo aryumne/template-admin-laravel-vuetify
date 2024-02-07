@@ -1,5 +1,23 @@
 <template>
+  <VBtn
+    v-if="propsEx.isAll"
+    type="button"
+    color="secondary"
+    variant="tonal"
+    class="ms-2"
+    :disabled="loading"
+    :loading="loading"
+    @click.prevent="downloadSelectedRow"
+  >
+    <VIcon
+      size="small"
+      class="me-2"
+      color="green-darken-2"
+      icon="mdi-export-variant"
+    /> Export Selected
+  </VBtn>
   <VDialog
+    v-else
     v-model="dialog"
     persistent
     width="500"
@@ -80,11 +98,39 @@
 </template>
 
 <script setup>
-import { productService } from '@/services'
-import { onMounted, ref } from 'vue'
+import { downloadExcel } from "@/services/blobApi"
+import { snackbarStore } from "@/stores"
+import { ref } from "vue"
+
+const propsEx = defineProps({
+  paths: String,
+  isAll: Boolean,
+  selectedIds: Array,
+  fileName: String,
+})
+
+
+// Download for select items
+const loading = ref(false)
+
+const downloadSelectedRow = async () => {
+  try {
+    loading.value = true
+
+    const url = await downloadExcel(propsEx.paths, { is_by_selected: 1, selected_ids: propsEx.selectedIds })
+
+    getAsFile(url)
+  } catch (e) {
+    snackbarStore.setMsg(e.message)
+  } finally {
+    loading.value = false
+  }
+}
+
+
+// Download for all
 
 const dialog = ref(false)
-const loading= ref(false)
 
 const data = ref({
   start_date: null,
@@ -110,23 +156,29 @@ const download = async () => {
   try {
     loading.value = true
 
-    const url = await productService.downloadProduct({ is_by_selected: 0, ...data.value })
-    const link = document.createElement('a')
+    const url = await downloadExcel(propsEx.paths, { is_by_selected: 0, ...data.value })
 
-    link.href = url
-    link.setAttribute('download', 'data_obat.xlsx')
-    document.body.appendChild(link)
-    link.click()
-
-    // Release the URL object
-    window.URL.revokeObjectURL(url)
+    getAsFile(url)
     resetForm()
     dialog.value = false
   } catch (e) {
-    Swal.fire('Oops!', e.message, 'error')
+    snackbarStore.setMsg(e.message)
   } finally {
     loading.value = false
   }
+}
+
+const getAsFile = url => {
+  const link = document.createElement('a')
+    
+  link.href = url
+  link.setAttribute('download', `${propsEx.fileName}.xlsx`)
+  document.body.appendChild(link)
+  link.click()
+
+  // Release the URL object
+  window.URL.revokeObjectURL(url)
+
 }
 
 onMounted(() => {

@@ -149,7 +149,7 @@ class ProductController extends Controller
         if ($validator->fails())  return HttpHelper::errorValidation($validator->errors()->first(), $validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         try {
             $filePath = storage_path('app/public/data-obat.xlsx');
-            (new FastExcel($this->attendanceGenerator($request->all())))->export($filePath, function ($att) {
+            (new FastExcel($this->getSource($request->all())))->export($filePath, function ($att) {
                 return [
                     'Nama obat'     => $att->name,
                     'Barcode'       => $att->barcode,
@@ -171,7 +171,7 @@ class ProductController extends Controller
         }
     }
 
-    private function attendanceGenerator($data)
+    private function getSource($data)
     {
         $query = Product::query();
         if ($data['is_by_selected'] == 1) {

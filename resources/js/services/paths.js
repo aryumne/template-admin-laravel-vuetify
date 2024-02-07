@@ -7,7 +7,9 @@ const paths = {
   searchProductByBarcode: "product-barcode-search",
   transactions: 'transactions',
   sales: 'sales',
+  salesDownload: 'sales-download',
   purchases: 'purchases',
+  purchasesDownload: 'purchases-download',
 }
 
 

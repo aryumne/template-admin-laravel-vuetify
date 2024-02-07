@@ -14,24 +14,12 @@
         @toggle-select-all="toggleSelectAll"
       >
         <template #table-button>
-          <VBtn
-            v-if="selectedRow.is_all"
-            type="button"
-            color="secondary"
-            variant="tonal"
-            class="ms-2"
-            :disabled="downloadLoading"
-            :loading="downloadLoading"
-            @click.prevent="downloadSelectedRow"
-          >
-            <VIcon
-              size="small"
-              class="me-2"
-              color="green-darken-2"
-              icon="mdi-export-variant"
-            /> Export Selected
-          </VBtn>
-          <ExportForm v-else />
+          <Export
+            :is-all="selectedRow.is_all"
+            :paths="paths.productsDownload"
+            :selected-ids="selectedRow.selected_ids"
+            file-name="data-obat"
+          />
           <RouterLink :to="{name:'productsAddStock'}">
             <VBtn
               type="button"
@@ -137,9 +125,9 @@
 
 <script setup>
 import Datatable from '@/components/Datatable.vue'
+import Export from '@/components/Export.vue'
 import Loading from '@/components/Loading.vue'
 import TableCard from '@/layouts/components/TableCard.vue'
-import { productService } from '@/services'
 import { currencyFormat } from '@/utils'
 import paths from '@services/paths.js'
 import { snackbarStore } from '@stores'
@@ -147,7 +135,6 @@ import { ref, watch } from 'vue'
 import ProductDeleteConfirmation from './ProductDeleteConfirmation.vue'
 import ProductEditFrom from './ProductEditFrom.vue'
 import ProductForm from './ProductForm.vue'
-import ExportForm from './ExportForm.vue'
 
 
 // Datatable heads
@@ -217,29 +204,6 @@ watch(
   },
   { deep: true },
 )
-
-const downloadLoading = ref(false)
-
-const downloadSelectedRow = async () => {
-  try {
-    downloadLoading.value = true
-
-    const url = await productService.downloadProduct({ is_by_selected: 1, selected_ids: selectedRow.value.selected_ids })
-    const link = document.createElement('a')
-
-    link.href = url
-    link.setAttribute('download', 'data_obat.xlsx')
-    document.body.appendChild(link)
-    link.click()
-
-    // Release the URL object
-    window.URL.revokeObjectURL(url)
-  } catch (e) {
-    Swal.fire('Oops!', e.message, 'error')
-  } finally {
-    downloadLoading.value = false
-  }
-}
 
 // end Download selection
 

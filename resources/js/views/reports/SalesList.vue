@@ -13,19 +13,12 @@
         @toggle-select-all="toggleSelectAll"
       >
         <template #table-button>
-          <VBtn
-            type="button"
-            color="secondary"
-            variant="tonal"
-            class="mx-2"
-          >
-            <VIcon
-              size="small"
-              class="me-2"
-              color="green-darken-2"
-              icon="mdi-export-variant"
-            /> Export
-          </VBtn>
+          <Export
+            :is-all="selectedRow.is_all"
+            :paths="paths.salesDownload"
+            :selected-ids="selectedRow.selected_ids"
+            file-name="laporan-penjualan"
+          />
         </template>
         <template #tbody>
           <tr v-if="loading">
@@ -75,6 +68,7 @@
 
 <script setup>
 import Datatable from '@/components/Datatable.vue'
+import Export from '@/components/Export.vue'
 import Loading from '@/components/Loading.vue'
 import TableCard from '@/layouts/components/TableCard.vue'
 import { currencyFormat } from '@/utils'

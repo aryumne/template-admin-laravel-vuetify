@@ -55,6 +55,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('product-barcode-search/{barcode}', [ProductController::class, 'searchByBarcode']);
         Route::resource('transactions', TransactionController::class)->only(['index', 'store', 'show']);
         Route::resource('sales', SalesController::class)->only('index');
+        Route::post('sales-download', [SalesController::class, 'download']);
         Route::resource('purchases', PurchaseController::class)->only(['index', 'store']);
+        Route::post('purchases-download', [PurchaseController::class, 'download']);
     });
 });

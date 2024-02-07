@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\api;
 
 use Exception;
+use Carbon\Carbon;
+use App\Models\Sales;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Helpers\HttpHelper;
 use App\Services\DatatableService;
 use App\Http\Controllers\Controller;
+use Rap2hpoutre\FastExcel\FastExcel;
+use Illuminate\Support\Facades\Validator;
 use App\Exceptions\CustomExceptionHandler;
-use App\Models\Sales;
 use App\Repositories\TransactionRepository;
 
 class SalesController extends Controller
@@ -48,35 +51,52 @@ class SalesController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function download(Request $request)
     {
-        //
+        if (!$request->has('is_by_selected')) return HttpHelper::errorValidation('Silahkan pilih jenis download berdasarkan tanggal atau per data!', [], Response::HTTP_UNPROCESSABLE_ENTITY);
+        $rules = [];
+        if ($request->is_by_selected == 1) {
+            $rules['selected_ids'] = ['required', 'array', 'min:1'];
+        } else {
+            $rules['start_date'] = ['required', 'date'];
+            $rules['end_date'] = ['required', 'date'];
+        }
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails())  return HttpHelper::errorValidation($validator->errors()->first(), $validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        try {
+            $filePath = storage_path('app/public/data-sales.xlsx');
+            (new FastExcel($this->getSource($request->all())))->export($filePath, function ($att) {
+                return [
+                    'No transaksi'  => $att->transaction_number,
+                    'Tanggal'       => $att->tanggal,
+                    'Nama obat'     => $att->name,
+                    'Jumlah'        => $att->quantity,
+                    'Satuan'        => $att->type,
+                    'Harga satuan'  => $att->price,
+                    'Total'         => $att->total_price,
+                ];
+            });
+            return response()->download($filePath)->deleteFileAfterSend(true);
+        } catch (CustomExceptionHandler $e) {
+            return HttpHelper::errorResponse($e->getMessage(), [], $e->getCodeStatus());
+        } catch (Exception $e) {
+            return HttpHelper::errorResponse('Proses download gagal!', $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    private function getSource($data)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $query = Sales::query();
+        if ($data['is_by_selected'] == 1) {
+            $query->whereIn('id', $data['selected_ids'])->orderBy('created_at', 'asc');
+        } else {
+            $startDate = Carbon::parse($data['start_date'])->startOfDay();
+            $endDate = Carbon::parse($data['end_date'])->endOfDay();
+            $query->whereBetween('created_at', [$startDate, $endDate])->orderBy('created_at', 'asc');
+        }
+        foreach ($query->cursor() as $att) {
+            $att->tanggal = Carbon::parse($att->created_at)->format('Y-m-d');
+            yield $att;
+        }
     }
 }
