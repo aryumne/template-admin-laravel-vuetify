@@ -37,8 +37,12 @@ blobApi.interceptors.response.use(
 const downloadPdf = async (path, id, params = {}) => {
   try {
     const response = await blobApi.get(`/${path}/${id}`, { responseType: 'arraybuffer', ...params })
+
+    console.log(response)
     
     const blob = new Blob([response.data], { type: 'application/pdf' })
+
+    console.log(blob)
     
     return URL.createObjectURL(blob)
   } catch (error) {

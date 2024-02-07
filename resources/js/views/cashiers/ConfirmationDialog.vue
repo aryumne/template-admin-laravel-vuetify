@@ -147,8 +147,6 @@
 
 <script setup>
 import { transactionService } from '@/services'
-import { downloadPdf } from '@/services/blobApi'
-import paths from '@/services/paths'
 import { orderStore, snackbarStore } from "@/stores"
 import { currencyFormat } from "@/utils"
 import { ref, watch } from 'vue'
@@ -190,7 +188,7 @@ const submit = async isPrint => {
     })
 
     if (isPrint) {
-      const url = await downloadPdf(paths.transactions, res.data.id)
+      const url = await transactionService.downloadInvoice(res.data.id)
 
       // Open the PDF in a new tab
       window.open(url, '_blank')

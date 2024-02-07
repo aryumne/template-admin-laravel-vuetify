@@ -9,9 +9,11 @@ use Illuminate\Http\Response;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Helpers\HttpHelper;
 use App\Services\DatatableService;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Exceptions\CustomExceptionHandler;
 use App\Http\Requests\TransactionRequest;
+use App\Exceptions\CustomExceptionHandler;
+use App\Http\Resources\TransactionResource;
 use App\Repositories\TransactionRepository;
 
 class TransactionController extends Controller
@@ -72,7 +74,18 @@ class TransactionController extends Controller
     {
         try {
             $data = $this->trxRepo->getById($uuid, ['sales']);
-            // return HttpHelper::successResponse('Data obat.', new TransactionResource($data), Response::HTTP_OK);
+            return HttpHelper::successResponse('Data obat.', new TransactionResource($data), Response::HTTP_OK);
+        } catch (CustomExceptionHandler $e) {
+            return HttpHelper::errorResponse($e->getMessage(), [], $e->getCodeStatus());
+        } catch (Exception $e) {
+            return HttpHelper::errorResponse('Gagal memuat data obat!', $e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function downloadInvoice(string $uuid)
+    {
+        try {
+            $data = $this->trxRepo->getById($uuid, ['sales']);
             $pdf = Pdf::loadView('invoice', ['data' => $data]);
             return $pdf->download('invoice.pdf');
         } catch (CustomExceptionHandler $e) {
@@ -87,7 +100,7 @@ class TransactionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        Log::info(json_encode($request->all()));
     }
 
     /**

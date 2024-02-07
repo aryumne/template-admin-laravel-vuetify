@@ -69,7 +69,7 @@
 import Datatable from '@/components/Datatable.vue'
 import Loading from '@/components/Loading.vue'
 import TableCard from '@/layouts/components/TableCard.vue'
-import { downloadPdf } from '@/services/blobApi'
+import { transactionService } from '@/services'
 import { currencyFormat } from '@/utils'
 import paths from '@services/paths.js'
 import { snackbarStore } from '@stores'
@@ -143,7 +143,7 @@ const isLoading = data => {
 
 const download = async uuid => {
   try {
-    const url = await downloadPdf(paths.transactions, uuid)
+    const url = await transactionService.downloadInvoice(uuid)
 
     // Open the PDF in a new tab
     window.open(url, '_blank')
