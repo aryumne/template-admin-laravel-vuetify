@@ -1,7 +1,7 @@
 <script setup>
+import { hexToRgb } from '@layouts/utils'
 import VueApexCharts from 'vue3-apexcharts'
 import { useTheme } from 'vuetify'
-import { hexToRgb } from '@layouts/utils'
 
 const vuetifyTheme = useTheme()
 

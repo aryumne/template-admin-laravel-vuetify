@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\AnalyticController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\BlogController;
@@ -48,16 +49,22 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('blogs-group', [BlogController::class, 'groupByTypeKey']);
 
         // POS Cashier
+        Route::get('analytics', [AnalyticController::class, 'index']);
+
         Route::get('product-types', [ProductTypeController::class, 'index']);
         Route::resource('products', ProductController::class);
         Route::post('products-download', [ProductController::class, 'download']);
         Route::get('products-search', [ProductController::class, 'search']);
         Route::get('product-barcode-search/{barcode}', [ProductController::class, 'searchByBarcode']);
+
         Route::resource('transactions', TransactionController::class)->only(['index', 'store', 'show', 'update']);
         Route::get('transactions-invoice/{uuid}', [TransactionController::class, 'downloadInvoice']);
+
         Route::resource('sales', SalesController::class)->only('index');
         Route::post('sales-download', [SalesController::class, 'download']);
+
         Route::resource('purchases', PurchaseController::class)->only(['index', 'store']);
         Route::post('purchases-download', [PurchaseController::class, 'download']);
     });
 });
+Route::get('v1/test', [AnalyticController::class, 'index']);

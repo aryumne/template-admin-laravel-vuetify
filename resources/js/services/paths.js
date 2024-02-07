@@ -11,6 +11,7 @@ const paths = {
   salesDownload: 'sales-download',
   purchases: 'purchases',
   purchasesDownload: 'purchases-download',
+  analytics: 'analytics',
 }
 
 

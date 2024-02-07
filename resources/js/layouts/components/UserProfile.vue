@@ -1,5 +1,4 @@
 <script setup>
-import avatar1 from '@images/avatars/avatar-1.png'
 import { authStore, snackbarStore } from '@stores'
 
 
@@ -29,7 +28,7 @@ const signOut = async () => {
       color="primary"
       variant="tonal"
     >
-      <VImg :src="avatar1" />
+      <VIcon icon="mdi-account" />
 
       <!-- SECTION Menu -->
       <VMenu
@@ -54,16 +53,15 @@ const signOut = async () => {
                     color="primary"
                     variant="tonal"
                   >
-                    <VImg :src="avatar1" />
+                    <VIcon icon="mdi-account" />
                   </VAvatar>
                 </VBadge>
               </VListItemAction>
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              John Doe
+              {{ authStore.getUser.name }}
             </VListItemTitle>
-            <VListItemSubtitle>Admin</VListItemSubtitle>
           </VListItem>
           <VDivider class="my-2" />
 

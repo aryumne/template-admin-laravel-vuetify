@@ -1,16 +1,55 @@
 <script setup>
-import AnalyticsCongratulations from '@/views/dashboard/AnalyticsCongratulations.vue'
-import AnalyticsFinanceTabs from '@/views/dashboard/AnalyticsFinanceTab.vue'
-import AnalyticsOrderStatistics from '@/views/dashboard/AnalyticsOrderStatistics.vue'
-import AnalyticsProfitReport from '@/views/dashboard/AnalyticsProfitReport.vue'
-import AnalyticsTotalRevenue from '@/views/dashboard/AnalyticsTotalRevenue.vue'
-import AnalyticsTransactions from '@/views/dashboard/AnalyticsTransactions.vue'
+import CardStatistic from '@/components/CardStatistic.vue'
+import { dashboardService } from '@/services'
+import { snackbarStore } from '@/stores'
+import { currencyFormat } from '@/utils'
+import ExpiredProductList from '@/views/dashboard/ExpiredProductList.vue'
+import LowStockProductList from '@/views/dashboard/LowStockProductList.vue'
+import OrderTodayList from '@/views/dashboard/OrderTodayList.vue'
+import { onMounted, ref } from 'vue'
 
-// 👉 Images
-import chart from '@images/cards/chart-success.png'
-import card from '@images/cards/credit-card-primary.png'
-import paypal from '@images/cards/paypal-error.png'
-import wallet from '@images/cards/wallet-info.png'
+const data = ref({
+  cardStatistic: {
+    totalTransaction: 0,
+    totalProduct: 0,
+    totalTransactionThisMonth: 0,
+    totalPurchasesThisMonth: 0,
+  },
+  orderTodayList: {
+    total: 0,
+    data: [],
+  },
+  lowStockProductList: {
+    total: 0,
+    data: [],
+  },
+  expiredProductList: {
+    total: 0,
+    data: [],
+  },
+})
+
+onMounted(async () => {
+  try {
+    const res = await dashboardService.getAnalytics()
+
+    data.value.cardStatistic.totalTransaction = res?.data.cardStatistic.totalTransaction
+    data.value.cardStatistic.totalProduct = res?.data.cardStatistic.totalProduct
+    data.value.cardStatistic.totalTransactionThisMonth = res?.data.cardStatistic.totalTransactionThisMonth
+    data.value.cardStatistic.totalPurchasesThisMonth = res?.data.cardStatistic.totalPurchasesThisMonth
+
+    data.value.orderTodayList.total = res?.data.orderTodayList.total
+    data.value.orderTodayList.data = res?.data.orderTodayList.data
+
+    data.value.lowStockProductList.total = res?.data.lowStockProductList.total
+    data.value.lowStockProductList.data = res?.data.lowStockProductList.data
+
+    data.value.expiredProductList.total = res?.data.expiredProductList.total
+    data.value.expiredProductList.data = res?.data.expiredProductList.data
+  } catch (error) {
+    snackbarStore.setMsg(error.message)
+  }
+})
 </script>
 
 <template>
@@ -18,136 +57,86 @@ import wallet from '@images/cards/wallet-info.png'
     <!-- 👉 Congratulations -->
     <VCol
       cols="12"
-      md="8"
+      md="6"  
+      order-md="first"
+      order-sm="last"
     >
-      <AnalyticsCongratulations />
+      <VRow>
+        <VCol cols="12">
+          <OrderTodayList
+            :total="data.orderTodayList.total"
+            :data="data.orderTodayList.data"
+          />
+        </VCol>
+        <VCol cols="12">
+          <LowStockProductList
+            :total="data.lowStockProductList.total"
+            :data="data.lowStockProductList.data"
+          />
+        </VCol>
+      </VRow>
     </VCol>
 
     <VCol
       cols="12"
-      sm="4"
+      md="6"
+      order-md="last"
+      order-sm="first"
     >
       <VRow>
         <!-- 👉 Profit -->
         <VCol
           cols="12"
-          md="6"
+          sm="6"
         >
-          <CardStatisticsVertical
-            v-bind="{
-              title: 'Profit',
-              image: chart,
-              stats: '$12,628',
-              change: 72.80,
-            }"
+          <CardStatistic
+            title="Total Transaksi"
+            icon="mdi-credit-card-outline"
+            color="success"
+            :counter="data.cardStatistic.totalTransaction"
           />
         </VCol>
 
-        <!-- 👉 Sales -->
-        <VCol
-          cols="12"
-          md="6"
-        >
-          <CardStatisticsVertical
-            v-bind="{
-              title: 'Sales',
-              image: wallet,
-              stats: '$4,679',
-              change: 28.42,
-            }"
-          />
-        </VCol>
-      </VRow>
-    </VCol>
-
-    <!-- 👉 Total Revenue -->
-    <VCol
-      cols="12"
-      md="8"
-      order="2"
-      order-md="1"
-    >
-      <AnalyticsTotalRevenue />
-    </VCol>
-
-    <VCol
-      cols="12"
-      sm="8"
-      md="4"
-      order="1"
-      order-md="2"
-    >
-      <VRow>
-        <!-- 👉 Payments -->
         <VCol
           cols="12"
           sm="6"
         >
-          <CardStatisticsVertical
-            v-bind=" {
-              title: 'Payments',
-              image: paypal,
-              stats: '$2,468',
-              change: -14.82,
-            }"
+          <CardStatistic
+            title="Total Obat"
+            icon="mdi-pill-multiple"
+            color="info"
+            :counter="data.cardStatistic.totalProduct"
           />
         </VCol>
-
-        <!-- 👉 Revenue -->
         <VCol
           cols="12"
           sm="6"
         >
-          <CardStatisticsVertical
-            v-bind="{
-              title: 'Transactions',
-              image: card,
-              stats: '$14,857',
-              change: 28.14,
-            }"
+          <CardStatistic
+            title="Penjualan bulan ini"
+            icon="mdi-finance"
+            :counter="`Rp. ${currencyFormat(data.cardStatistic.totalTransactionThisMonth)}`"
+            color="primary"
+          />
+        </VCol>
+        <VCol
+          cols="12"
+          sm="6"
+        >
+          <CardStatistic
+            title="Pembelian bulan ini"
+            color="warning"
+            icon="mdi-chart-box-plus-outline"
+            :counter="`Rp. ${currencyFormat(data.cardStatistic.totalPurchasesThisMonth)}`"
+          />
+        </VCol>
+        <VCol cols="12">
+          <ExpiredProductList
+            :total="data.expiredProductList.total"
+            :data="data.expiredProductList.data"
           />
         </VCol>
       </VRow>
-
-      <VRow>
-        <!-- 👉 Profit Report -->
-        <VCol
-          cols="12"
-          sm="12"
-        >
-          <AnalyticsProfitReport />
-        </VCol>
-      </VRow>
-    </VCol>
-
-    <!-- 👉 Order Statistics -->
-    <VCol
-      cols="12"
-      md="4"
-      sm="6"
-      order="3"
-    >
-      <AnalyticsOrderStatistics />
-    </VCol>
-
-    <!-- 👉 Tabs chart -->
-    <VCol
-      cols="12"
-      md="4"
-      sm="6"
-      order="3"
-    >
-      <AnalyticsFinanceTabs />
-    </VCol>
-
-    <!-- 👉 Transactions -->
-    <VCol
-      cols="12"
-      md="4"
-      sm="6"
-      order="3"
-    >
-      <AnalyticsTransactions />
     </VCol>
   </VRow>
 </template>
