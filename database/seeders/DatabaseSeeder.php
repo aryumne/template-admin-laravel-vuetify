@@ -13,8 +13,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         \App\Models\User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' =>  env("ACCOUNT_PASSWORD"),
+            'email' => env("ACCOUNT_EMAIL"),
+            'password' => env("ACCOUNT_PASSWORD"),
         ]);
 
         $this->call([
