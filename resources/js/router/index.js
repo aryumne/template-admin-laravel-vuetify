@@ -41,7 +41,7 @@ const router = createRouter({
           name: 'dashboard',
           component: () => import('../pages/dashboard.vue'),
           meta: {
-            title: 'Dashboard',
+            title: 'Dashboard SIRARM',
           },
         },
         {
@@ -100,58 +100,6 @@ const router = createRouter({
             title: 'Edit Transaksi',
           },
         },
-        {
-          path: 'blogs',
-          name: 'blogs',
-          component: () => import('../pages/blogs.vue'),
-          meta: {
-            title: 'Blogs',
-          },
-        },
-        {
-          path: 'blog/create',
-          name: 'createBlog',
-          component: () => import('../pages/blogs-create.vue'),
-          meta: {
-            title: 'Create Blog',
-          },
-        },
-        {
-          path: 'blog/:id',
-          name: 'editBlog',
-          component: () => import('../pages/blogs-edit.vue'),
-          meta: {
-            title: 'Edit Blog',
-          },
-        },
-        {
-          path: 'typography',
-          component: () => import('../pages/typography.vue'),
-          meta: {
-            title: 'Typography',
-          },
-        },
-        {
-          path: 'icons',
-          component: () => import('../pages/icons.vue'),
-          meta: {
-            title: 'Icons',
-          },
-        },
-        {
-          path: 'tables',
-          component: () => import('../pages/tables.vue'),
-          meta: {
-            title: 'Tables',
-          },
-        },
-        {
-          path: 'form-layouts',
-          component: () => import('../pages/form-layouts.vue'),
-          meta: {
-            title: 'Form',
-          },
-        },
       ],
     },
     {
@@ -166,14 +114,7 @@ const router = createRouter({
           path: 'login',
           component: () => import('../pages/login.vue'),
           meta: {
-            title: 'Login Page',
-          },
-        },
-        {
-          path: 'register',
-          component: () => import('../pages/register.vue'),
-          meta: {
-            title: 'Register Page',
+            title: 'Login SIRARM',
           },
         },
       ],

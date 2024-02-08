@@ -1,4 +1,4 @@
-export const staticPrimaryColor = '#696CFF'
+export const staticPrimaryColor = '#01c063'
 
 const theme = {
   defaultTheme: 'light',
@@ -6,11 +6,11 @@ const theme = {
     light: {
       dark: false,
       colors: {
-        'primary': '#696CFF',
+        'success': '#696CFF',
         'on-primary': '#fff',
         'secondary': '#8592A3',
         'on-secondary': '#fff',
-        'success': '#71DD37',
+        'primary': '#01c063',
         'on-success': '#fff',
         'info': '#03C3EC',
         'on-info': '#fff',
@@ -54,11 +54,11 @@ const theme = {
     dark: {
       dark: true,
       colors: {
-        'primary': '#696CFF',
+        'success': '#696CFF',
         'on-primary': '#fff',
         'secondary': '#8592A3',
         'on-secondary': '#fff',
-        'success': '#71DD37',
+        'primary': '#01c063',
         'on-success': '#fff',
         'info': '#03C3EC',
         'on-info': '#fff',

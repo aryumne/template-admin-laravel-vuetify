@@ -266,6 +266,6 @@ onMounted(getData)
 }
 
 .sort-active {
-  color: #696cff !important;
+  color: #01c063 !important;
 }
 </style>

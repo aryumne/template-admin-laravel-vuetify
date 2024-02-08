@@ -1,12 +1,11 @@
 <script setup>
 import { snackbarStore } from '@/stores'
-import logo from '@images/logo.svg?raw'
+import logo from '@images/logo.png'
 import { authStore } from '@stores'
 
 const loading = ref(false)
 
 const data = ref({
-  email: '',
   password: '',
   remember: false,
 })
@@ -27,9 +26,8 @@ const signin = async () => {
     if(error?.response) errorMsg = error.response?.data.message
     snackbarStore.setMsg(errorMsg)
     authStore.signOut()
-  } finally {
     loading.value = false
-  }
+  } 
 }
 </script>
 
@@ -37,29 +35,36 @@ const signin = async () => {
   <div class="auth-wrapper d-flex align-center justify-center pa-4">
     <VCard
       class="auth-card pa-4 pt-7"
-      max-width="448"
+      max-width="600"
     >
       <VCardItem class="justify-center">
         <template #prepend>
           <div class="d-flex">
-            <div
-              class="d-flex text-primary"
-              v-html="logo"
-            />
+            <VAvatar
+              rounded
+              variant="tonal"
+              color="primary"
+            >
+              <img
+                :src="logo"
+                class="img-fluid"
+                width="50"
+              >
+            </VAvatar>
           </div>
         </template>
 
         <VCardTitle class="text-2xl font-weight-bold">
-          sneat
+          SIRARM
         </VCardTitle>
       </VCardItem>
 
-      <VCardText class="pt-2">
-        <h5 class="text-h5 mb-1">
-          Welcome to sneat! 👋🏻
+      <VCardText class="pt-2 text-center">
+        <h5 class="text-h5 mb-1 font-weight-bold">
+          APOTIK REZKY MEDIKA
         </h5>
-        <p class="mb-0">
-          Please sign-in to your account and start the adventure
+        <p class="mb-0 text-body-2">
+          Jl. Gunung Salju, No. 14
         </p>
       </VCardText>
 
@@ -67,24 +72,6 @@ const signin = async () => {
         <VForm @submit.prevent="signin">
           <VRow>
             <VCol cols="12">
-              <VTextField
-                v-model="data.email"
-                autofocus
-                placeholder="johndoe@email.com"
-                label="Email"
-                type="email"
-              />
-            </VCol>
-
-            <VCol cols="12">
-              <div class="d-flex align-center justify-end flex-wrap">
-                <RouterLink
-                  class="text-primary ms-2 mb-1"
-                  to="javascript:void(0)"
-                >
-                  Forgot Password?
-                </RouterLink>
-              </div>
               <VTextField
                 v-model="data.password"
                 label="Password"

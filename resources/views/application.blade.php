@@ -60,7 +60,7 @@
 
     <script>
         const loaderColor = localStorage.getItem('sneat-initial-loader-bg') || '#FFFFFF'
-        const primaryColor = localStorage.getItem('sneat-initial-loader-color') || '#696CFF'
+        const primaryColor = localStorage.getItem('sneat-initial-loader-color') || '#01c063'
 
         if (loaderColor)
             document.documentElement.style.setProperty('--initial-loader-bg', loaderColor)
