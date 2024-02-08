@@ -31,16 +31,19 @@ defineProps({
     <VCardText>
       <VList
         class="card-list mt-7"
-        height="350"
+        max-height="375"
       >
         <VListItem
           v-for="(order, index) in data"
           :key="index"
         >
           <template #prepend>
-            <div class="text-h6 pe-6">
+            <p
+              class="text-subtitle-1 me-2"
+              style="width: 2rem;"
+            >
               {{ index + 1 }}.
-            </div>
+            </p>
           </template>
 
           <VListItemTitle class="mb-1">

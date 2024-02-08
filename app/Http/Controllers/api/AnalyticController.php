@@ -25,7 +25,7 @@ class AnalyticController extends Controller
          * Table obat low stock
          */
         $totalTransaction = Transaction::count();
-        $transactionToday = Sales::select(['name', 'quantity', 'type', 'total_price'])->whereMonth('created_at', now())->get();
+        $transactionToday = Sales::select(['name', 'quantity', 'type', 'total_price'])->whereDate('created_at', now())->get();
         $totalTransactionToday = Transaction::whereDate('created_at', now())->sum('amount');
         $totalTransactionThisMonth = Transaction::whereMonth('created_at', now()->month)->sum('amount');
 

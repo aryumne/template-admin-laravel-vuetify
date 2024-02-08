@@ -140,3 +140,10 @@ onMounted(async () => {
     </VCol>
   </VRow>
 </template>
+
+
+<style>
+::-webkit-scrollbar {
+  width: 5px;
+}
+</style>
