@@ -1,6 +1,6 @@
 export const baseUrl = import.meta.env.BASE_URL
-export const apiVersion = `${import.meta.env.BASE_URL}api/${import.meta.env.VITE_API_VERSION}`
-export const urlStorage = `${import.meta.env.BASE_URL}storage`
+export const apiVersion = `${import.meta.env.VITE_APP_URL}/api/${import.meta.env.VITE_API_VERSION}`
+export const urlStorage = `${import.meta.env.VITE_APP_URL}/storage`
 export const SECRETS = {
   SALT_CODE: 'mySalt',
   TOKEN_MAP_BOX:
