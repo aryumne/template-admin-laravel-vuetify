@@ -23,7 +23,29 @@ class Transaction extends Model
             'transactions.amount'        => 8,
             'transactions.cash_amount'   => 5,
             'transactions.return_amount' => 5,
-        ]
+        ],
+        'table_columns' => [
+            'id'            => 'transactions.id',
+            'amount'        => 'transactions.amount',
+            'cash_amount'   => 'transactions.cash_amount',
+            'return_amount' => 'transactions.return_amount',
+            'transaction_number'    => 'transactions.transaction_number',
+            'prescription_number'   => 'transactions.prescription_number',
+            'deleted_at' => 'transactions.deleted_at',
+            'created_at' => 'transactions.created_at',
+            'updated_at' => 'transactions.updated_at',
+        ],
+        'groupBy' => [
+            'id'            => 'transactions.id',
+            'amount'        => 'transactions.amount',
+            'cash_amount'   => 'transactions.cash_amount',
+            'return_amount' => 'transactions.return_amount',
+            'transaction_number'    => 'transactions.transaction_number',
+            'prescription_number'   => 'transactions.prescription_number',
+            'deleted_at' => 'transactions.deleted_at',
+            'created_at' => 'transactions.created_at',
+            'updated_at' => 'transactions.updated_at',
+        ],
     ];
 
     protected static function booted(): void

@@ -19,7 +19,29 @@ class Purchase extends Model
     protected $searchable = [
         'columns' => [
             'purchases.name' => 15
-        ]
+        ],
+        'table_columns' => [
+            'id' => 'purchases.id',
+            'name' => 'purchases.name',
+            'quantity' => 'purchases.quantity',
+            'product_id' => 'purchases.product_id',
+            'price' => 'purchases.price',
+            'total_price' => 'purchases.total_price',
+            'deleted_at' => 'purchases.deleted_at',
+            'created_at' => 'purchases.created_at',
+            'updated_at' => 'purchases.updated_at',
+        ],
+        'groupBy' => [
+            'id' => 'purchases.id',
+            'name' => 'purchases.name',
+            'quantity' => 'purchases.quantity',
+            'product_id' => 'purchases.product_id',
+            'price' => 'purchases.price',
+            'total_price' => 'purchases.total_price',
+            'deleted_at' => 'purchases.deleted_at',
+            'created_at' => 'purchases.created_at',
+            'updated_at' => 'purchases.updated_at',
+        ],
     ];
 
     public function product(): BelongsTo
