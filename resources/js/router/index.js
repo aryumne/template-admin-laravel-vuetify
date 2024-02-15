@@ -45,8 +45,32 @@ const router = createRouter({
           },
         },
         {
-          path: 'products',
+          path: 'blogs',
+          name: 'blogs',
+          component: () => import('../pages/blogs.vue'),
+          meta: {
+            title: 'Blogs',
+          },
+        },
+        {
+          name: 'createBlog',
+          path: 'blog/create',
+          component: () => import('../pages/blogs-create.vue'),
+          meta: {
+            title: 'Create Blog',
+          },
+        },
+        {
+          path: 'blog/:id',
+          name: 'editBlog',
+          component: () => import('../pages/blogs-edit.vue'),
+          meta: {
+            title: 'Edit Blog',
+          },
+        },
+        {
           name: 'products',
+          path: 'products',
           component: () => import('../pages/product.vue'),
           meta: {
             title: 'Daftar Obat',

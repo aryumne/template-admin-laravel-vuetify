@@ -49,6 +49,13 @@ const openLogViewer = () => window.location.href= '/log-viewer'
       />
       <VerticalNavLink
         :item="{
+          title: 'Blogs',
+          icon: 'mdi-account-cog-outline',
+          to: {name:'blogs'},
+        }"
+      />
+      <VerticalNavLink
+        :item="{
           title: 'Data Obat',
           icon: 'mdi-text-box',
           to: {name:'products'},
